@@ -76,28 +76,44 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { title, description, type, category, region, district, address, price, currency, rooms, area, floor, images } = body
+    const {
+      title, description, type, category, region, district, address,
+      price, currency, rooms, area, floor, totalFloors,
+      hasGas, hasWater, hasElectricity, images,
+    } = body
 
-    if (!title || !type || !region || !price) {
-      return NextResponse.json({ error: "Majburiy maydonlar to'ldirilmagan" }, { status: 400 })
+    const isBuilding = ["APARTMENT", "HOUSE", "OFFICE"].includes(category)
+
+    if (!category || !type || !region || !price) {
+      return NextResponse.json({ error: "Kategoriya, bitim turi, region va narx majburiy" }, { status: 400 })
+    }
+    if (isBuilding && (!rooms || !floor || !totalFloors)) {
+      return NextResponse.json({ error: "Xonalar soni, qavat va jami qavatlar majburiy" }, { status: 400 })
+    }
+    if (!images || !Array.isArray(images) || images.length === 0) {
+      return NextResponse.json({ error: "Kamida bitta rasm yuklang" }, { status: 400 })
     }
 
     const listing = await prisma.listing.create({
       data: {
-        title,
+        title: title || "",
         description: description || "",
         type,
-        category: category || "APARTMENT",
+        category,
         status: "PENDING",
         price: parseFloat(price),
-        currency: currency || "UZS",
+        currency: currency || "USD",
         region,
         district: district || "",
         address: address || "",
         rooms: rooms ? parseInt(rooms) : null,
         area: area ? parseFloat(area) : null,
         floor: floor ? parseInt(floor) : null,
-        images: images || [],
+        totalFloors: totalFloors ? parseInt(totalFloors) : null,
+        hasGas: !!hasGas,
+        hasWater: !!hasWater,
+        hasElectricity: !!hasElectricity,
+        images,
         userId: session.user.id,
       },
     })

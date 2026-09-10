@@ -67,7 +67,7 @@ export default function EditListingPage() {
     if (!files.length) return
     try {
       const res = await startUpload(files)
-      if (res) setImages(prev => [...prev, ...res.map(r => r.url)])
+      if (res) setImages(prev => [...prev, ...res.map(r => (r as { ufsUrl?: string; url: string }).ufsUrl || r.url)])
     } catch { setError("Rasm yuklashda xatolik") }
     e.target.value = ""
   }
