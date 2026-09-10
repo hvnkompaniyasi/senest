@@ -22,8 +22,6 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-xl border-b border-white/60 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16">
-          
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-orange-400 via-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-orange-400/30 group-hover:scale-110 transition-transform">
               <Home className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
@@ -33,7 +31,6 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-1">
             <Link href="/buy" className="px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all">
               Sotib olish
@@ -41,15 +38,11 @@ export default function Navbar() {
             <Link href="/rent" className="px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all">
               Ijaraga
             </Link>
-            <Link href="/new" className="px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all">
-              Yangi binolar
-            </Link>
             <Link href="/listings" className="px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all">
               Barcha e'lonlar
             </Link>
           </div>
 
-          {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-2 xl:gap-3">
             <button
               onClick={handleAddListing}
@@ -87,7 +80,6 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile Actions */}
           <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={handleAddListing}
@@ -107,9 +99,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-100 space-y-1 animate-in slide-in-from-top-2">
+          <div className="lg:hidden py-4 border-t border-gray-100 space-y-1">
             <Link href="/" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-orange-50 rounded-lg">
               Bosh sahifa
             </Link>
@@ -119,13 +110,10 @@ export default function Navbar() {
             <Link href="/rent" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-orange-50 rounded-lg">
               Ijaraga
             </Link>
-            <Link href="/new" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-orange-50 rounded-lg">
-              Yangi binolar
-            </Link>
             <Link href="/listings" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-orange-50 rounded-lg">
               Barcha e'lonlar
             </Link>
-            
+
             <div className="pt-2 mt-2 border-t border-gray-100">
               {session ? (
                 <>

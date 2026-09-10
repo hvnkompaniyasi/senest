@@ -6,8 +6,6 @@ export default function Footer() {
     <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white mt-12 sm:mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          
-          {/* Logo */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-3 sm:mb-4">
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-orange-400 via-amber-400 to-orange-500 flex items-center justify-center">
@@ -20,18 +18,16 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Links */}
           <div>
             <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Bo'limlar</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
               <li><Link href="/buy" className="hover:text-orange-400 transition-colors">Sotib olish</Link></li>
               <li><Link href="/rent" className="hover:text-orange-400 transition-colors">Ijaraga</Link></li>
-              <li><Link href="/new" className="hover:text-orange-400 transition-colors">Yangi binolar</Link></li>
+              <li><Link href="/listings" className="hover:text-orange-400 transition-colors">Barcha e'lonlar</Link></li>
               <li><Link href="/add-listing" className="hover:text-orange-400 transition-colors">E'lon qo'shish</Link></li>
             </ul>
           </div>
 
-          {/* Company */}
           <div>
             <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Kompaniya</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
@@ -42,7 +38,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
             <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Aloqa</h4>
             <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-400">

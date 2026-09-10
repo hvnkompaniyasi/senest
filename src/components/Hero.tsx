@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import SearchFilters from "@/components/SearchFilters"
 import { FilterState, DEFAULT_FILTERS } from "@/lib/locations"
 
@@ -41,7 +40,6 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Search Box */}
         <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-2xl shadow-orange-400/10 border border-white/60 p-3 sm:p-4 md:p-6">
           <SearchFilters filters={filters} onChange={setFilters} onSearch={handleSearch} showAdvanced={showAdvanced} />
 
@@ -53,23 +51,6 @@ export default function Hero() {
             {showAdvanced ? "Kamroq filtrlar" : "Kengaytirilgan qidiruv"}
             {showAdvanced ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </button>
-        </div>
-
-        {/* Stats */}
-        <div className="mt-6 sm:mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto px-4">
-          {[
-            { number: "10,000+", label: "E'lonlar" },
-            { number: "5,000+", label: "Foydalanuvchilar" },
-            { number: "14", label: "Hududlar" },
-            { number: "180+", label: "Tumanlar" },
-          ].map((stat, i) => (
-            <div key={i} className="text-center p-3 sm:p-4 bg-white/60 backdrop-blur-xl rounded-lg sm:rounded-xl border border-white/70 shadow-lg">
-              <div className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
-                {stat.number}
-              </div>
-              <div className="text-xs sm:text-sm text-gray-600 mt-1">{stat.label}</div>
-            </div>
-          ))}
         </div>
       </div>
     </section>

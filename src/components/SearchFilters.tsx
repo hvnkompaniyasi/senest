@@ -52,6 +52,7 @@ export default function SearchFilters({ filters, onChange, onSearch, showAdvance
             {PROPERTY_CATEGORIES.map((t) => (
               <option key={t.id} value={t.id}>{t.name}</option>
             ))}
+            <option value="RENT">Ijara</option>
           </select>
         </div>
 

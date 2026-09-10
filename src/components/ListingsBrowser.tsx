@@ -37,11 +37,14 @@ export default function ListingsBrowser({ title, subtitle, dealFilter }: Listing
   const [listings, setListings] = useState<DbListing[]>([])
   const [loading, setLoading] = useState(true)
 
+  const urlCategory = searchParams.get("category") || ""
+  const urlDeal = searchParams.get("deal") || ""
+
   const [filters, setFilters] = useState<FilterState>({
     ...DEFAULT_FILTERS,
     region: searchParams.get("region") || "",
     district: searchParams.get("district") || "",
-    category: searchParams.get("category") || "",
+    category: urlCategory || (urlDeal === "RENT" ? "RENT" : ""),
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
     rooms: searchParams.get("rooms") || "",
@@ -56,8 +59,16 @@ export default function ListingsBrowser({ title, subtitle, dealFilter }: Listing
       const params = new URLSearchParams()
       if (filters.region) params.set("region", filters.region)
       if (filters.district) params.set("district", filters.district)
-      if (filters.category) params.set("category", filters.category)
+
+      // Ijara tanlangan bo'lsa -> deal, aks holda category
+      if (filters.category === "RENT") {
+        params.set("deal", "RENT")
+      } else if (filters.category) {
+        params.set("category", filters.category)
+      }
+
       if (dealFilter) params.set("deal", dealFilter)
+      if (urlDeal && !dealFilter) params.set("deal", urlDeal)
       if (filters.minPrice) params.set("minPrice", filters.minPrice)
       if (filters.maxPrice) params.set("maxPrice", filters.maxPrice)
       if (filters.rooms) params.set("rooms", filters.rooms)
@@ -75,7 +86,7 @@ export default function ListingsBrowser({ title, subtitle, dealFilter }: Listing
     } finally {
       setLoading(false)
     }
-  }, [filters, dealFilter, searchQuery])
+  }, [filters, dealFilter, urlDeal, searchQuery])
 
   useEffect(() => {
     const timer = setTimeout(fetchListings, 300)
