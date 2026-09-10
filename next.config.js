@@ -1,9 +1,16 @@
-﻿/** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
-    domains: ['utfs.io'],
+    unoptimized: true,
+    remotePatterns: [
+      { protocol: "https", hostname: "utfs.io" },
+      { protocol: "https", hostname: "**.ufs.io" },
+      { protocol: "https", hostname: "**.ufslive.com" },
+    ],
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
   },
 }
 
