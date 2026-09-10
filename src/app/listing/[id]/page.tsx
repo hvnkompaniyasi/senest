@@ -95,6 +95,34 @@ export default async function ListingDetailPage({ params }: PageProps) {
                 </div>
               </div>
 
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-800 mb-3">Qo'shimcha ma'lumotlar</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {listing.totalFloors ? (
+                    <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
+                      <Layers className="h-5 w-5 text-orange-500 mx-auto mb-1" />
+                      <div className="text-xs text-gray-600">Jami qavat</div>
+                      <div className="font-bold text-gray-800">{listing.totalFloors}</div>
+                    </div>
+                  ) : null}
+                  <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
+                    <div className="text-lg mb-1">🔥</div>
+                    <div className="text-xs text-gray-600">Gaz</div>
+                    <div className={`font-bold ${listing.hasGas ? "text-green-600" : "text-red-500"}`}>{listing.hasGas ? "✓ Bor" : "✕ Yo'q"}</div>
+                  </div>
+                  <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
+                    <div className="text-lg mb-1">💧</div>
+                    <div className="text-xs text-gray-600">Suv</div>
+                    <div className={`font-bold ${listing.hasWater ? "text-green-600" : "text-red-500"}`}>{listing.hasWater ? "✓ Bor" : "✕ Yo'q"}</div>
+                  </div>
+                  <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
+                    <div className="text-lg mb-1">💡</div>
+                    <div className="text-xs text-gray-600">Elektr</div>
+                    <div className={`font-bold ${listing.hasElectricity ? "text-green-600" : "text-red-500"}`}>{listing.hasElectricity ? "✓ Bor" : "✕ Yo'q"}</div>
+                  </div>
+                </div>
+              </div>
+
               <div>
                 <h3 className="font-bold text-gray-800 mb-2">Tavsif</h3>
                 <p className="text-gray-600 leading-relaxed whitespace-pre-line">{listing.description}</p>

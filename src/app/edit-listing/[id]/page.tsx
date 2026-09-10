@@ -27,7 +27,8 @@ export default function EditListingPage() {
 
   const [form, setForm] = useState({
     title: "", description: "", price: "", region: "", district: "", address: "",
-    rooms: "", area: "", floor: "", category: "", type: "",
+    rooms: "", area: "", floor: "", totalFloors: "", category: "", type: "",
+    hasGas: false, hasWater: false, hasElectricity: false,
   })
 
   const { startUpload, isUploading } = useUploadThing("listingImage", {
@@ -45,7 +46,9 @@ export default function EditListingPage() {
         title: l.title || "", description: l.description || "", price: String(l.price ?? ""),
         region: l.region || "", district: l.district || "", address: l.address || "",
         rooms: l.rooms ? String(l.rooms) : "", area: l.area ? String(l.area) : "",
-        floor: l.floor ? String(l.floor) : "", category: l.category || "", type: l.type || "",
+        floor: l.floor ? String(l.floor) : "", totalFloors: l.totalFloors ? String(l.totalFloors) : "",
+        category: l.category || "", type: l.type || "",
+        hasGas: !!l.hasGas, hasWater: !!l.hasWater, hasElectricity: !!l.hasElectricity,
       })
       setImages(l.images || [])
     } catch (e) {
@@ -60,7 +63,7 @@ export default function EditListingPage() {
     else if (status === "unauthenticated") router.push("/login")
   }, [status, load, router])
 
-  const set = (f: string, v: string) => setForm(p => ({ ...p, [f]: v }))
+  const set = (f: string, v: unknown) => setForm(p => ({ ...p, [f]: v }))
 
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
@@ -139,6 +142,37 @@ export default function EditListingPage() {
               <select value={form.type} onChange={(e) => set("type", e.target.value)} className="w-full h-12 px-4 bg-white/90 border-2 border-white/70 rounded-xl">
                 {DEAL_TYPES.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
               </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <Label className="font-semibold">Jami qavatlar</Label>
+              <Input type="number" value={form.totalFloors} onChange={(e) => set("totalFloors", e.target.value)} className="h-12 bg-white/90 border-2 border-white/70 rounded-xl" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label className="font-semibold">Kommunikatsiyalar</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {[
+                { key: "hasGas", label: "Gaz", emoji: "🔥" },
+                { key: "hasWater", label: "Suv", emoji: "💧" },
+                { key: "hasElectricity", label: "Elektr", emoji: "💡" },
+              ].map((u) => {
+                const val = form[u.key as keyof typeof form] as boolean
+                return (
+                  <div key={u.key} className="p-3 bg-white/90 border-2 border-white/70 rounded-xl">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-lg">{u.emoji}</span>
+                      <span className="text-sm font-medium text-gray-700">{u.label}</span>
+                    </div>
+                    <div className="flex gap-1">
+                      <button type="button" onClick={() => set(u.key, true)} className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${val ? "bg-green-500 text-white shadow" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}>✓ Bor</button>
+                      <button type="button" onClick={() => set(u.key, false)} className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${!val ? "bg-red-500 text-white shadow" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}>✕ Yo'q</button>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
 

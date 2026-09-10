@@ -4,11 +4,12 @@ import { prisma } from "@/lib/auth"
 import { authOptions } from "@/lib/auth-options"
 import { Prisma } from "@prisma/client"
 
-const EDITABLE = ["title","description","price","region","district","address","rooms","area","floor","category","type","images"]
+const EDITABLE = ["title","description","price","region","district","address","rooms","area","floor","totalFloors","category","type","hasGas","hasWater","hasElectricity","images"]
 
 function norm(field: string, v: unknown): unknown {
   if (field === "images") return Array.isArray(v) ? v : []
-  if (["price","area","rooms","floor"].includes(field)) {
+  if (["hasGas","hasWater","hasElectricity"].includes(field)) return !!v
+  if (["price","area","rooms","floor","totalFloors"].includes(field)) {
     if (v === null || v === undefined || v === "") return null
     return Number(v)
   }
