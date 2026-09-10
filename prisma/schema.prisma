@@ -132,3 +132,21 @@ model Message {
   receiverId String
   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
 }
+enum EditStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model ListingEdit {
+  id         String     @id @default(cuid())
+  listingId  String
+  userId     String
+  changes    Json
+  status     EditStatus @default(PENDING)
+  createdAt  DateTime   @default(now())
+  reviewedAt DateTime?
+
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

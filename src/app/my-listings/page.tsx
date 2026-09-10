@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Plus, Eye, Clock, CheckCircle, XCircle, Loader2 } from "lucide-react"
+import { Plus, Eye, Clock, CheckCircle, XCircle, Loader2, Pencil } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Navbar from "@/components/Navbar"
@@ -117,6 +117,12 @@ export default function MyListingsPage() {
                       </div>
                     </div>
                     <div className="flex sm:flex-col gap-2">
+                      <Link href={`/edit-listing/${listing.id}`} className="flex-1 sm:flex-none">
+                        <Button variant="outline" size="sm" className="w-full sm:w-auto border-gray-300 text-xs">
+                          <Pencil className="h-3.5 w-3.5 mr-1" />
+                          Tahrirlash
+                        </Button>
+                      </Link>
                       {listing.status === "ACTIVE" && (
                         <Link href={`/listing/${listing.id}`} className="flex-1 sm:flex-none">
                           <Button variant="outline" size="sm" className="w-full sm:w-auto border-gray-300 text-xs">
