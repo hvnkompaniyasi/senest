@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Plus, Edit, Trash2, Eye, Clock, CheckCircle, XCircle, Loader2 } from "lucide-react"
+import { Plus, Eye, Clock, CheckCircle, XCircle, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Navbar from "@/components/Navbar"
@@ -90,8 +90,8 @@ export default function MyListingsPage() {
         ) : (
           <div className="space-y-3 sm:space-y-4">
             {listings.map((listing) => {
-              const status = statusConfig[listing.status] || statusConfig.PENDING
-              const StatusIcon = status.icon
+              const st = statusConfig[listing.status] || statusConfig.PENDING
+              const StatusIcon = st.icon
               return (
                 <Card key={listing.id} className="bg-white/80 backdrop-blur-xl border border-white/70 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
@@ -111,18 +111,20 @@ export default function MyListingsPage() {
                         <span>•</span>
                         <span>{new Date(listing.createdAt).toLocaleDateString("uz-UZ")}</span>
                       </div>
-                      <div className={`inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full text-xs font-semibold border ${status.color}`}>
+                      <div className={`inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full text-xs font-semibold border ${st.color}`}>
                         <StatusIcon className="h-3 w-3" />
-                        {status.label}
+                        {st.label}
                       </div>
                     </div>
                     <div className="flex sm:flex-col gap-2">
-                      <Link href={`/listing/${listing.id}`} className="flex-1 sm:flex-none">
-                        <Button variant="outline" size="sm" className="w-full sm:w-auto border-gray-300 text-xs">
-                          <Eye className="h-3.5 w-3.5 mr-1" />
-                          Ko'rish
-                        </Button>
-                      </Link>
+                      {listing.status === "ACTIVE" && (
+                        <Link href={`/listing/${listing.id}`} className="flex-1 sm:flex-none">
+                          <Button variant="outline" size="sm" className="w-full sm:w-auto border-gray-300 text-xs">
+                            <Eye className="h-3.5 w-3.5 mr-1" />
+                            Ko'rish
+                          </Button>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </Card>
