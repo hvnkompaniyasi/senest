@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const { getServerSession } = await import("next-auth")
-    const { authOptions } = await import("@/app/api/auth/[...nextauth]/route")
+    const { authOptions } = await import("@/lib/auth-options")
     const session = await getServerSession(authOptions)
 
     if (!session?.user?.id) {
