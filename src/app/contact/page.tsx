@@ -17,8 +17,8 @@ export default function StaticPage() {
           </h1>
           <div className="prose prose-sm sm:prose-base max-w-none text-gray-700 space-y-4">
             <p>Biz bilan bog'lanish uchun quyidagi usullardan foydalanishingiz mumkin:</p>
-<p><strong>Telefon:</strong> +998 90 123 45 67</p>
-<p><strong>Email:</strong> info@senest.uz</p>
+<p><strong>Telefon:</strong> +998 33 007 01 50</p>
+<p><strong>Email:</strong> frlking2007@gmail.com</p>
 <p><strong>Manzil:</strong> Toshkent shahri, Amir Temur ko'chasi, 108-uy</p>
 <p><strong>Ish vaqti:</strong> Dushanba - Shanba, 9:00 - 18:00</p>
 <p>Savollaringiz bo'lsa, bemalol murojaat qiling. Bizning jamoamiz sizga yordam berishdan xursand bo'ladi!</p>

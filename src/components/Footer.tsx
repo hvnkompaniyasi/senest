@@ -43,11 +43,11 @@ export default function Footer() {
             <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-400">
               <li className="flex items-center gap-2">
                 <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-orange-400" />
-                +998 90 123 45 67
+                +998 33 007 01 50
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-orange-400" />
-                info@senest.uz
+                frlking2007@gmail.com
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-orange-400 mt-0.5" />
