@@ -37,23 +37,24 @@ enum PropertyCategory {
 }
 
 model User {
-  id               String      @id @default(cuid())
-  name             String?
-  email            String?
-  phone            String      @unique
-  emailVerified    DateTime?
-  image            String?
-  password         String?
-  role             Role        @default(USER)
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?
+  phone         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   accounts         Account[]
   sessions         Session[]
   listings         Listing[]
   favorites        Favorite[]
-  messagesSent     Message[]   @relation("SentMessages")
-  messagesReceived Message[]   @relation("ReceivedMessages")
+  messagesSent     Message[]     @relation("SentMessages")
+  messagesReceived Message[]     @relation("ReceivedMessages")
+  edits            ListingEdit[]
 }
 
 model Account {
@@ -84,33 +85,34 @@ model Session {
 }
 
 model Listing {
-  id            String           @id @default(cuid())
-  title         String           @default("")
-  description   String           @default("")
-  type          ListingType
-  category      PropertyCategory @default(APARTMENT)
-  status        ListingStatus    @default(PENDING)
-  price         Float
-  currency      String           @default("UZS")
-  region        String
-  district      String
-  address       String
-  latitude      Float?
-  longitude     Float?
-  rooms         Int?
-  area          Float?
-  floor         Int?
-  totalFloors   Int?
-  hasGas        Boolean          @default(false)
-  hasWater      Boolean          @default(false)
-  hasElectricity Boolean         @default(false)
-  images        String[]         @default([])
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  id             String           @id @default(cuid())
+  title          String           @default("")
+  description    String           @default("")
+  type           ListingType
+  category       PropertyCategory @default(APARTMENT)
+  status         ListingStatus    @default(PENDING)
+  price          Float
+  currency       String           @default("UZS")
+  region         String
+  district       String
+  address        String
+  latitude       Float?
+  longitude      Float?
+  rooms          Int?
+  area           Float?
+  floor          Int?
+  totalFloors    Int?
+  hasGas         Boolean          @default(false)
+  hasWater       Boolean          @default(false)
+  hasElectricity Boolean          @default(false)
+  images         String[]         @default([])
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 
-  userId        String
-  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  favorites     Favorite[]
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  favorites Favorite[]
+  edits     ListingEdit[]
 }
 
 model Favorite {
@@ -126,16 +128,17 @@ model Favorite {
 }
 
 model Message {
-  id         String   @id @default(cuid())
-  content    String
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
 
-  senderId   String
-  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId String
+  sender   User   @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
 
   receiverId String
-  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiver   User   @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
 }
+
 enum EditStatus {
   PENDING
   APPROVED
