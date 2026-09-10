@@ -78,6 +78,16 @@ export default function AddListingPage() {
     })
   }
 
+  const moveFile = (index: number, dir: -1 | 1) => {
+    setFiles(prev => {
+      const next = [...prev]
+      const j = index + dir
+      if (j < 0 || j >= next.length) return prev
+      ;[next[index], next[j]] = [next[j], next[index]]
+      return next
+    })
+  }
+
   const handleSubmit = async () => {
     setLoading(true)
     setError("")
@@ -205,7 +215,7 @@ export default function AddListingPage() {
                     <Input placeholder="Masalan: 3-xonali kvartira, Chilonzor" value={formData.title} onChange={(e) => handleChange("title", e.target.value)} className="h-12 bg-white/90 border-2 border-white/70 rounded-xl" />
                   </div>
                   <div className="space-y-2">
-                    <Label className="font-semibold">Tavsif *</Label>
+                    <Label className="font-semibold">Tavsif (ixtiyoriy)</Label>
                     <textarea placeholder="E'lon haqida batafsil..." value={formData.description} onChange={(e) => handleChange("description", e.target.value)} rows={4} className="w-full px-4 py-3 bg-white/90 border-2 border-white/70 rounded-xl focus:border-orange-400 focus:ring-4 focus:ring-orange-400/20 outline-none resize-none" />
                   </div>
                 </>
@@ -225,7 +235,7 @@ export default function AddListingPage() {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <Label className="font-semibold">Tuman *</Label>
+                  <Label className="font-semibold">Tuman (ixtiyoriy)</Label>
                   <select value={formData.district} onChange={(e) => handleChange("district", e.target.value)} disabled={!formData.region} className="w-full h-12 px-4 bg-white/90 border-2 border-white/70 rounded-xl disabled:opacity-50">
                     <option value="">Tanlang</option>
                     {getDistricts(formData.region).map(d => <option key={d} value={d}>{d}</option>)}
@@ -305,12 +315,16 @@ export default function AddListingPage() {
               {files.length > 0 && (
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {files.map((f, i) => (
-                    <div key={i} className="relative aspect-square rounded-xl overflow-hidden border-2 border-white/70 shadow-lg bg-orange-100">
+                    <div key={i} className="relative aspect-square rounded-xl overflow-hidden border-2 border-white/70 shadow-lg bg-orange-100 group">
                       <img src={f.preview} alt="" className="w-full h-full object-cover" />
-                      <button onClick={() => removeFile(i)} className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600">
-                        <X className="h-3 w-3 text-white" />
-                      </button>
-                      {i === 0 && <div className="absolute bottom-2 left-2 px-2 py-1 bg-orange-500 text-white text-xs rounded-full font-semibold">Asosiy</div>}
+                      {i === 0 && <div className="absolute top-2 left-2 px-2 py-0.5 bg-orange-500 text-white text-[10px] rounded-full font-bold z-10">Asosiy</div>}
+                      <div className="absolute inset-0 bg-black/50 md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                        <button type="button" onClick={() => moveFile(i, -1)} aria-label="Chapga surish" className="w-7 h-7 bg-white/20 rounded-full text-white text-xs hover:bg-white/30">←</button>
+                        <button type="button" onClick={() => moveFile(i, 1)} aria-label="O'ngga surish" className="w-7 h-7 bg-white/20 rounded-full text-white text-xs hover:bg-white/30">→</button>
+                        <button type="button" onClick={() => removeFile(i)} aria-label="Rasmni o'chirish" className="w-7 h-7 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600">
+                          <X className="h-3.5 w-3.5 text-white" />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

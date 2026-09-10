@@ -78,14 +78,14 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { title, description, type, category, region, district, address, price, currency, rooms, area, floor, images } = body
 
-    if (!title || !description || !type || !region || !price) {
+    if (!title || !type || !region || !price) {
       return NextResponse.json({ error: "Majburiy maydonlar to'ldirilmagan" }, { status: 400 })
     }
 
     const listing = await prisma.listing.create({
       data: {
         title,
-        description,
+        description: description || "",
         type,
         category: category || "APARTMENT",
         status: "PENDING",
