@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { ArrowLeft, SlidersHorizontal, LocateFixed, Plus, Minus, X, Loader2, MapPin } from "lucide-react"
 import { REGIONS, DEAL_TYPES } from "@/lib/locations"
-import { listingCoords } from "@/lib/geo"
 import MobileNav from "@/components/MobileNav"
 
 interface MapListing {
@@ -19,8 +18,7 @@ interface MapListing {
   longitude: number | null
 }
 
-const coordsOf = (l: MapListing): [number, number] =>
-  l.latitude && l.longitude ? [l.latitude, l.longitude] : listingCoords(l.region, l.district, l.id)
+const coordsOf = (l: MapListing): [number, number] => [l.latitude || 0, l.longitude || 0]
 
 export default function MapPage() {
   const divRef = useRef<HTMLDivElement>(null)
@@ -67,7 +65,7 @@ export default function MapPage() {
     if (deal) params.set("deal", deal)
     fetch(`/api/listings?${params.toString()}`)
       .then((r) => r.json())
-      .then((d) => setListings(d.listings || []))
+      .then((d) => setListings((d.listings || []).filter((l: MapListing) => l.latitude !== null && l.longitude !== null)))
       .catch(() => setListings([]))
   }, [region, deal])
 
