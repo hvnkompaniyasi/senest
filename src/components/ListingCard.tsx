@@ -52,7 +52,7 @@ export default function ListingCard({ id, title, price, location, rooms, area, i
       <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-orange-400/20 transition-all duration-300 hover:-translate-y-1">
         <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-orange-100 via-amber-100 to-yellow-100 dark:from-zinc-800 dark:to-zinc-900">
           {image ? (
-            <img src={image} alt={title || "E'lon rasmi"} loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+            <img src={image} alt={title || "E'lon rasmi"} decoding="async" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
           ) : (
             <div className="w-full h-full flex items-center justify-center"><span className="text-5xl">🏠</span></div>
           )}

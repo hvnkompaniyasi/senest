@@ -27,11 +27,9 @@ export default function MapPage() {
   const mapRef = useRef<any>(null)
   const groupRef = useRef<any>(null)
   const userMarkerRef = useRef<any>(null)
-  const listingsRef = useRef<MapListing[]>([])
 
   const [ready, setReady] = useState(false)
   const [listings, setListings] = useState<MapListing[]>([])
-  const [visible, setVisible] = useState<MapListing[]>([])
   const [region, setRegion] = useState("")
   const [deal, setDeal] = useState("")
   const [sheetOpen, setSheetOpen] = useState(false)
@@ -43,7 +41,6 @@ export default function MapPage() {
     setTimeout(() => setToast(""), 2500)
   }
 
-  // Xaritani ishga tushirish
   useEffect(() => {
     let map: any
     let cancelled = false
@@ -58,24 +55,11 @@ export default function MapPage() {
       }).addTo(map)
       groupRef.current = L.layerGroup().addTo(map)
       mapRef.current = map
-
-      // Xarita ko'chirilganda - ko'rinayotgan e'lonlarni yangilash
-      map.on("moveend", () => {
-        const b = map.getBounds()
-        setVisible(
-          listingsRef.current.filter((l) => {
-            const [la, ln] = coordsOf(l)
-            return b.contains(L.latLng(la, ln))
-          })
-        )
-      })
-
       setReady(true)
     })()
     return () => { cancelled = true; if (map) map.remove() }
   }, [])
 
-  // E'lonlarni yuklash
   useEffect(() => {
     const params = new URLSearchParams()
     if (region) params.set("region", region)
@@ -86,15 +70,12 @@ export default function MapPage() {
       .catch(() => setListings([]))
   }, [region, deal])
 
-  // Markerlarni chizish + ko'rinayotganlarni hisoblash
   useEffect(() => {
     const L = LRef.current
     const group = groupRef.current
     const map = mapRef.current
     if (!ready || !L || !group || !map) return
-    listingsRef.current = listings
     group.clearLayers()
-
     listings.forEach((l) => {
       const [lat, lng] = coordsOf(l)
       const icon = L.divIcon({
@@ -113,16 +94,12 @@ export default function MapPage() {
         </div>`
       )
     })
-
     if (listings.length > 0) {
       const pts = listings.map((l) => { const [la, ln] = coordsOf(l); return L.latLng(la, ln) })
       map.fitBounds(L.latLngBounds(pts), { padding: [60, 60] })
     }
-    const b = map.getBounds()
-    setVisible(listings.filter((l) => { const [la, ln] = coordsOf(l); return b.contains(L.latLng(la, ln)) }))
   }, [listings, ready])
 
-  // O'zim turgan joy
   const locate = () => {
     if (!navigator.geolocation) { showToast("Brauzeringiz joylashuvni qo'llab-quvvatlamaydi"); return }
     setLocating(true)
@@ -148,7 +125,7 @@ export default function MapPage() {
   const fabCls = "w-11 h-11 bg-white dark:bg-zinc-900 rounded-xl shadow-xl border border-gray-200 dark:border-zinc-700 flex items-center justify-center text-gray-700 dark:text-gray-200 active:scale-95 transition-all"
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950">
+    <div className="fixed inset-0 z-40 overflow-hidden bg-zinc-100 dark:bg-zinc-950">
       <div ref={divRef} className="absolute inset-0 z-0" />
 
       {!ready && (
@@ -165,7 +142,7 @@ export default function MapPage() {
         <div className="flex-1 h-11 px-4 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200 dark:border-zinc-700 flex items-center gap-2 min-w-0">
           <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0" />
           <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 truncate">
-            Xaritadagi e'lonlar: {visible.length}
+            Xaritadagi e'lonlar: {listings.length}
           </span>
         </div>
         <button onClick={() => setSheetOpen(true)} className={fabCls} aria-label="Filtrlar">
@@ -173,15 +150,14 @@ export default function MapPage() {
         </button>
       </div>
 
-      {/* Toast */}
       {toast && (
         <div className="absolute top-16 left-1/2 -translate-x-1/2 z-[600] px-4 py-2 bg-zinc-900/90 text-white text-xs font-semibold rounded-full shadow-xl">
           {toast}
         </div>
       )}
 
-      {/* O'ng past FAB'lar */}
-      <div className="absolute right-3 bottom-44 z-[500] flex flex-col gap-2">
+      {/* O'ng past FAB'lar (karusel yo'q, pastda) */}
+      <div className="absolute right-3 bottom-6 z-[500] flex flex-col gap-2">
         <button onClick={locate} className={fabCls} aria-label="O'zim turgan joy">
           {locating ? <Loader2 className="h-5 w-5 animate-spin text-blue-500" /> : <LocateFixed className="h-5 w-5 text-blue-500" />}
         </button>
@@ -193,45 +169,11 @@ export default function MapPage() {
         </button>
       </div>
 
-      {/* Pastki karusel - ko'rinayotgan e'lonlar */}
-      <div className="absolute bottom-0 left-0 right-0 z-[500] pb-3 pt-6 bg-gradient-to-t from-black/30 to-transparent pointer-events-none">
-        {visible.length === 0 ? (
-          <div className="mx-3 pointer-events-auto px-4 py-3 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl rounded-xl shadow-xl text-center">
-            <p className="text-xs font-semibold text-gray-600 dark:text-gray-300">
-              Bu hududda e'lon yo'q — xaritani ko'chiring yoki filtrni o'zgartiring
-            </p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto flex gap-3 px-3 pointer-events-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {visible.map((l) => (
-              <Link
-                key={l.id}
-                href={`/listing/${l.id}`}
-                className="flex-shrink-0 w-52 bg-white dark:bg-zinc-900 rounded-xl overflow-hidden shadow-2xl border border-white/70 dark:border-zinc-700 active:scale-95 transition-transform"
-              >
-                <div className="relative h-28 bg-gradient-to-br from-orange-100 to-amber-100 dark:from-zinc-800 dark:to-zinc-900">
-                  {l.images?.[0] && <img src={l.images[0]} alt="" className="w-full h-full object-cover" loading="lazy" />}
-                  <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-white/95 rounded-full text-[11px] font-bold text-orange-600 shadow">
-                    ${l.price.toLocaleString("en-US")}
-                  </span>
-                </div>
-                <div className="p-2.5">
-                  <div className="text-xs font-semibold text-gray-800 dark:text-white truncate">{l.title || "Sarlavhasiz"}</div>
-                  <div className="text-[10px] text-gray-500 dark:text-gray-400 truncate mt-0.5">
-                    {l.region}{l.district ? `, ${l.district}` : ""}
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-
       {/* Filter bottom sheet */}
       {sheetOpen && (
         <div className="absolute inset-0 z-[700] bg-black/50 backdrop-blur-sm" onClick={() => setSheetOpen(false)}>
           <div
-            className="absolute bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 rounded-t-3xl p-5 pb-8 shadow-2xl animate-fade-in-up"
+            className="absolute bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 rounded-t-3xl p-5 pb-8 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-10 h-1 bg-gray-300 dark:bg-zinc-700 rounded-full mx-auto mb-4" />
@@ -257,16 +199,10 @@ export default function MapPage() {
                 </select>
               </div>
               <div className="flex gap-2 pt-1">
-                <button
-                  onClick={() => { setRegion(""); setDeal("") }}
-                  className="flex-1 h-12 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold"
-                >
+                <button onClick={() => { setRegion(""); setDeal("") }} className="flex-1 h-12 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold">
                   Tozalash
                 </button>
-                <button
-                  onClick={() => setSheetOpen(false)}
-                  className="flex-1 h-12 bg-gradient-to-r from-orange-400 to-amber-500 text-white rounded-xl text-sm font-bold shadow-lg"
-                >
+                <button onClick={() => setSheetOpen(false)} className="flex-1 h-12 bg-gradient-to-r from-orange-400 to-amber-500 text-white rounded-xl text-sm font-bold shadow-lg">
                   Ko'rish ({listings.length})
                 </button>
               </div>
