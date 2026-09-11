@@ -70,10 +70,10 @@ export default function ListingCard({ id, title, price, location, rooms, area, i
         </div>
         <div className="p-4">
           <div className="text-xl font-bold text-orange-600 mb-1">${price.toLocaleString("en-US")}</div>
-          <h3 className="font-semibold text-gray-800 dark:text-white mb-2 truncate">{title || "Sarlavhasiz e'lon"}</h3>
+          <h3 className="font-semibold text-gray-800 dark:text-white mb-2 line-clamp-2">{title || "Sarlavhasiz e'lon"}</h3>
           <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 mb-3">
             <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0" />
-            <span className="truncate">{location}</span>
+            <span className="line-clamp-2">{location}</span>
           </div>
           {(rooms > 0 || area > 0) && (
             <div className="flex items-center gap-4 pt-3 border-t border-gray-100 dark:border-zinc-800 text-sm text-gray-600 dark:text-gray-400">

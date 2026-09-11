@@ -31,8 +31,16 @@ interface ListingsBrowserProps {
 
 const PAGE_SIZE = 12
 
+const CATEGORY_NAMES: Record<string, string> = {
+  APARTMENT: "Kvartira",
+  HOUSE: "Uy / Hovli",
+  OFFICE: "Ofis",
+  LAND: "Yer",
+  WAREHOUSE: "Ombor",
+}
+
 const inputCls =
-  "h-11 w-full px-3 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-700 dark:text-gray-200 outline-none focus:border-orange-400"
+  "h-11 w-full px-3 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-700 dark:text-gray-200 outline-none focus:border-[#FF9500]"
 
 export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {}) {
   const searchParams = useSearchParams()
@@ -45,7 +53,7 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
   const [minPrice, setMinPrice] = useState("")
   const [maxPrice, setMaxPrice] = useState("")
   const [sort, setSort] = useState("new")
-  const [showFilters, setShowFilters] = useState(false)
+  const [sheetOpen, setSheetOpen] = useState(false)
 
   const [listings, setListings] = useState<DbListing[]>([])
   const [total, setTotal] = useState(0)
@@ -57,19 +65,13 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
   const regions = REGIONS as Region[]
   const districts = regions.find((r) => r.name === region)?.districts || []
 
-  // Qidiruv uchun debounce
   const [debouncedQ, setDebouncedQ] = useState(q)
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQ(q), 400)
     return () => clearTimeout(t)
   }, [q])
 
-  // Asosiy yuklash (filtrlar o'zgarganda)
-  useEffect(() => {
-    let cancelled = false
-    setLoading(true)
-    setSkip(0)
-
+  const buildParams = (nextSkip: number) => {
     const params = new URLSearchParams()
     if (debouncedQ) params.set("q", debouncedQ)
     if (region) params.set("region", region)
@@ -80,9 +82,15 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
     if (maxPrice) params.set("maxPrice", maxPrice)
     params.set("sort", sort)
     params.set("take", String(PAGE_SIZE))
-    params.set("skip", "0")
+    params.set("skip", String(nextSkip))
+    return params
+  }
 
-    fetch(`/api/listings?${params.toString()}`)
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    setSkip(0)
+    fetch(`/api/listings?${buildParams(0).toString()}`)
       .then((r) => r.json())
       .then((d) => {
         if (cancelled) return
@@ -97,25 +105,14 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
     return () => {
       cancelled = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQ, region, district, category, deal, minPrice, maxPrice, sort])
 
   const loadMore = async () => {
     setLoadingMore(true)
     const nextSkip = skip + PAGE_SIZE
-    const params = new URLSearchParams()
-    if (debouncedQ) params.set("q", debouncedQ)
-    if (region) params.set("region", region)
-    if (district) params.set("district", district)
-    if (category) params.set("category", category)
-    if (deal) params.set("deal", deal)
-    if (minPrice) params.set("minPrice", minPrice)
-    if (maxPrice) params.set("maxPrice", maxPrice)
-    params.set("sort", sort)
-    params.set("take", String(PAGE_SIZE))
-    params.set("skip", String(nextSkip))
-
     try {
-      const d = await (await fetch(`/api/listings?${params.toString()}`)).json()
+      const d = await (await fetch(`/api/listings?${buildParams(nextSkip).toString()}`)).json()
       setListings((prev) => [...prev, ...(d.listings || [])])
       setSkip(nextSkip)
       setHasMore(!!d.hasMore)
@@ -127,7 +124,6 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
   }
 
   const resetFilters = () => {
-    setQ("")
     setRegion("")
     setDistrict("")
     setCategory("")
@@ -137,104 +133,85 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
     setSort("new")
   }
 
-  const activeFilterCount = [region, district, category, deal, minPrice, maxPrice].filter(Boolean).length
+  // Faol filtr chips
+  const chips: { label: string; clear: () => void }[] = []
+  if (region) chips.push({ label: region, clear: () => { setRegion(""); setDistrict("") } })
+  if (district) chips.push({ label: district, clear: () => setDistrict("") })
+  if (category) chips.push({ label: CATEGORY_NAMES[category] || category, clear: () => setCategory("") })
+  if (deal) chips.push({ label: DEAL_TYPES.find((d) => d.id === deal)?.name || deal, clear: () => setDeal("") })
+  if (minPrice) chips.push({ label: `dan $${minPrice}`, clear: () => setMinPrice("") })
+  if (maxPrice) chips.push({ label: `gacha $${maxPrice}`, clear: () => setMaxPrice("") })
 
   return (
-    <div>
-      {/* Qidiruv + filtr tugmasi */}
+    <div className="pb-6">
+      {/* Qidiruv + Filtr tugmasi */}
       <div className="flex gap-2 mb-3">
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Sarlavha, manzil yoki hudud bo'yicha qidirish..."
-            className={`${inputCls} pl-10`}
+            placeholder="Sarlavha, manzil yoki hudud..."
+            className="h-12 w-full pl-10 pr-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-[#FF9500] shadow-[0_4px_16px_rgba(0,0,0,0.04)]"
           />
         </div>
         <button
-          onClick={() => setShowFilters((s) => !s)}
-          className={`h-11 px-4 rounded-xl flex items-center gap-2 text-sm font-semibold border transition-colors ${
-            showFilters || activeFilterCount > 0
-              ? "bg-orange-500 text-white border-orange-500"
-              : "bg-white/90 dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-gray-200"
-          }`}
+          onClick={() => setSheetOpen(true)}
+          aria-label="Filtrlar"
+          className="relative w-12 h-12 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:border-[#FF9500] transition-colors flex-shrink-0"
         >
-          <SlidersHorizontal className="h-4 w-4" />
-          Filtrlar
-          {activeFilterCount > 0 && (
-            <span className="min-w-[18px] h-[18px] px-1 bg-white text-orange-600 text-[10px] font-bold rounded-full flex items-center justify-center">
-              {activeFilterCount}
+          <SlidersHorizontal className="h-4.5 w-4.5 h-5 w-5" />
+          {chips.length > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-[#FF9500] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              {chips.length}
             </span>
           )}
         </button>
       </div>
 
-      {/* Filtr paneli */}
-      {showFilters && (
-        <div className="mb-4 p-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl shadow-lg grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <select value={region} onChange={(e) => { setRegion(e.target.value); setDistrict("") }} className={inputCls}>
-            <option value="">Barcha hududlar</option>
-            {regions.map((r) => (<option key={r.id} value={r.name}>{r.name}</option>))}
-          </select>
-          <select value={district} onChange={(e) => setDistrict(e.target.value)} className={inputCls} disabled={!region}>
-            <option value="">{region ? "Barcha tumanlar" : "Avval hudud tanlang"}</option>
-            {districts.map((d) => (<option key={d} value={d}>{d}</option>))}
-          </select>
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className={inputCls}>
-            <option value="">Barcha turlar (mulkiy)</option>
-            <option value="APARTMENT">Kvartira</option>
-            <option value="HOUSE">Uy / Hovli</option>
-            <option value="OFFICE">Ofis</option>
-            <option value="LAND">Yer uchastkasi</option>
-            <option value="WAREHOUSE">Ombor</option>
-          </select>
-          <select value={deal} onChange={(e) => setDeal(e.target.value)} className={inputCls}>
-            <option value="">Barcha bitimlar</option>
-            {DEAL_TYPES.map((d) => (<option key={d.id} value={d.id}>{d.name}</option>))}
-          </select>
-          <input type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="Narx: dan ($)" className={inputCls} />
-          <input type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="Narx: gacha ($)" className={inputCls} />
-          <select value={sort} onChange={(e) => setSort(e.target.value)} className={inputCls}>
-            <option value="new">Eng yangilari</option>
-            <option value="price_asc">Arzon → Qimmat</option>
-            <option value="price_desc">Qimmat → Arzon</option>
-          </select>
-          <button onClick={resetFilters} className="h-11 px-4 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5">
-            <X className="h-4 w-4" /> Tozalash
+      {/* Faol filtr chips */}
+      {chips.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {chips.map((c) => (
+            <button
+              key={c.label}
+              onClick={c.clear}
+              className="inline-flex items-center gap-1 px-2.5 py-1 bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded-full text-[11px] font-semibold"
+            >
+              {c.label} <X className="h-3 w-3" />
+            </button>
+          ))}
+          <button onClick={resetFilters} className="px-2.5 py-1 text-[11px] font-semibold text-gray-400 hover:text-gray-600">
+    Tozalash
           </button>
         </div>
       )}
 
-      {/* Natija soni */}
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          {loading ? "Qidirilmoqda..." : `${total} ta e'lon topildi`}
-        </p>
-      </div>
+      {/* Natijalar soni */}
+      <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">
+        {loading ? "Qidirilmoqda..." : `${total} ta e'lon topildi`}
+      </p>
 
       {/* Grid */}
       {loading ? (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
           <ListingSkeleton count={6} />
         </div>
       ) : listings.length === 0 ? (
-        <div className="text-center py-16 bg-white/80 dark:bg-zinc-900/80 rounded-2xl border border-white/70 dark:border-zinc-800">
-          <MapPin className="h-12 w-12 text-gray-300 dark:text-zinc-700 mx-auto mb-3" />
-          <p className="font-semibold text-gray-700 dark:text-gray-200 mb-1">Hech narsa topilmadi</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-            Filtrlarni o'zgartirib yoki tozalab qayta urinib ko'ring
-          </p>
+        <div className="text-center py-16 bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800">
+          <MapPin className="h-12 w-12 text-gray-200 dark:text-zinc-700 mx-auto mb-3" />
+          <p className="font-semibold text-gray-700 dark:text-gray-200 mb-1 text-sm">Hech narsa topilmadi</p>
+          <p className="text-xs text-gray-400 mb-4">Filtrlarni o'zgartirib qayta urinib ko'ring</p>
           <button
-            onClick={resetFilters}
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-sm font-bold rounded-xl"
+            onClick={() => { resetFilters(); setQ("") }}
+            className="px-5 py-2.5 bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white text-xs font-bold rounded-xl"
           >
-            <X className="h-4 w-4" /> Filtrlarni tozalash
+            Filtrlarni tozalash
           </button>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
             {listings.map((l) => (
               <ListingCard
                 key={l.id}
@@ -251,18 +228,83 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
           </div>
 
           {hasMore && (
-            <div className="text-center mt-6">
+            <div className="text-center mt-5">
               <button
                 onClick={loadMore}
                 disabled={loadingMore}
-                className="h-12 px-8 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-gray-200 rounded-xl font-bold text-sm flex items-center gap-2 mx-auto hover:border-orange-400 transition-colors"
+                className="h-11 px-7 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-bold flex items-center gap-2 mx-auto hover:border-[#FF9500] transition-colors"
               >
-                {loadingMore ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                {loadingMore && <Loader2 className="h-4 w-4 animate-spin" />}
                 Yana yuklash ({total - listings.length} ta qoldi)
               </button>
             </div>
           )}
         </>
+      )}
+
+      {/* FILTER BOTTOM SHEET */}
+      {sheetOpen && (
+        <div className="fixed inset-0 z-[800] bg-black/40 backdrop-blur-sm" onClick={() => setSheetOpen(false)}>
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-white dark:bg-zinc-900 rounded-t-3xl p-5 pb-8 max-h-[80vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-10 h-1 bg-gray-200 dark:bg-zinc-700 rounded-full mx-auto mb-4" />
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-gray-900 dark:text-white">Filtrlar</h3>
+              <button onClick={() => setSheetOpen(false)} aria-label="Yopish">
+                <X className="h-5 w-5 text-gray-400" />
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-2.5">
+                <select value={region} onChange={(e) => { setRegion(e.target.value); setDistrict("") }} className={inputCls}>
+                  <option value="">Barcha hududlar</option>
+                  {regions.map((r) => (<option key={r.id} value={r.name}>{r.name}</option>))}
+                </select>
+                <select value={district} onChange={(e) => setDistrict(e.target.value)} className={inputCls} disabled={!region}>
+                  <option value="">{region ? "Barcha tumanlar" : "Avval hudud"}</option>
+                  {districts.map((d) => (<option key={d} value={d}>{d}</option>))}
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <select value={category} onChange={(e) => setCategory(e.target.value)} className={inputCls}>
+                  <option value="">Barcha turlar</option>
+                  {Object.entries(CATEGORY_NAMES).map(([id, name]) => (<option key={id} value={id}>{name}</option>))}
+                </select>
+                <select value={deal} onChange={(e) => setDeal(e.target.value)} className={inputCls}>
+                  <option value="">Barcha bitimlar</option>
+                  {DEAL_TYPES.map((d) => (<option key={d.id} value={d.id}>{d.name}</option>))}
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <input type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="Narx: dan ($)" className={inputCls} />
+                <input type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="Narx: gacha ($)" className={inputCls} />
+              </div>
+
+              <select value={sort} onChange={(e) => setSort(e.target.value)} className={inputCls}>
+                <option value="new">Eng yangilari</option>
+                <option value="price_asc">Arzon → Qimmat</option>
+                <option value="price_desc">Qimmat → Arzon</option>
+              </select>
+
+              <div className="flex gap-2.5 pt-1">
+                <button onClick={resetFilters} className="flex-1 h-12 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold">
+                  Tozalash
+                </button>
+                <button
+                  onClick={() => setSheetOpen(false)}
+                  className="flex-1 h-12 bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white rounded-xl text-sm font-bold shadow-lg shadow-orange-400/30"
+                >
+                  Ko'rish ({total})
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
