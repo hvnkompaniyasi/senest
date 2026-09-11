@@ -36,7 +36,7 @@ export default async function Categories() {
           <p className="text-gray-600">O'zingizga mos turdagi ko'chmas mulkni tanlang</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {categories.map((cat) => {
             const Icon = cat.icon
             const count = getCount(cat.id)
@@ -44,13 +44,13 @@ export default async function Categories() {
               <Link
                 key={cat.id}
                 href={cat.href}
-                className="group relative bg-white/70 backdrop-blur-xl border border-white/70 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:shadow-orange-400/20 transition-all duration-300 hover:-translate-y-1 text-center"
+                className="group relative bg-white/70 backdrop-blur-xl border border-white/70 rounded-xl p-3 sm:p-4 shadow-md hover:shadow-2xl hover:shadow-orange-400/20 transition-all duration-300 hover:-translate-y-1 text-center"
               >
-                <div className={`inline-flex items-center justify-center w-14 h-14 mb-3 rounded-xl bg-gradient-to-br ${cat.color} shadow-lg group-hover:scale-110 transition-transform`}>
-                  <Icon className="h-7 w-7 text-white" />
+                <div className={`inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 mb-2 rounded-lg bg-gradient-to-br ${cat.color} shadow-lg group-hover:scale-110 transition-transform`}>
+                  <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <div className="font-semibold text-gray-800 mb-1">{cat.name}</div>
-                <div className="text-xs text-gray-500">
+                <div className="font-semibold text-gray-800 text-xs sm:text-sm leading-tight">{cat.name}</div>
+                <div className="text-[10px] sm:text-xs text-gray-500 mt-0.5">
                   {count > 0 ? `${count} ta e'lon` : "Hozircha bo'sh"}
                 </div>
               </Link>
