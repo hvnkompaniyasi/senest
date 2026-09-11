@@ -331,7 +331,7 @@ export default function AddListingPage() {
                 <div className="flex justify-between"><span className="text-gray-600">Sarlavha:</span><span className="font-semibold">{formData.title || "(sarlavhasiz)"}</span></div>
                 <div className="flex justify-between"><span className="text-gray-600">Kategoriya:</span><span className="font-semibold">{PROPERTY_CATEGORIES.find(c => c.id === formData.category)?.name || "-"}</span></div>
                 <div className="flex justify-between"><span className="text-gray-600">Bitim turi:</span><span className="font-semibold">{DEAL_TYPES.find(d => d.id === formData.deal)?.name || "-"}</span></div>
-                <div className="flex justify-between"><span className="text-gray-600">Narx:</span><span className="font-bold text-orange-600">{formData.price ? `$${Number(formData.price).toLocaleString()}` : "-"}</span></div>
+                <div className="flex justify-between"><span className="text-gray-600">Narx:</span><span className="font-bold text-orange-600">{formData.price ? `$${Number(formData.price).toLocaleString("en-US")}` : "-"}</span></div>
                 <div className="flex justify-between"><span className="text-gray-600">Rasmlar:</span><span className="font-semibold">{files.length} ta</span></div>
                 <div className="flex justify-between"><span className="text-gray-600">Kommunikatsiyalar:</span>
                   <span className="font-semibold">

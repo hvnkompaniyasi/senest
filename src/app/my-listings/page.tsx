@@ -105,7 +105,7 @@ export default function MyListingsPage() {
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-gray-800 mb-1 truncate">{listing.title}</h3>
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600">
-                        <span className="font-bold text-orange-600">${listing.price.toLocaleString()}</span>
+                        <span className="font-bold text-orange-600">${listing.price.toLocaleString("en-US")}</span>
                         <span>•</span>
                         <span>{DEAL_TYPES.find((d) => d.id === listing.type)?.name || listing.type}</span>
                         <span>•</span>

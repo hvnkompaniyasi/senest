@@ -46,6 +46,15 @@ export default async function ListingDetailPage({ params }: PageProps) {
           <div className="lg:col-span-2 space-y-6">
             <ImageGallery images={listing.images} title={listing.title} />
 
+            <div className="flex items-center justify-between mt-4 gap-3">
+              <div className="flex flex-wrap gap-2">
+                <span className="px-3 py-1.5 bg-orange-100 border border-orange-200 rounded-full text-xs font-semibold text-orange-700">
+                  🛡️ Tasdiqlangan e'lon
+                </span>
+              </div>
+              <ShareButton title={listing.title} />
+            </div>
+
             <Card className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-lg rounded-2xl p-5 sm:p-6">
               <div className="flex flex-wrap items-center gap-2 mb-3">
                 <span className="px-3 py-1 bg-orange-100 border border-orange-200 rounded-full text-xs font-semibold text-orange-700">
@@ -63,7 +72,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
               </div>
 
               <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-6">
-                ${listing.price.toLocaleString()}
+                ${listing.price.toLocaleString("en-US")}
                 {listing.type === "RENT" && <span className="text-base font-medium text-gray-500"> / oy</span>}
               </div>
 
