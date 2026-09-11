@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+;
 import "./globals.css"
 import SWRegister from "@/components/SWRegister"
 import InstallPWA from "@/components/InstallPWA"
@@ -7,12 +7,7 @@ import MobileNav from "@/components/MobileNav"
 ;
 import AuthProvider from "@/components/AuthProvider";
 
-const inter = Inter({ 
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-inter",
-  display: "swap",
-  preload: true,
-});
+;
 
 export const metadata: Metadata = {
   title: "Senest - Ko'chmas mulk platformasi",
@@ -25,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning lang="uz" className={inter.variable}>
+    <html suppressHydrationWarning lang="uz">
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -39,7 +34,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Senest" />
-      <body className={inter.className}>
+      <body>
         <AuthProvider><div className="pb-16 lg:pb-0">{children}</div>
         <MobileNav />
         <SWRegister />
