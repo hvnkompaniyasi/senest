@@ -6,7 +6,6 @@ import { Search, SlidersHorizontal, ChevronDown, ChevronUp, Loader2 } from "luci
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import ListingSkeleton from "@/components/ListingSkeleton"
-import Footer from "@/components/Footer"
 import ListingCard from "@/components/ListingCard"
 import SearchFilters from "@/components/SearchFilters"
 import { FilterState, DEFAULT_FILTERS, DEAL_TYPES } from "@/lib/locations"
@@ -153,7 +152,7 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
         )}
       </div>
 
-      <Footer />
+      
     </div>
   )
 }
