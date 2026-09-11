@@ -7,8 +7,6 @@ import { Home, Search, Plus, MapPin, User } from "lucide-react"
 export default function MobileNav() {
   const pathname = usePathname()
 
-  // Xarita sahifasida MobileNav ko'rsatilmaydi (immersiv xarita)
-  if (pathname === "/map") return null
 
   const items = [
     { href: "/", icon: Home, label: "Bosh" },

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowLeft, SlidersHorizontal, LocateFixed, Plus, Minus, X, Loader2, MapPin } from "lucide-react"
 import { REGIONS, DEAL_TYPES } from "@/lib/locations"
 import { listingCoords } from "@/lib/geo"
+import MobileNav from "@/components/MobileNav"
 
 interface MapListing {
   id: string
@@ -157,7 +158,7 @@ export default function MapPage() {
       )}
 
       {/* O'ng past FAB'lar (karusel yo'q, pastda) */}
-      <div className="absolute right-3 top-16 z-[500] flex flex-col gap-2">
+      <div className="absolute right-3 bottom-24 z-[500] flex flex-col gap-2">
         <button onClick={locate} className={fabCls} aria-label="O'zim turgan joy">
           {locating ? <Loader2 className="h-5 w-5 animate-spin text-blue-500" /> : <LocateFixed className="h-5 w-5 text-blue-500" />}
         </button>
@@ -210,6 +211,7 @@ export default function MapPage() {
           </div>
         </div>
       )}
+      <MobileNav />
     </div>
   )
 }
