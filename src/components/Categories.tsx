@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import Link from "next/link"
 import { Building2, Home, Building, TreePine, Warehouse, Key } from "lucide-react"
 import { prisma } from "@/lib/auth"

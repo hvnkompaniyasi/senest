@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import Link from "next/link"
 import { Search, MapPin, Plus } from "lucide-react"
 
@@ -15,19 +16,31 @@ export default function Hero() {
           </span>
         </div>
 
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
           <span className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
             Uy-joyingizni
           </span>
           <br />
           <span className="text-gray-800 dark:text-white">osongina toping</span>
-        </h1>
+        </motion.h1>
 
-        <p className="text-sm sm:text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-xl mx-auto">
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="text-sm sm:text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-xl mx-auto">
           Minglab e'lonlar orasidan o'zingizga mosini tanlang — ro'yxatda yoki xaritada
-        </p>
+        </motion.p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.6 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
             href="/listings"
             className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-bold rounded-2xl shadow-xl shadow-orange-400/30 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 text-base"
@@ -40,13 +53,17 @@ export default function Hero() {
           >
             <MapPin className="h-5 w-5 text-orange-500" /> Xaritada ko'rish
           </Link>
-        </div>
+        </motion.div>
 
-        <div className="mt-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.9 }}
+          className="mt-4">
           <Link href="/add-listing" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-600 dark:text-orange-400 hover:underline">
             <Plus className="h-4 w-4" /> E'lon qo'shish — bepul
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

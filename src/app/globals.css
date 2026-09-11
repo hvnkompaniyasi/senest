@@ -170,3 +170,15 @@
 .dark .text-green-700 { color: #86efac; }
 .dark .text-red-700 { color: #fca5a5; }
 .dark .text-amber-700 { color: #fcd34d; }
+
+/* ============ SMOOTH TRANSITIONS ============ */
+* { scroll-behavior: smooth; }
+a, button { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 200ms; }
+img { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Skeleton pulse yaxshilash */
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.animate-pulse { animation: shimmer 2s ease-in-out infinite; background-size: 200% 100%; background-image: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent); }
+
+/* Card hover yaxshilash */
+.group { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
