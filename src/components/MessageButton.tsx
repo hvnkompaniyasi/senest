@@ -37,7 +37,7 @@ export default function MessageButton({ listingId }: { listingId: string }) {
     <button
       onClick={start}
       disabled={loading}
-      className="mt-2 h-12 w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all shadow-lg shadow-blue-500/25"
+      className="h-12 w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all shadow-lg shadow-blue-500/25"
     >
       {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageSquare className="h-4 w-4" />}
       Xabar yuborish

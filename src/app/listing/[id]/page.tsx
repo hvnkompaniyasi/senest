@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import {
-  MapPin, Home, Ruler, Building2, Layers, Flame, Droplets, Zap, ArrowLeft, Phone, User
+  MapPin, Home, Ruler, Layers, Flame, Droplets, Zap, Phone, User, Building2,
 } from "lucide-react"
 import { prisma } from "@/lib/auth"
+import { authOptions } from "@/lib/auth-options"
+import { getServerSession } from "next-auth"
 import Navbar from "@/components/Navbar"
 import MobileNav from "@/components/MobileNav"
 import Footer from "@/components/Footer"
@@ -11,6 +13,8 @@ import ListingCard from "@/components/ListingCard"
 import ListingGallery from "@/components/ListingGallery"
 import MessageButton from "@/components/MessageButton"
 import ShareListingButton from "@/components/ShareListingButton"
+import BackButton from "@/components/BackButton"
+import FavoriteToggle from "@/components/FavoriteToggle"
 import { DEAL_TYPES } from "@/lib/locations"
 
 export const dynamic = "force-dynamic"
@@ -41,152 +45,154 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 export default async function ListingDetailPage({ params }: { params: { id: string } }) {
+  const session = await getServerSession(authOptions)
+
   const listing = await prisma.listing.findUnique({
     where: { id: params.id },
     include: { user: { select: { name: true, phone: true } } },
   })
-
   if (!listing || listing.status !== "ACTIVE") notFound()
+
+  const isFavorite = session?.user?.id
+    ? !!(await prisma.favorite.findFirst({
+        where: { userId: session.user.id, listingId: listing.id },
+        select: { id: true },
+      }))
+    : false
 
   const similar = await prisma.listing.findMany({
     where: { id: { not: listing.id }, region: listing.region, status: "ACTIVE" },
     orderBy: { createdAt: "desc" },
-    take: 3,
+    take: 4,
   })
 
   const dealName = DEAL_TYPES.find((d) => d.id === listing.type)?.name || listing.type
 
-  const facts = [
-    listing.rooms ? { icon: Home, label: "Xonalar", value: `${listing.rooms} ta` } : null,
-    listing.area ? { icon: Ruler, label: "Maydon", value: `${listing.area} m²` } : null,
-    listing.floor ? { icon: Layers, label: "Qavat", value: `${listing.floor}${listing.totalFloors ? ` / ${listing.totalFloors}` : ""}` } : null,
-  ].filter(Boolean) as { icon: typeof Home; label: string; value: string }[]
+  const specs = [
+    listing.rooms ? { icon: Home, value: `${listing.rooms} ta`, label: "Xonalar" } : null,
+    listing.area ? { icon: Ruler, value: `${listing.area} m²`, label: "Maydon" } : null,
+    listing.floor ? { icon: Layers, value: `${listing.floor}${listing.totalFloors ? `/${listing.totalFloors}` : ""}`, label: "Qavat" } : null,
+  ].filter(Boolean) as { icon: typeof Home; value: string; label: string }[]
 
   const comforts = [
-    listing.hasGas ? { icon: Flame, label: "Gaz", on: true } : null,
-    listing.hasWater ? { icon: Droplets, label: "Suv", on: true } : null,
-    listing.hasElectricity ? { icon: Zap, label: "Elektr", on: true } : null,
-  ].filter(Boolean) as { icon: typeof Flame; label: string; on: boolean }[]
+    listing.hasGas ? { icon: Flame, label: "Gaz bor" } : null,
+    listing.hasWater ? { icon: Droplets, label: "Suv bor" } : null,
+    listing.hasElectricity ? { icon: Zap, label: "Elektr bor" } : null,
+  ].filter(Boolean) as { icon: typeof Flame; label: string }[]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 pb-24 lg:pb-10">
+    <div className="min-h-screen bg-[#FFFDF9] dark:bg-zinc-950">
       <Navbar />
 
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 py-4">
-        <Link href="/listings" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 dark:text-gray-300 mb-3 hover:text-orange-600">
-          <ArrowLeft className="h-4 w-4" /> E'lonlarga qaytish
-        </Link>
+      {/* ===== GALEREYA (to'liq kenglik + overlay) ===== */}
+      <div className="relative">
+        <ListingGallery images={listing.images || []} title={listing.title} />
+        <div className="absolute top-3 left-3 z-20">
+          <BackButton />
+        </div>
+        <div className="absolute top-3 right-3 z-20">
+          <FavoriteToggle listingId={listing.id} initial={isFavorite} />
+        </div>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-5">
-          {/* Chap: galereya + ma'lumot */}
-          <div>
-            <ListingGallery images={listing.images || []} title={listing.title} />
-
-            <div className="mt-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl p-5 shadow-lg">
-              <div className="flex flex-wrap gap-2 mb-3">
-                <span className="px-3 py-1 bg-orange-100 dark:bg-orange-500/15 text-orange-700 dark:text-orange-400 rounded-full text-xs font-bold">
-                  {dealName}
-                </span>
-                <span className="px-3 py-1 bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400 rounded-full text-xs font-bold">
-                  {categoryNames[listing.category] || listing.category}
-                </span>
-              </div>
-
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">
-                {listing.title || "Sarlavhasiz e'lon"}
-              </h1>
-              <div className="text-2xl sm:text-3xl font-extrabold text-orange-600 mt-2">
-                ${listing.price.toLocaleString("en-US")}
-              </div>
-              <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 mt-2">
-                <MapPin className="h-4 w-4 text-orange-500" />
-                {listing.region}{listing.district ? `, ${listing.district}` : ""}{listing.address ? ` — ${listing.address}` : ""}
-              </div>
-
-              {facts.length > 0 && (
-                <div className="grid grid-cols-3 gap-2.5 mt-4">
-                  {facts.map((f) => {
-                    const Icon = f.icon
-                    return (
-                      <div key={f.label} className="p-3 bg-gray-50 dark:bg-zinc-800 rounded-xl text-center">
-                        <Icon className="h-5 w-5 text-orange-500 mx-auto mb-1" />
-                        <div className="text-sm font-bold text-gray-800 dark:text-white">{f.value}</div>
-                        <div className="text-[10px] text-gray-500 dark:text-gray-400">{f.label}</div>
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-
-              {comforts.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {comforts.map((c) => {
-                    const Icon = c.icon
-                    return (
-                      <span key={c.label} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 rounded-full text-xs font-semibold">
-                        <Icon className="h-3.5 w-3.5" /> {c.label} bor
-                      </span>
-                    )
-                  })}
-                </div>
-              )}
-
-              {listing.description && (
-                <>
-                  <h2 className="font-bold text-gray-800 dark:text-white mt-5 mb-2">Tavsif</h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line">
-                    {listing.description}
-                  </p>
-                </>
-              )}
-
-              <div className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 mt-4 pt-4 border-t border-gray-100 dark:border-zinc-800">
-                <Building2 className="h-3.5 w-3.5" />
-                E'lon ID: {listing.id.slice(0, 8)} · Joylashtirildi: {new Date(listing.createdAt).toLocaleDateString("uz-UZ")}
-              </div>
-            </div>
+      <main className="max-w-6xl mx-auto px-3 sm:px-6 pb-36">
+        {/* ===== ASOSIY MA'LUMOTLAR (bitta karta) ===== */}
+        <div className="mt-3 bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+          <div className="flex flex-wrap gap-2 mb-2.5">
+            <span className="px-3 py-1 bg-orange-100 dark:bg-orange-500/15 text-orange-700 dark:text-orange-400 rounded-full text-[11px] font-bold">
+              {dealName}
+            </span>
+            <span className="px-3 py-1 bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400 rounded-full text-[11px] font-bold">
+              {categoryNames[listing.category] || listing.category}
+            </span>
           </div>
 
-          {/* O'ng: kontakt karta */}
-          <div className="lg:sticky lg:top-24 h-fit">
-            <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl p-5 shadow-lg">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center">
-                  <User className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">Sotuvchi</div>
-                  <div className="font-bold text-gray-800 dark:text-white">
-                    {listing.user?.name || `+${listing.user?.phone.slice(0, 6)}...`}
+          <div className="text-[26px] leading-tight font-extrabold text-[#FF9500]">
+            ${listing.price.toLocaleString("en-US")}
+          </div>
+          <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mt-1">
+            {listing.title || "Sarlavhasiz e'lon"}
+          </h1>
+          <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 mt-1.5">
+            <MapPin className="h-4 w-4 text-[#FF9500] flex-shrink-0" />
+            {listing.region}{listing.district ? `, ${listing.district}` : ""}{listing.address ? ` — ${listing.address}` : ""}
+          </div>
+
+          {/* Specs grid */}
+          {specs.length > 0 && (
+            <div className={`grid gap-2.5 mt-4 ${specs.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+              {specs.map((s) => {
+                const Icon = s.icon
+                return (
+                  <div key={s.label} className="p-3 bg-gray-50 dark:bg-zinc-800 rounded-xl text-center">
+                    <Icon className="h-4 w-4 text-[#FF9500] mx-auto mb-1" />
+                    <div className="text-sm font-extrabold text-gray-900 dark:text-white">{s.value}</div>
+                    <div className="text-[10px] text-gray-400 dark:text-gray-500">{s.label}</div>
                   </div>
-                </div>
-              </div>
-
-              <a
-                href={`tel:+${listing.user?.phone}`}
-                className="h-12 w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all shadow-lg shadow-green-500/25"
-              >
-                <Phone className="h-4 w-4" /> Qo'ng'iroq qilish
-              </a>
-              <MessageButton listingId={listing.id} />
-              <div className="mt-2">
-                <ShareListingButton title={listing.title} />
-              </div>
-
-              <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-3 text-center leading-relaxed">
-                Firibgarlikdan ehtiyot bo'ling: oldindan to'lov qilmang va shaxsiy ma'lumotlaringizni ulashmang
-              </p>
+                )
+              })}
             </div>
+          )}
+
+          {/* Kommunikatsiyalar chips */}
+          {comforts.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-3">
+              {comforts.map((c) => {
+                const Icon = c.icon
+                return (
+                  <span key={c.label} className="inline-flex items-center gap-1 px-2.5 py-1 bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 rounded-full text-[11px] font-semibold">
+                    <Icon className="h-3 w-3" /> {c.label}
+                  </span>
+                )
+              })}
+            </div>
+          )}
+
+          {/* Tavsif */}
+          {listing.description && (
+            <>
+              <div className="h-px bg-gray-100 dark:bg-zinc-800 my-4" />
+              <h2 className="text-sm font-bold text-gray-900 dark:text-white mb-1.5">Tavsif</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                {listing.description}
+              </p>
+            </>
+          )}
+
+          <div className="flex items-center gap-1.5 text-[11px] text-gray-400 dark:text-gray-500 mt-4 pt-3 border-t border-gray-100 dark:border-zinc-800">
+            <Building2 className="h-3.5 w-3.5" />
+            E'lon ID: {listing.id.slice(0, 8)} · {new Date(listing.createdAt).toLocaleDateString("uz-UZ")}
           </div>
         </div>
 
-        {/* O'xshash e'lonlar */}
+        {/* ===== SOTUVCHI (ixcham) ===== */}
+        <div className="mt-3 bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#FF9500] to-[#FF6A00] flex items-center justify-center flex-shrink-0">
+              <User className="h-5 w-5 text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] text-gray-400 dark:text-gray-500">Sotuvchi</div>
+              <div className="text-sm font-bold text-gray-900 dark:text-white truncate">
+                {listing.user?.name || `+${listing.user?.phone.slice(0, 6)}...`}
+              </div>
+            </div>
+          </div>
+          <div className="mt-3">
+            <ShareListingButton title={listing.title} />
+          </div>
+          <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-2.5 text-center leading-relaxed">
+            Firibgarlikdan ehtiyot bo'ling: oldindan to'lov qilmang
+          </p>
+        </div>
+
+        {/* ===== O'XSHASH E'LONLAR ===== */}
         {similar.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-lg font-bold text-gray-800 dark:text-white mb-3">
+          <div className="mt-6">
+            <h2 className="text-base font-bold text-gray-900 dark:text-white mb-3">
               {listing.region}dagi boshqa e'lonlar
             </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               {similar.map((s) => (
                 <ListingCard
                   key={s.id}
@@ -203,9 +209,26 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
             </div>
           </div>
         )}
-      </div>
+      </main>
 
       <Footer />
+      <div className="h-20" />
+
+      {/* ===== STICKY CTA BAR ===== */}
+      <div className="fixed inset-x-0 bottom-16 lg:bottom-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-t border-gray-200 dark:border-zinc-800 px-3 py-2.5">
+        <div className="max-w-6xl mx-auto flex gap-2.5">
+          <a
+            href={`tel:+${listing.user?.phone}`}
+            className="flex-1 h-12 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-all shadow-lg shadow-green-500/25"
+          >
+            <Phone className="h-4 w-4" /> Qo'ng'iroq qilish
+          </a>
+          <div className="flex-1">
+            <MessageButton listingId={listing.id} />
+          </div>
+        </div>
+      </div>
+
       <MobileNav />
     </div>
   )
