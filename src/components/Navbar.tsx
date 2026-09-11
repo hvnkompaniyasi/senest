@@ -29,6 +29,7 @@ export default function Navbar() {
             <Link href="/listings?deal=RENT" className={linkCls}>Ijaraga</Link>
             <Link href="/favorites" className={linkCls}>Sevimlilar</Link>
             <Link href="/listings" className={linkCls}>Barcha e'lonlar</Link>
+            <Link href="/map" className={linkCls}>Xarita</Link>
           </nav>
 
           <div className="flex items-center gap-2">
