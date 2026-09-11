@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import Link from "next/link"
 import {
   Plus, FileText, Heart, MessageSquare, KeyRound, Settings,
-  ChevronRight, Camera,
+  ChevronRight, LogOut as LogOutIcon,
 } from "lucide-react"
 import { prisma } from "@/lib/auth"
 import { authOptions } from "@/lib/auth-options"
@@ -47,31 +47,30 @@ export default async function ProfilePage() {
     <div className="min-h-screen bg-[#FFFDF9] dark:bg-zinc-950">
       <Navbar />
 
-      {/* Gradient header */}
-      <div className="bg-gradient-to-br from-[#FF9500] via-[#FF8A00] to-[#FFB25E] pt-24 pb-14" />
-
-      <main className="pb-24">
-        {/* Profil kartasi */}
-        <div className="-mt-10 mx-3 sm:mx-6 max-w-6xl lg:mx-auto bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.08)] flex items-center gap-3.5">
-          <div className="relative flex-shrink-0">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FF9500] to-[#FF6A00] flex items-center justify-center text-white text-2xl font-extrabold shadow-md shadow-orange-400/30">
-              {initial}
-            </div>
-            <span className="absolute -bottom-1.5 -right-1.5 w-6 h-6 bg-white dark:bg-zinc-800 rounded-full flex items-center justify-center shadow border border-gray-100 dark:border-zinc-700">
-              <Camera className="h-3 w-3 text-gray-500 dark:text-gray-400" />
-            </span>
+      <main className="pb-24 max-w-6xl mx-auto px-3 sm:px-6 pt-4">
+        {/* ========== IXCHAM HEADER KARTA (banner yo'q) ========== */}
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)] flex items-center gap-3.5">
+          {/* Kichik gradient avatar */}
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FF9500] to-[#FF6A00] flex items-center justify-center text-white text-xl font-extrabold shadow-md shadow-orange-400/30 flex-shrink-0">
+            {initial}
           </div>
 
+          {/* Ism + telefon */}
           <div className="flex-1 min-w-0">
-            <div className="text-base font-bold text-gray-900 dark:text-white truncate">{name}</div>
-            <div className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">+{phone}</div>
+            <div className="text-base font-bold text-gray-900 dark:text-white truncate">
+              {name}
+            </div>
+            <div className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+              +{phone}
+            </div>
           </div>
 
+          {/* Tahrirlash */}
           <ProfileEditSheet initialName={name} initialPhone={phone} />
         </div>
 
-        {/* Statistika */}
-        <div className="mx-3 sm:mx-6 max-w-6xl lg:mx-auto mt-3 grid grid-cols-3 divide-x divide-gray-100 dark:divide-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+        {/* ========== STATISTIKA (to'g'ridan-to'g'ri ostida) ========== */}
+        <div className="mt-3 grid grid-cols-3 divide-x divide-gray-100 dark:divide-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
           <Link href="/my-listings" className="py-3.5 text-center active:bg-gray-50 dark:active:bg-zinc-800 rounded-l-2xl transition-colors">
             <div className="text-lg font-extrabold text-gray-900 dark:text-white">{total}</div>
             <div className="text-[11px] text-gray-400 dark:text-gray-500">E'lonlarim</div>
@@ -86,8 +85,8 @@ export default async function ProfilePage() {
           </Link>
         </div>
 
-        {/* Menyu ro'yxati */}
-        <div className="mx-3 sm:mx-6 max-w-6xl lg:mx-auto mt-5">
+        {/* ========== MENYU ========== */}
+        <div className="mt-5">
           <h2 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2 px-1">
             Menyu
           </h2>
