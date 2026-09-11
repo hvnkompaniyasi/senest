@@ -1,56 +1,51 @@
-"use client"
-
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react"
-import SearchFilters from "@/components/SearchFilters"
-import { FilterState, DEFAULT_FILTERS } from "@/lib/locations"
+import Link from "next/link"
+import { Search, MapPin, Plus } from "lucide-react"
 
 export default function Hero() {
-  const router = useRouter()
-  const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS)
-  const [showAdvanced, setShowAdvanced] = useState(false)
-
-  const handleSearch = () => {
-    const params = new URLSearchParams()
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value) params.set(key, value)
-    })
-    router.push(`/listings?${params.toString()}`)
-  }
-
   return (
-    <section className="relative py-10 sm:py-16 md:py-24 overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-72 h-72 sm:w-96 sm:h-96 bg-gradient-to-br from-orange-300/40 to-amber-400/40 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-72 h-72 sm:w-96 sm:h-96 bg-gradient-to-br from-amber-300/40 to-orange-400/40 rounded-full blur-3xl" />
-      </div>
+    <section className="relative py-10 sm:py-16 overflow-hidden">
+      <div className="absolute top-10 left-10 w-72 h-72 bg-orange-200/40 dark:bg-orange-500/10 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-10 right-10 w-72 h-72 bg-amber-200/40 dark:bg-amber-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 sm:mb-10">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-3 sm:mb-4">
-            <span className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
-              Uy-joyingizni
-            </span>
-            <br />
-            <span className="text-gray-800">osongina toping</span>
-          </h1>
-          <p className="text-sm sm:text-lg text-gray-600 max-w-2xl mx-auto px-4">
-            O'zbekistonning barcha 14 hududidagi minglab e'lonlar orasidan o'zingizga mosini tanlang.
-          </p>
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-zinc-900/80 border border-white/70 dark:border-zinc-800 rounded-full shadow-md mb-5">
+          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200">
+            O'zbekiston bo'ylab ishonchli e'lonlar
+          </span>
         </div>
 
-        <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-2xl shadow-orange-400/10 border border-white/60 p-3 sm:p-4 md:p-6">
-          <SearchFilters filters={filters} onChange={setFilters} onSearch={handleSearch} showAdvanced={showAdvanced} />
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
+          <span className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+            Uy-joyingizni
+          </span>
+          <br />
+          <span className="text-gray-800 dark:text-white">osongina toping</span>
+        </h1>
 
-          <button
-            onClick={() => setShowAdvanced(!showAdvanced)}
-            className="mt-3 w-full flex items-center justify-center gap-2 py-2 text-sm font-semibold text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded-lg transition-all"
+        <p className="text-sm sm:text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-xl mx-auto">
+          Minglab e'lonlar orasidan o'zingizga mosini tanlang — ro'yxatda yoki xaritada
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link
+            href="/listings"
+            className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-bold rounded-2xl shadow-xl shadow-orange-400/30 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 text-base"
           >
-            <SlidersHorizontal className="h-4 w-4" />
-            {showAdvanced ? "Kamroq filtrlar" : "Kengaytirilgan qidiruv"}
-            {showAdvanced ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-          </button>
+            <Search className="h-5 w-5" /> Qidirish
+          </Link>
+          <Link
+            href="/map"
+            className="w-full sm:w-auto px-8 py-4 bg-white/90 dark:bg-zinc-900/90 border-2 border-white/70 dark:border-zinc-800 text-gray-800 dark:text-white font-bold rounded-2xl shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2 text-base"
+          >
+            <MapPin className="h-5 w-5 text-orange-500" /> Xaritada ko'rish
+          </Link>
+        </div>
+
+        <div className="mt-4">
+          <Link href="/add-listing" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-600 dark:text-orange-400 hover:underline">
+            <Plus className="h-4 w-4" /> E'lon qo'shish — bepul
+          </Link>
         </div>
       </div>
     </section>

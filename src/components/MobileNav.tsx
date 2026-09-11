@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
-import { Home, Search, Plus, Heart, User } from "lucide-react"
+import { Home, Search, Plus, MapPin, User } from "lucide-react"
 
 export default function MobileNav() {
   const pathname = usePathname()
@@ -13,7 +13,7 @@ export default function MobileNav() {
     { href: "/", icon: Home, label: "Bosh sahifa" },
     { href: "/listings", icon: Search, label: "Qidiruv" },
     { href: "/add-listing", icon: Plus, label: "Qo'shish", center: true },
-    { href: "/favorites", icon: Heart, label: "Sevimlilar" },
+    { href: "/map", icon: MapPin, label: "Xarita" },
     { href: session ? "/profile" : "/login", icon: User, label: "Profil" },
   ]
 
