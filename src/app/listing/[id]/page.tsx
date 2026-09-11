@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import ImageGallery from "@/components/ImageGallery"
+import ShareButton from "@/components/ShareButton"
 import { prisma } from "@/lib/auth"
 import { PROPERTY_CATEGORIES, DEAL_TYPES } from "@/lib/locations"
 
