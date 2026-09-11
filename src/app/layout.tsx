@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css"
-import ThemeProvider from "@/components/ThemeProvider"
 import MobileNav from "@/components/MobileNav"
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import AuthProvider from "@/components/AuthProvider";
@@ -25,6 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="uz" className={inter.variable}>
+              <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("senest-theme")==="dark"){document.documentElement.classList.add("dark")}}catch(e){}`,
+          }}
+        />
       <body className={inter.className}>
         <AuthProvider><div className="pb-16 lg:pb-0">{children}</div>
         <MobileNav />

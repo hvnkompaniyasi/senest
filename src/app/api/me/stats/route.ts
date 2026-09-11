@@ -7,14 +7,13 @@ export const dynamic = "force-dynamic"
 
 export async function GET() {
   const session = await getServerSession(authOptions)
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Auth kerak" }, { status: 401 })
-  }
+  if (!session?.user?.id) return NextResponse.json({ error: "Auth kerak" }, { status: 401 })
 
-  const [listingsCount, favoritesCount] = await Promise.all([
+  const [listingsCount, activeCount, favoritesCount] = await Promise.all([
     prisma.listing.count({ where: { userId: session.user.id } }),
+    prisma.listing.count({ where: { userId: session.user.id, status: "ACTIVE" } }),
     prisma.favorite.count({ where: { userId: session.user.id } }),
   ])
 
-  return NextResponse.json({ listingsCount, favoritesCount })
+  return NextResponse.json({ listingsCount, activeCount, favoritesCount })
 }

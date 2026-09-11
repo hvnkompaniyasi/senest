@@ -46,12 +46,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
           <div className="lg:col-span-2 space-y-6">
             <ImageGallery images={listing.images} title={listing.title} />
 
-            <div className="flex items-center justify-between mt-4 gap-3">
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1.5 bg-orange-100 border border-orange-200 rounded-full text-xs font-semibold text-orange-700">
-                  🛡️ Tasdiqlangan e'lon
-                </span>
-              </div>
+            <div className="flex justify-end mt-4">
               <ShareButton title={listing.title} />
             </div>
 
