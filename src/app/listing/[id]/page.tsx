@@ -3,6 +3,7 @@ import { prisma } from "@/lib/auth"
 import { MapPin, Bed, Maximize, Layers, Phone, Home as HomeIcon } from "lucide-react"
 import ImageGallery from "@/components/ImageGallery"
 import ShareButton from "@/components/ShareButton"
+import ListingCard from "@/components/ListingCard"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { DEAL_TYPES, PROPERTY_CATEGORIES } from "@/lib/locations"
@@ -19,6 +20,21 @@ export default async function ListingPage({ params }: { params: { id: string } }
   const deal = DEAL_TYPES.find((d) => d.id === listing.type)?.name || listing.type
   const cat = PROPERTY_CATEGORIES.find((c) => c.id === listing.category)?.name || listing.category
   const phone = listing.user?.phone || ""
+
+  let similar = await prisma.listing.findMany({
+    where: { status: "ACTIVE", id: { not: listing.id }, region: listing.region, category: listing.category },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+  })
+  if (similar.length < 3) {
+    const taken = similar.map((x) => x.id)
+    const more = await prisma.listing.findMany({
+      where: { status: "ACTIVE", id: { notIn: [...taken, listing.id] }, region: listing.region },
+      orderBy: { createdAt: "desc" },
+      take: 3 - similar.length,
+    })
+    similar = [...similar, ...more]
+  }
 
   const facts = [
     { icon: Bed, label: "Xonalar", value: listing.rooms ? String(listing.rooms) : null },
@@ -125,6 +141,28 @@ export default async function ListingPage({ params }: { params: { id: string } }
           </a>
         </div>
       </div>
+
+      {similar.length > 0 && (
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-6">
+          <h2 className="font-bold text-gray-800 dark:text-white mb-3 text-base sm:text-lg">O'xshash e'lonlar</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {similar.map((sim) => (
+              <ListingCard
+                key={sim.id}
+                id={sim.id}
+                title={sim.title}
+                price={sim.price}
+                location={[sim.region, sim.district].filter(Boolean).join(", ")}
+                rooms={sim.rooms || 0}
+                area={sim.area || 0}
+                image={sim.images?.[0] || ""}
+                type={DEAL_TYPES.find((d) => d.id === sim.type)?.name || sim.type}
+                createdAt={sim.createdAt.toISOString()}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Mobil yopishqoq amal paneli */}
       <div className="fixed bottom-16 left-0 right-0 z-30 lg:hidden bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-t border-gray-200 dark:border-zinc-800 px-3 py-2 flex gap-2">

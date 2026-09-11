@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar"
 import Hero from "@/components/Hero"
+import SmartSearch from "@/components/SmartSearch"
 import Categories from "@/components/Categories"
 import FeaturedListings from "@/components/FeaturedListings"
 import Features from "@/components/Features"
@@ -11,6 +12,9 @@ export default function HomePage() {
       <Navbar />
       <main>
         <Hero />
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 -mt-2 sm:-mt-4 relative z-20 mb-6">
+        <SmartSearch />
+      </div>
         <Categories />
         <FeaturedListings />
         <Features />
