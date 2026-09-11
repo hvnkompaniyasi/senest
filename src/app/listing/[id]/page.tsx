@@ -4,6 +4,7 @@ import { MapPin, Bed, Maximize, Layers, Phone, Home as HomeIcon } from "lucide-r
 import ImageGallery from "@/components/ImageGallery"
 import ShareButton from "@/components/ShareButton"
 import ListingCard from "@/components/ListingCard"
+import MessageButton from "@/components/MessageButton"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { DEAL_TYPES, PROPERTY_CATEGORIES } from "@/lib/locations"
@@ -139,6 +140,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
           >
             <Phone className="h-4 w-4" /> Qo'ng'iroq qilish
           </a>
+          <MessageButton listingId={listing.id} />
         </div>
       </div>
 

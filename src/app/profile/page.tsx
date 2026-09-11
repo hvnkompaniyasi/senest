@@ -6,7 +6,8 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import {
   Phone, Mail, Calendar, Home, Heart, Plus, FileText, KeyRound,
-  LogOut, Loader2, Pencil, CheckCircle, X, ChevronRight, Star
+  LogOut, Loader2, Pencil, CheckCircle, X, ChevronRight, Star,
+  MessageSquare
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -99,6 +100,7 @@ export default function ProfilePage() {
     { icon: FileText, label: "Mening e'lonlarim", href: "/my-listings", color: "text-blue-600 bg-blue-100 dark:bg-blue-500/15" },
     { icon: Heart, label: "Sevimli e'lonlar", href: "/favorites", color: "text-pink-600 bg-pink-100 dark:bg-pink-500/15" },
     { icon: Star, label: "Barcha e'lonlar", href: "/listings", color: "text-purple-600 bg-purple-100 dark:bg-purple-500/15" },
+    { icon: MessageSquare, label: "Xabarlarim", href: "/messages", color: "text-green-600 bg-green-100 dark:bg-green-500/15" },
   ]
 
   return (

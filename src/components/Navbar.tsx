@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
 import { Home, Plus, Heart, User, LogOut } from "lucide-react"
 import ThemeToggle from "@/components/ThemeToggle"
+import ChatNavLink from "@/components/ChatNavLink"
 
 const linkCls = "px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-zinc-800 rounded-lg transition-all"
 
@@ -34,6 +35,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <ChatNavLink />
             <Link
               href="/add-listing"
               aria-label="E'lon qo'shish"
