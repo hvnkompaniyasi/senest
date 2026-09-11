@@ -128,3 +128,45 @@
     @apply font-sans;
   }
 }
+/* ============ DARK MODE ============ */
+.dark { color-scheme: dark; }
+.dark body { background-color: #09090b; color: #f4f4f5; }
+
+/* Sahifa fonlari */
+.dark .bg-gradient-to-br.from-orange-50.via-amber-50.to-yellow-50 { background-image: none; background-color: #09090b; }
+.dark .bg-gradient-to-br.from-orange-100.to-amber-100 { background-image: none; background-color: #27272a; }
+
+/* Yuzalar (kartalar, navbar, modallar) */
+.dark .bg-white, .dark .bg-white\/95 { background-color: #18181b; }
+.dark .bg-white\/90 { background-color: rgb(24 24 27 / 0.9); }
+.dark .bg-white\/80 { background-color: rgb(24 24 27 / 0.8); }
+.dark .bg-white\/70 { background-color: rgb(9 9 11 / 0.85); }
+.dark .bg-white\/60, .dark .bg-white\/50, .dark .bg-white\/40 { background-color: rgb(24 24 27 / 0.5); }
+.dark .bg-gray-100 { background-color: #27272a; }
+.dark .bg-gray-200 { background-color: #3f3f46; }
+
+/* Chegaralar */
+.dark .border-white\/70, .dark .border-white\/60 { border-color: rgb(63 63 70 / 0.6); }
+.dark .border-gray-100 { border-color: #27272a; }
+.dark .border-gray-200 { border-color: #3f3f46; }
+.dark .border-gray-300 { border-color: #52525b; }
+
+/* Matnlar */
+.dark .text-gray-800, .dark .text-gray-900 { color: #fafafa; }
+.dark .text-gray-700 { color: #e4e4e7; }
+.dark .text-gray-600 { color: #a1a1aa; }
+.dark .text-gray-500 { color: #8b8b93; }
+
+/* Chip va badge'lar */
+.dark .bg-orange-50 { background-color: rgb(67 20 7 / 0.35); }
+.dark .bg-amber-100 { background-color: rgb(67 20 7 / 0.35); }
+.dark .bg-green-50 { background-color: rgb(5 46 22 / 0.45); }
+.dark .bg-red-50 { background-color: rgb(69 10 10 / 0.45); }
+.dark .border-orange-200 { border-color: rgb(154 52 18 / 0.45); }
+.dark .border-green-200 { border-color: rgb(20 83 45 / 0.45); }
+.dark .border-red-200 { border-color: rgb(153 27 27 / 0.45); }
+.dark .border-amber-200 { border-color: rgb(146 64 14 / 0.45); }
+.dark .text-orange-700 { color: #fdba74; }
+.dark .text-green-700 { color: #86efac; }
+.dark .text-red-700 { color: #fca5a5; }
+.dark .text-amber-700 { color: #fcd34d; }

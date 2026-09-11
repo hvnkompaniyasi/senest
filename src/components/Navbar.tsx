@@ -5,6 +5,7 @@ import { Home, Plus, Menu, User, LogOut, X , Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useSession, signOut } from "next-auth/react"
 import { useState } from "react"
+import ThemeToggle from "@/components/ThemeToggle"
 
 export default function Navbar() {
   const { data: session } = useSession()
@@ -48,6 +49,7 @@ export default function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center gap-2 xl:gap-3">
+            <ThemeToggle />
             <button
               onClick={handleAddListing}
               className="bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-semibold px-3 xl:px-4 py-2 rounded-xl shadow-lg shadow-orange-400/30 hover:shadow-orange-400/50 transition-all flex items-center gap-1.5 text-sm"
@@ -85,6 +87,7 @@ export default function Navbar() {
           </div>
 
           <div className="flex lg:hidden items-center gap-2">
+            <ThemeToggle />
             <button
               onClick={handleAddListing}
               className="bg-gradient-to-r from-orange-400 to-amber-500 text-white p-2 rounded-lg shadow-md"
