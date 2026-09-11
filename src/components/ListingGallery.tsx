@@ -60,7 +60,7 @@ export default function ListingGallery({ images, title }: ListingGalleryProps) {
           onClick={() => setLightbox(true)}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
-          className="w-full h-64 sm:h-[420px] object-cover cursor-zoom-in select-none"
+          className="w-full h-64 sm:h-[420px] object-cover cursor-zoom-in select-none [touch-action:pan-y]"
         />
 
         {count > 1 && (
@@ -144,7 +144,7 @@ export default function ListingGallery({ images, title }: ListingGalleryProps) {
             onClick={() => setLightbox(false)}
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
-            className="max-h-[88vh] max-w-[94vw] object-contain select-none"
+            className="max-h-[88vh] max-w-[94vw] object-contain select-none [touch-action:pan-y]"
           />
 
           <span className="absolute bottom-5 left-1/2 -translate-x-1/2 px-3 py-1 bg-white/10 text-white/90 text-sm font-semibold rounded-full">
