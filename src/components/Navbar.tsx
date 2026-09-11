@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
-import { Home, Heart, User, LogOut } from "lucide-react"
+import { Home, Heart, LogOut } from "lucide-react"
 import ThemeToggle from "@/components/ThemeToggle"
 import ChatNavLink from "@/components/ChatNavLink"
 
@@ -38,13 +38,6 @@ export default function Navbar() {
             <ChatNavLink />
             {session ? (
               <div className="flex items-center gap-2">
-                <Link
-                  href="/profile"
-                  aria-label="Profil"
-                  className="w-9 h-9 rounded-xl bg-white/80 dark:bg-zinc-800 border border-white/70 dark:border-zinc-700 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-md hover:scale-110 transition-transform"
-                >
-                  <User className="h-4 w-4" />
-                </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
                   aria-label="Chiqish"
