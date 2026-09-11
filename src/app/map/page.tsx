@@ -16,7 +16,12 @@ interface MapListing {
   district: string
   images: string[]
   type: string
+  latitude: number | null
+  longitude: number | null
 }
+
+const coordsOf = (l: MapListing): [number, number] =>
+  l.latitude && l.longitude ? [l.latitude, l.longitude] : coordsOf(l)
 
 export default function MapPage() {
   const divRef = useRef<HTMLDivElement>(null)
@@ -76,7 +81,7 @@ export default function MapPage() {
 
     group.clearLayers()
     listings.forEach((l) => {
-      const [lat, lng] = listingCoords(l.region, l.district, l.id)
+      const [lat, lng] = coordsOf(l)
       const icon = L.divIcon({
         className: "",
         html: `<div style="background:linear-gradient(135deg,#fb923c,#f59e0b);color:#fff;padding:5px 12px;border-radius:9999px;font-size:12px;font-weight:700;box-shadow:0 4px 14px rgba(249,115,22,.45);border:2px solid #fff;white-space:nowrap;transform:translate(-50%,-50%)">$${Math.round(l.price / 1000)}k</div>`,
@@ -96,7 +101,7 @@ export default function MapPage() {
 
     if (listings.length > 0) {
       const pts = listings.map((l) => {
-        const [la, ln] = listingCoords(l.region, l.district, l.id)
+        const [la, ln] = coordsOf(l)
         return L.latLng(la, ln)
       })
       map.fitBounds(L.latLngBounds(pts), { padding: [50, 50] })

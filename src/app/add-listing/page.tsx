@@ -16,6 +16,8 @@ import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { REGIONS, getDistricts, PROPERTY_CATEGORIES, DEAL_TYPES } from "@/lib/locations"
 import { useUploadThing } from "@/lib/uploadthing"
+import MapPicker from "@/components/MapPicker"
+import { REGION_COORDS } from "@/lib/geo"
 
 const categoryIcons: Record<string, any> = {
   APARTMENT: Building2, HOUSE: Home, OFFICE: Building, LAND: TreePine, WAREHOUSE: Warehouse,
@@ -43,6 +45,7 @@ export default function AddListingPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [files, setFiles] = useState<FileWithPreview[]>([])
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null)
 
   const { startUpload, isUploading } = useUploadThing("listingImage", {
     onUploadError: (e) => setError("Rasm yuklashda xatolik: " + e.message),
@@ -118,6 +121,8 @@ export default function AddListingPage() {
           floor: formData.floor || null, totalFloors: formData.totalFloors || null,
           hasGas: formData.hasGas, hasWater: formData.hasWater, hasElectricity: formData.hasElectricity,
           images: imageUrls,
+          latitude: coords?.lat ?? null,
+          longitude: coords?.lng ?? null,
         }),
       })
       const data = await response.json()

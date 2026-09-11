@@ -106,6 +106,8 @@ export async function POST(req: NextRequest) {
         region,
         district: district || "",
         address: address || "",
+        latitude: body.latitude ?? null,
+        longitude: body.longitude ?? null,
         rooms: rooms ? parseInt(rooms) : null,
         area: area ? parseFloat(area) : null,
         floor: floor ? parseInt(floor) : null,
