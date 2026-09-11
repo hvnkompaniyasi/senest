@@ -5,7 +5,7 @@ import Link from "next/link"
 import { MapPin, List } from "lucide-react"
 import Navbar from "@/components/Navbar"
 import MobileNav from "@/components/MobileNav"
-import { REGION_NAMES, DEAL_TYPES } from "@/lib/locations"
+import { REGIONS, DEAL_TYPES } from "@/lib/locations"
 import { listingCoords } from "@/lib/geo"
 
 interface MapListing {
@@ -120,7 +120,7 @@ export default function MapPage() {
           <div className="flex gap-2">
             <select value={region} onChange={(e) => setRegion(e.target.value)} className="h-10 px-3 bg-white/90 dark:bg-zinc-900 border border-white/70 dark:border-zinc-800 rounded-xl text-sm text-gray-700 dark:text-gray-200 outline-none">
               <option value="">Barcha hududlar</option>
-              {REGION_NAMES.map((r) => (<option key={r} value={r}>{r}</option>))}
+              {REGIONS.map((r) => (<option key={r.id} value={r.name}>{r.name}</option>))}
             </select>
             <select value={deal} onChange={(e) => setDeal(e.target.value)} className="h-10 px-3 bg-white/90 dark:bg-zinc-900 border border-white/70 dark:border-zinc-800 rounded-xl text-sm text-gray-700 dark:text-gray-200 outline-none">
               <option value="">Barcha turlar</option>
