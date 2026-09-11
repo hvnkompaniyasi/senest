@@ -143,6 +143,13 @@ enum EditStatus {
   PENDING
   APPROVED
   REJECTED
+
+  @@index([status, createdAt])
+  @@index([region, status])
+  @@index([category, status])
+  @@index([userId])
+  @@index([status, type])
+
 }
 
 model ListingEdit {
