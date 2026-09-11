@@ -26,7 +26,6 @@ interface DbListing {
 }
 
 interface ListingsBrowserProps {
-  sub
   dealFilter?: string
 }
 
