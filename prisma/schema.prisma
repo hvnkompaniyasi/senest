@@ -53,6 +53,7 @@ model User {
   listings         Listing[]
   favorites        Favorite[]
   notifications    Notification[]
+  pushSubscriptions PushSubscription[]
   conversationsAsBuyer  Conversation[] @relation("ConvBuyer")
   conversationsAsSeller Conversation[] @relation("ConvSeller")
   sentMessages          Message[]      @relation("MessageSender")
@@ -207,4 +208,17 @@ model Notification {
 
   @@index([userId, read])
   @@index([userId, createdAt])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

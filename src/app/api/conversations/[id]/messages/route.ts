@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { prisma } from "@/lib/auth"
 import { authOptions } from "@/lib/auth-options"
+import { createNotification } from "@/lib/notify"
+import { sendPush } from "@/lib/push"
 import { CreateMessageSchema } from "@/lib/schemas"
 
 export const dynamic = "force-dynamic"
@@ -34,7 +36,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     include: { sender: { select: { id: true, name: true } } },
   })
 
-  // Menga kelgan xabarlarni o'qilgan deb belgilash
   await prisma.message.updateMany({
     where: { conversationId: params.id, NOT: { senderId: uid }, read: false },
     data: { read: true },
@@ -51,20 +52,33 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   const conv = await getConv(params.id, uid)
   if (!conv) return NextResponse.json({ error: "Topilmadi" }, { status: 404 })
 
-    const body = await req.json()
+  const body = await req.json()
   const validation = CreateMessageSchema.safeParse(body)
   if (!validation.success) {
-    return NextResponse.json({ error: validation.error.issues[0]?.message || "Validation xatosi" }, { status: 400 })
+    return NextResponse.json(
+      { error: validation.error.issues[0]?.message || "Xabar noto'g'ri" },
+      { status: 400 }
+    )
   }
   const { text } = validation.data
 
-  if (!text || !String(text).trim()) return NextResponse.json({ error: "Xabar bo'sh" }, { status: 400 })
-
   const message = await prisma.message.create({
-    data: { conversationId: params.id, senderId: uid, text: String(text).trim().slice(0, 1000) },
+    data: {
+      conversationId: params.id,
+      senderId: uid,
+      text: text.trim().slice(0, 1000),
+    },
     include: { sender: { select: { id: true, name: true } } },
   })
   await prisma.conversation.update({ where: { id: params.id }, data: { updatedAt: new Date() } })
+
+  // Qabul qiluvchiga: in-app bildirishnoma + push
+  const recipientId = conv.buyerId === uid ? conv.sellerId : conv.buyerId
+  const senderName = session.user.name || session.user.phone || "Foydalanuvchi"
+  const pushBody = `${senderName}: ${message.text.slice(0, 60)}`
+
+  await createNotification(recipientId, "NEW_MESSAGE", "💬 Yangi xabar", pushBody, `/messages?c=${conv.id}`)
+  await sendPush(recipientId, { title: "💬 Yangi xabar", body: pushBody, link: `/messages?c=${conv.id}` })
 
   return NextResponse.json({ message }, { status: 201 })
 }
