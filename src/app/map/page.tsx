@@ -40,11 +40,18 @@ export default function MapPage() {
     let cancelled = false
     ;(async () => {
       const L = (await import("leaflet")).default
-      await import("leaflet/dist/leaflet.css")
       if (cancelled || !divRef.current) return
       LRef.current = L
       map = L.map(divRef.current, { zoomControl: false }).setView([41.3111, 69.2797], 6)
       L.control.zoom({ position: "bottomright" }).addTo(map)
+      // Leaflet default icon muammosi fix
+      delete (L.Icon.Default.prototype as any)._getIconUrl
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+      })
+      
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
         maxZoom: 18,

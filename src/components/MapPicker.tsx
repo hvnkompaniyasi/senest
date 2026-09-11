@@ -19,7 +19,6 @@ export default function MapPicker({ value, onChange, center }: MapPickerProps) {
     let cancelled = false
     ;(async () => {
       const L = (await import("leaflet")).default
-      await import("leaflet/dist/leaflet.css")
       if (cancelled || !divRef.current) return
       LRef.current = L
       map = L.map(divRef.current, { zoomControl: true }).setView(center || [41.3111, 69.2797], 6)
