@@ -32,9 +32,11 @@ interface ShareButtonProps {
   title: string
   url?: string
   text?: string
+  iconOnly?: boolean
+  block?: boolean
 }
 
-export default function ShareButton({ title, url, text }: ShareButtonProps) {
+export default function ShareButton({ title, url, text, iconOnly, block }: ShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -82,10 +84,16 @@ export default function ShareButton({ title, url, text }: ShareButtonProps) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/80 backdrop-blur-xl border border-white/70 rounded-xl text-gray-700 font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all text-sm"
+        className={
+          iconOnly
+            ? "w-9 h-9 rounded-xl bg-white/80 dark:bg-zinc-800 border border-white/70 dark:border-zinc-700 flex items-center justify-center text-gray-600 dark:text-gray-300 shadow-md hover:scale-110 transition-all flex-shrink-0"
+            : block
+            ? "w-full h-11 bg-white/80 dark:bg-zinc-800 border border-white/70 dark:border-zinc-700 rounded-xl text-gray-700 dark:text-gray-200 font-semibold text-sm flex items-center justify-center gap-2"
+            : "inline-flex items-center gap-2 px-4 py-2.5 bg-white/80 dark:bg-zinc-800 backdrop-blur-xl border border-white/70 dark:border-zinc-700 rounded-xl text-gray-700 dark:text-gray-200 font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all text-sm"
+        }
       >
         <Share2 className="h-4 w-4" />
-        Ulashish
+        {!iconOnly && "Ulashish"}
       </button>
 
       {isOpen && (

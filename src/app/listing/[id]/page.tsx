@@ -1,177 +1,140 @@
 import { notFound } from "next/navigation"
-import Link from "next/link"
-import { MapPin, Bed, Maximize, Layers, Phone, MessageCircle, ArrowLeft, User } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
+import { prisma } from "@/lib/auth"
+import { MapPin, Bed, Maximize, Layers, Phone, MessageCircle, Home as HomeIcon } from "lucide-react"
 import ImageGallery from "@/components/ImageGallery"
 import ShareButton from "@/components/ShareButton"
-import { prisma } from "@/lib/auth"
-import { PROPERTY_CATEGORIES, DEAL_TYPES } from "@/lib/locations"
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer"
+import { DEAL_TYPES, PROPERTY_CATEGORIES } from "@/lib/locations"
 
-interface PageProps {
-  params: { id: string }
-}
+export const dynamic = "force-dynamic"
 
-export async function generateMetadata({ params }: PageProps) {
-  const listing = await prisma.listing.findUnique({ where: { id: params.id } })
-  return { title: listing ? `${listing.title} - Senest` : "E'lon topilmadi - Senest" }
-}
-
-export default async function ListingDetailPage({ params }: PageProps) {
+export default async function ListingPage({ params }: { params: { id: string } }) {
   const listing = await prisma.listing.findUnique({
     where: { id: params.id },
     include: { user: { select: { name: true, phone: true } } },
   })
+  if (!listing || listing.status !== "ACTIVE") notFound()
 
-  if (!listing || listing.status !== "ACTIVE") {
-    notFound()
-  }
+  const deal = DEAL_TYPES.find((d) => d.id === listing.type)?.name || listing.type
+  const cat = PROPERTY_CATEGORIES.find((c) => c.id === listing.category)?.name || listing.category
+  const phone = listing.user?.phone || ""
 
-  const categoryName = PROPERTY_CATEGORIES.find((c) => c.id === listing.category)?.name || listing.category
-  const dealName = DEAL_TYPES.find((d) => d.id === listing.type)?.name || listing.type
+  const facts = [
+    { icon: Bed, label: "Xonalar", value: listing.rooms ? String(listing.rooms) : null },
+    { icon: Layers, label: "Qavat", value: listing.floor ? `${listing.floor}${listing.totalFloors ? `/${listing.totalFloors}` : ""}` : null },
+    { icon: Maximize, label: "Maydon", value: listing.area ? `${listing.area} m²` : null },
+    { icon: HomeIcon, label: "Tur", value: cat },
+  ].filter((f) => f.value)
+
+  const utilities = [
+    { emoji: "🔥", label: "Gaz", ok: !!listing.hasGas },
+    { emoji: "💧", label: "Suv", ok: !!listing.hasWater },
+    { emoji: "💡", label: "Elektr", ok: !!listing.hasElectricity },
+  ]
+
+  const cardCls = "bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl shadow-lg"
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 pb-28 lg:pb-8">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <Link href="/listings" className="inline-flex items-center gap-2 text-gray-600 hover:text-orange-600 mb-4 sm:mb-6 transition-colors text-sm">
-          <ArrowLeft className="h-4 w-4" />
-          Barcha e'lonlarga qaytish
-        </Link>
+      <div className="max-w-2xl mx-auto px-3 sm:px-6 py-3 sm:py-6 space-y-3">
+        <ImageGallery images={listing.images} title={listing.title} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-          <div className="lg:col-span-2 space-y-6">
-            <ImageGallery images={listing.images} title={listing.title} />
-
-            <div className="flex justify-end mt-4">
-              <ShareButton title={listing.title} />
+        {/* Sarlavha + narx (ixcham) */}
+        <div className={`${cardCls} p-4`}>
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex flex-wrap gap-1.5">
+              <span className="px-2.5 py-1 bg-orange-100 dark:bg-orange-500/15 text-orange-700 dark:text-orange-300 rounded-full text-[11px] font-bold">{deal}</span>
+              <span className="px-2.5 py-1 bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-300 rounded-full text-[11px] font-bold">{cat}</span>
             </div>
-
-            <Card className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-lg rounded-2xl p-5 sm:p-6">
-              <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span className="px-3 py-1 bg-orange-100 border border-orange-200 rounded-full text-xs font-semibold text-orange-700">
-                  {dealName}
-                </span>
-                <span className="px-3 py-1 bg-amber-100 border border-amber-200 rounded-full text-xs font-semibold text-amber-700">
-                  {categoryName}
-                </span>
-              </div>
-
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-2">{listing.title}</h1>
-              <div className="flex items-center gap-2 text-gray-600 mb-4 text-sm">
-                <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0" />
-                <span>{[listing.region, listing.district, listing.address].filter(Boolean).join(", ")}</span>
-              </div>
-
-              <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-6">
-                ${listing.price.toLocaleString("en-US")}
-                {listing.type === "RENT" && <span className="text-base font-medium text-gray-500"> / oy</span>}
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                {listing.rooms ? (
-                  <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
-                    <Bed className="h-5 w-5 text-orange-500 mx-auto mb-1" />
-                    <div className="text-xs text-gray-600">Xonalar</div>
-                    <div className="font-bold text-gray-800">{listing.rooms}</div>
-                  </div>
-                ) : null}
-                {listing.area ? (
-                  <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
-                    <Maximize className="h-5 w-5 text-orange-500 mx-auto mb-1" />
-                    <div className="text-xs text-gray-600">Maydon</div>
-                    <div className="font-bold text-gray-800">{listing.area} m²</div>
-                  </div>
-                ) : null}
-                {listing.floor ? (
-                  <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
-                    <Layers className="h-5 w-5 text-orange-500 mx-auto mb-1" />
-                    <div className="text-xs text-gray-600">Qavat</div>
-                    <div className="font-bold text-gray-800">{listing.floor}</div>
-                  </div>
-                ) : null}
-                <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
-                  <MapPin className="h-5 w-5 text-orange-500 mx-auto mb-1" />
-                  <div className="text-xs text-gray-600">Hudud</div>
-                  <div className="font-bold text-gray-800 text-xs sm:text-sm">{listing.district || listing.region}</div>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <h3 className="font-bold text-gray-800 mb-3">Qo'shimcha ma'lumotlar</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {listing.totalFloors ? (
-                    <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
-                      <Layers className="h-5 w-5 text-orange-500 mx-auto mb-1" />
-                      <div className="text-xs text-gray-600">Jami qavat</div>
-                      <div className="font-bold text-gray-800">{listing.totalFloors}</div>
-                    </div>
-                  ) : null}
-                  <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
-                    <div className="text-lg mb-1">🔥</div>
-                    <div className="text-xs text-gray-600">Gaz</div>
-                    <div className={`font-bold ${listing.hasGas ? "text-green-600" : "text-red-500"}`}>{listing.hasGas ? "✓ Bor" : "✕ Yo'q"}</div>
-                  </div>
-                  <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
-                    <div className="text-lg mb-1">💧</div>
-                    <div className="text-xs text-gray-600">Suv</div>
-                    <div className={`font-bold ${listing.hasWater ? "text-green-600" : "text-red-500"}`}>{listing.hasWater ? "✓ Bor" : "✕ Yo'q"}</div>
-                  </div>
-                  <div className="p-3 sm:p-4 bg-orange-50 rounded-xl border border-orange-200 text-center">
-                    <div className="text-lg mb-1">💡</div>
-                    <div className="text-xs text-gray-600">Elektr</div>
-                    <div className={`font-bold ${listing.hasElectricity ? "text-green-600" : "text-red-500"}`}>{listing.hasElectricity ? "✓ Bor" : "✕ Yo'q"}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-gray-800 mb-2">Tavsif</h3>
-                <p className="text-gray-600 leading-relaxed whitespace-pre-line">{listing.description}</p>
-              </div>
-            </Card>
+            <ShareButton title={listing.title} iconOnly />
           </div>
-
-          <div>
-            <Card className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-lg rounded-2xl p-5 sm:p-6 lg:sticky lg:top-20">
-              <h3 className="font-bold text-gray-800 mb-4">E'lon egasi bilan bog'lanish</h3>
-
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                  {(listing.user?.name || listing.user?.phone || "U")[0].toUpperCase()}
-                </div>
-                <div className="min-w-0">
-                  <div className="font-semibold text-gray-800 truncate">{listing.user?.name || "Foydalanuvchi"}</div>
-                  <div className="text-xs text-gray-500">E'lon egasi</div>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <a href={`tel:+${listing.user?.phone}`} className="block">
-                  <Button className="w-full bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-semibold">
-                    <Phone className="h-4 w-4 mr-2" />
-                    +{listing.user?.phone}
-                  </Button>
-                </a>
-                <Button variant="outline" className="w-full border-orange-300 text-orange-600 hover:bg-orange-50" disabled>
-                  <MessageCircle className="h-4 w-4 mr-2" />
-                  Xabar yuborish (tez orada)
-                </Button>
-              </div>
-
-              <div className="mt-5 pt-5 border-t border-gray-200">
-                <h4 className="font-semibold text-gray-800 mb-2 text-sm">Xavfsizlik maslahatlari</h4>
-                <ul className="text-xs text-gray-600 space-y-1.5">
-                  <li>• Ko'chmas mulkni shaxsan ko'rib chiqing</li>
-                  <li>• Hujjatlarni diqqat bilan tekshiring</li>
-                  <li>• Oldindan to'lov qilmang</li>
-                </ul>
-              </div>
-            </Card>
+          <h1 className="mt-2 text-lg sm:text-xl font-bold text-gray-800 dark:text-white leading-snug">
+            {listing.title || "Sarlavhasiz e'lon"}
+          </h1>
+          <div className="mt-1 flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+            <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0" />
+            {[listing.region, listing.district].filter(Boolean).join(", ")}
           </div>
+          <div className="mt-2 text-2xl font-bold text-orange-600">
+            ${listing.price.toLocaleString("en-US")}
+            {listing.type === "RENT" && <span className="text-sm font-medium text-gray-500 dark:text-gray-400"> /oy</span>}
+          </div>
+        </div>
+
+        {/* Asosiy faktlar - bitta qatorda */}
+        {facts.length > 0 && (
+          <div className={`${cardCls} p-3 grid grid-cols-2 sm:grid-cols-4 gap-2`}>
+            {facts.map((f) => {
+              const Icon = f.icon
+              return (
+                <div key={f.label} className="text-center p-2 rounded-xl bg-orange-50 dark:bg-zinc-800">
+                  <Icon className="h-4 w-4 text-orange-500 mx-auto mb-1" />
+                  <div className="text-sm font-bold text-gray-800 dark:text-white leading-tight">{f.value}</div>
+                  <div className="text-[10px] text-gray-500 dark:text-gray-400">{f.label}</div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Kommunikatsiyalar - chip'lar */}
+        <div className={`${cardCls} p-3 flex flex-wrap gap-2`}>
+          {utilities.map((u) => (
+            <span
+              key={u.label}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border ${
+                u.ok
+                  ? "bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border-green-200 dark:border-green-500/30"
+                  : "bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-gray-500 border-gray-200 dark:border-zinc-700 line-through"
+              }`}
+            >
+              <span>{u.emoji}</span> {u.label} {u.ok ? "✓" : "✕"}
+            </span>
+          ))}
+        </div>
+
+        {/* Tavsif - faqat bo'lsa */}
+        {listing.description && (
+          <div className={`${cardCls} p-4`}>
+            <h3 className="font-bold text-gray-800 dark:text-white mb-1.5 text-sm">Tavsif</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+              {listing.description}
+            </p>
+          </div>
+        )}
+
+        {/* Egasi bilan bog'lanish */}
+        <div className={`${cardCls} p-4`}>
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+              {(listing.user?.name || "U")[0].toUpperCase()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-semibold text-gray-800 dark:text-white truncate">{listing.user?.name || "E'lon egasi"}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">+{phone}</div>
+            </div>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <a href={`tel:+${phone}`} className="h-11 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all">
+              <Phone className="h-4 w-4" /> Qo'ng'iroq
+            </a>
+            <a href={`https://wa.me/${phone}`} target="_blank" rel="noopener noreferrer" className="h-11 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all">
+              <MessageCircle className="h-4 w-4" /> WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobil yopishqoq amal paneli */}
+      <div className="fixed bottom-16 left-0 right-0 z-30 lg:hidden bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border-t border-gray-200 dark:border-zinc-800 px-3 py-2 flex gap-2">
+        <a href={`tel:+${phone}`} className="flex-1 h-11 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl flex items-center justify-center gap-2 font-semibold text-sm shadow-lg">
+          <Phone className="h-4 w-4" /> Qo'ng'iroq qilish
+        </a>
+        <div className="flex-1">
+          <ShareButton title={listing.title} block />
         </div>
       </div>
 
