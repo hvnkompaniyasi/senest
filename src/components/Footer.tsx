@@ -21,8 +21,8 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Bo'limlar</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
-              <li><Link href="/buy" className="hover:text-orange-400 transition-colors">Sotib olish</Link></li>
-              <li><Link href="/rent" className="hover:text-orange-400 transition-colors">Ijaraga</Link></li>
+              <li><Link href="/listings?deal=SALE" className="hover:text-orange-400 transition-colors">Sotib olish</Link></li>
+              <li><Link href="/listings?deal=RENT" className="hover:text-orange-400 transition-colors">Ijaraga</Link></li>
               <li><Link href="/listings" className="hover:text-orange-400 transition-colors">Barcha e'lonlar</Link></li>
               <li><Link href="/add-listing" className="hover:text-orange-400 transition-colors">E'lon qo'shish</Link></li>
             </ul>

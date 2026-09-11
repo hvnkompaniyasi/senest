@@ -6,7 +6,6 @@ import { Search, SlidersHorizontal, ChevronDown, ChevronUp, Loader2 } from "luci
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import ListingSkeleton from "@/components/ListingSkeleton"
-import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import ListingCard from "@/components/ListingCard"
 import SearchFilters from "@/components/SearchFilters"
@@ -97,8 +96,7 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-      <Navbar />
-
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
 
