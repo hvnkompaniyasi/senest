@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { prisma } from "@/lib/auth"
-import { MapPin, Bed, Maximize, Layers, Phone, MessageCircle, Home as HomeIcon } from "lucide-react"
+import { MapPin, Bed, Maximize, Layers, Phone, Home as HomeIcon } from "lucide-react"
 import ImageGallery from "@/components/ImageGallery"
 import ShareButton from "@/components/ShareButton"
 import Navbar from "@/components/Navbar"
@@ -117,14 +117,12 @@ export default async function ListingPage({ params }: { params: { id: string } }
               <div className="text-sm text-gray-500 dark:text-gray-400">+{phone}</div>
             </div>
           </div>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <a href={`tel:+${phone}`} className="h-11 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all">
-              <Phone className="h-4 w-4" /> Qo'ng'iroq
-            </a>
-            <a href={`https://wa.me/${phone}`} target="_blank" rel="noopener noreferrer" className="h-11 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all">
-              <MessageCircle className="h-4 w-4" /> WhatsApp
-            </a>
-          </div>
+          <a
+            href={`tel:+${phone}`}
+            className="mt-3 h-12 w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl flex items-center justify-center gap-2 font-semibold text-sm transition-all shadow-lg shadow-green-500/25"
+          >
+            <Phone className="h-4 w-4" /> Qo'ng'iroq qilish
+          </a>
         </div>
       </div>
 
