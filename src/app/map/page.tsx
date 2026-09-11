@@ -157,7 +157,7 @@ export default function MapPage() {
       )}
 
       {/* O'ng past FAB'lar (karusel yo'q, pastda) */}
-      <div className="absolute right-3 bottom-6 z-[500] flex flex-col gap-2">
+      <div className="absolute right-3 top-16 z-[500] flex flex-col gap-2">
         <button onClick={locate} className={fabCls} aria-label="O'zim turgan joy">
           {locating ? <Loader2 className="h-5 w-5 animate-spin text-blue-500" /> : <LocateFixed className="h-5 w-5 text-blue-500" />}
         </button>
