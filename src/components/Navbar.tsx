@@ -38,6 +38,10 @@ export default function Navbar() {
             <Link href="/rent" className="px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all">
               Ijaraga
             </Link>
+            <Link href="/favorites" className="px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all hidden lg:flex items-center gap-1">
+              <Heart className="h-4 w-4" />
+              Sevimlilar
+            </Link>
             <Link href="/listings" className="px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all">
               Barcha e'lonlar
             </Link>
@@ -109,6 +113,14 @@ export default function Navbar() {
             </Link>
             <Link href="/rent" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-orange-50 rounded-lg">
               Ijaraga
+            </Link>
+            <Link href="/favorites" className="px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all hidden lg:flex items-center gap-1">
+              <Heart className="h-4 w-4" />
+              Sevimlilar
+            </Link>
+            <Link href="/favorites" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-orange-50 rounded-lg flex items-center gap-2">
+              <Heart className="h-4 w-4" />
+              Sevimlilar
             </Link>
             <Link href="/listings" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-orange-50 rounded-lg">
               Barcha e'lonlar
