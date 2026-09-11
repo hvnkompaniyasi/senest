@@ -13,6 +13,7 @@ import SearchFilters from "@/components/SearchFilters"
 import { FilterState, DEFAULT_FILTERS, DEAL_TYPES } from "@/lib/locations"
 
 interface DbListing {
+  title?: string
   id: string
   price: number
   region: string
@@ -134,7 +135,7 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
               <ListingCard
                 key={listing.id}
                 id={listing.id}
-                title={listing.title}
+                title={listing.title || "Sarlavhasiz e'lon"}
                 price={listing.price}
                 location={[listing.region, listing.district].filter(Boolean).join(", ")}
                 rooms={listing.rooms || 0}
