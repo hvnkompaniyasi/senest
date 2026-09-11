@@ -14,7 +14,6 @@ import { FilterState, DEFAULT_FILTERS, DEAL_TYPES } from "@/lib/locations"
 
 interface DbListing {
   id: string
-  title: string
   price: number
   region: string
   district: string
@@ -27,12 +26,11 @@ interface DbListing {
 }
 
 interface ListingsBrowserProps {
-  title: string
   subtitle: string
   dealFilter?: string
 }
 
-export default function ListingsBrowser({ title, subtitle, dealFilter }: ListingsBrowserProps) {
+export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps) {
   const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState("")
   const [showFilters, setShowFilters] = useState(false)
