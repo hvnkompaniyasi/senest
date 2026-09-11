@@ -26,11 +26,11 @@ interface DbListing {
 }
 
 interface ListingsBrowserProps {
-  subtitle: string
+  subtitle?: string
   dealFilter?: string
 }
 
-export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps) {
+export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {}) {
   const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState("")
   const [showFilters, setShowFilters] = useState(false)
