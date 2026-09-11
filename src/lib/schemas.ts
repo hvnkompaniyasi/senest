@@ -44,3 +44,24 @@ export const CreateMessageSchema = z.object({
 export const CreateConversationSchema = z.object({
   listingId: z.string().min(1, "listingId kerak"),
 })
+
+// E'lonni tahrirlash so'rovi
+export const EditListingSchema = z.object({
+  title: z.string().min(3, "Sarlavha kamida 3 belgi").max(100).optional(),
+  description: z.string().max(2000).optional(),
+  price: z.number().positive("Narx musbat bo'lishi kerak").max(10_000_000).optional(),
+  region: z.string().min(2).max(50).optional(),
+  district: z.string().max(50).optional(),
+  address: z.string().max(200).optional(),
+  rooms: z.number().int().min(0).max(20).optional(),
+  roomsNull: z.boolean().optional(),
+  area: z.number().min(0).max(100_000).optional(),
+  areaNull: z.boolean().optional(),
+  floor: z.number().int().min(0).max(200).optional(),
+  floorNull: z.boolean().optional(),
+  totalFloors: z.number().int().min(1).max(200).optional(),
+  totalFloorsNull: z.boolean().optional(),
+  hasGas: z.boolean().optional(),
+  hasWater: z.boolean().optional(),
+  hasElectricity: z.boolean().optional(),
+})

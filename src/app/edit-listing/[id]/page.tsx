@@ -1,211 +1,251 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
-import { ArrowLeft, Save, Loader2, Upload, X, Send } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card } from "@/components/ui/card"
+import Link from "next/link"
+import { ArrowLeft, Loader2, Send, Info } from "lucide-react"
 import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
-import { REGIONS, PROPERTY_CATEGORIES, DEAL_TYPES } from "@/lib/locations"
-import { useUploadThing } from "@/lib/uploadthing"
+import { REGIONS } from "@/lib/locations"
+
+interface EditListing {
+  id: string
+  title: string
+  description: string
+  price: number
+  region: string
+  district: string
+  address: string
+  rooms: number | null
+  area: number | null
+  floor: number | null
+  totalFloors: number | null
+  hasGas: boolean
+  hasWater: boolean
+  hasElectricity: boolean
+  status: string
+}
+
+const inputCls =
+  "h-12 w-full px-4 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-orange-400"
 
 export default function EditListingPage() {
   const params = useParams()
   const router = useRouter()
   const { data: session, status } = useSession()
-  const id = params.id as string
+  const id = String(params.id || "")
 
+  const [listing, setListing] = useState<EditListing | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
-  const [images, setImages] = useState<string[]>([])
 
   const [form, setForm] = useState({
-    title: "", description: "", price: "", region: "", district: "", address: "",
-    rooms: "", area: "", floor: "", totalFloors: "", category: "", type: "",
-    hasGas: false, hasWater: false, hasElectricity: false,
+    title: "",
+    description: "",
+    price: "",
+    region: "",
+    district: "",
+    address: "",
+    rooms: "",
+    area: "",
+    floor: "",
+    totalFloors: "",
+    hasGas: false,
+    hasWater: false,
+    hasElectricity: false,
   })
-
-  const { startUpload, isUploading } = useUploadThing("listingImage", {
-    onUploadError: (e) => setError("Rasm yuklashda xatolik: " + e.message),
-  })
-
-  const load = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch(`/api/listings/${id}/edit`)
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
-      const l = data.listing
-      setForm({
-        title: l.title || "", description: l.description || "", price: String(l.price ?? ""),
-        region: l.region || "", district: l.district || "", address: l.address || "",
-        rooms: l.rooms ? String(l.rooms) : "", area: l.area ? String(l.area) : "",
-        floor: l.floor ? String(l.floor) : "", totalFloors: l.totalFloors ? String(l.totalFloors) : "",
-        category: l.category || "", type: l.type || "",
-        hasGas: !!l.hasGas, hasWater: !!l.hasWater, hasElectricity: !!l.hasElectricity,
-      })
-      setImages(l.images || [])
-    } catch (e) {
-      setError((e as Error).message)
-    } finally {
-      setLoading(false)
-    }
-  }, [id])
 
   useEffect(() => {
-    if (status === "authenticated") load()
-    else if (status === "unauthenticated") router.push("/login")
-  }, [status, load, router])
+    if (status === "unauthenticated") router.push(`/login?callbackUrl=/edit-listing/${id}`)
+  }, [status, router, id])
 
-  const set = (f: string, v: unknown) => setForm(p => ({ ...p, [f]: v }))
+  useEffect(() => {
+    if (!id || !session) return
+    fetch(`/api/listings/${id}`)
+      .then((r) => r.json())
+      .then((d) => {
+        const l = d.listing || d
+        if (!l || !l.id) {
+          setError("E'lon topilmadi")
+          return
+        }
+        setListing(l)
+        setForm({
+          title: l.title || "",
+          description: l.description || "",
+          price: String(l.price || ""),
+          region: l.region || "",
+          district: l.district || "",
+          address: l.address || "",
+          rooms: l.rooms != null ? String(l.rooms) : "",
+          area: l.area != null ? String(l.area) : "",
+          floor: l.floor != null ? String(l.floor) : "",
+          totalFloors: l.totalFloors != null ? String(l.totalFloors) : "",
+          hasGas: !!l.hasGas,
+          hasWater: !!l.hasWater,
+          hasElectricity: !!l.hasElectricity,
+        })
+      })
+      .catch(() => setError("E'lonni yuklab bo'lmadi"))
+      .finally(() => setLoading(false))
+  }, [id, session])
 
-  const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
-    if (!files.length) return
-    try {
-      const res = await startUpload(files)
-      if (res) setImages(prev => [...prev, ...res.map(r => (r as { ufsUrl?: string; url: string }).ufsUrl || r.url)])
-    } catch { setError("Rasm yuklashda xatolik") }
-    e.target.value = ""
-  }
+  const set = (key: keyof typeof form, value: string | boolean) =>
+    setForm((f) => ({ ...f, [key]: value }))
 
   const submit = async () => {
-    setSaving(true); setError(""); setSuccess("")
+    setError("")
+    setSaving(true)
     try {
-      const res = await fetch(`/api/listings/${id}/edit`, {
+      const payload: Record<string, unknown> = {
+        title: form.title,
+        description: form.description,
+        price: Number(form.price),
+        region: form.region,
+        district: form.district || undefined,
+        address: form.address || undefined,
+        hasGas: form.hasGas,
+        hasWater: form.hasWater,
+        hasElectricity: form.hasElectricity,
+      }
+      if (form.rooms !== "") payload.rooms = Number(form.rooms)
+      if (form.area !== "") payload.area = Number(form.area)
+      if (form.floor !== "") payload.floor = Number(form.floor)
+      if (form.totalFloors !== "") payload.totalFloors = Number(form.totalFloors)
+
+      const res = await fetch(`/api/listings/${id}/edit-request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, images }),
+        body: JSON.stringify(payload),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
-      setSuccess("O'zgarishlar moderatsiyaga yuborildi! Admin tasdiqlagach qo'llanadi.")
-      setTimeout(() => router.push("/my-listings"), 1800)
-    } catch (e) {
-      setError((e as Error).message)
+      const d = await res.json()
+      if (!res.ok) {
+        setError(d.error || "Xatolik")
+        return
+      }
+      router.push("/my-listings")
+      router.refresh()
     } finally {
       setSaving(false)
     }
   }
 
   if (status === "loading" || loading) {
-    return <div className="min-h-screen flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-orange-50 dark:bg-zinc-950">
+        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 pb-24 lg:pb-10">
       <Navbar />
-      <div className="max-w-3xl mx-auto px-4 py-6 sm:py-8">
-        <button onClick={() => router.push("/my-listings")} className="inline-flex items-center gap-2 text-gray-600 hover:text-orange-600 mb-4 text-sm">
-          <ArrowLeft className="h-4 w-4" /> Orqaga
-        </button>
 
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">E'lonni tahrirlash</h1>
-        <p className="text-sm text-gray-600 mb-6">O'zgarishlar moderatsiyadan o'tgach qo'llanadi</p>
+      <div className="max-w-2xl mx-auto px-4 py-6">
+        <Link href="/my-listings" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 dark:text-gray-300 mb-4 hover:text-orange-600">
+          <ArrowLeft className="h-4 w-4" /> Mening e'lonlarim
+        </Link>
 
-        {error && <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">{error}</div>}
-        {success && <div className="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">{success}</div>}
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">E'lonni tahrirlash</h1>
 
-        <Card className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-xl rounded-2xl p-5 sm:p-6 space-y-4">
-          <div className="space-y-2">
-            <Label className="font-semibold">Sarlavha</Label>
-            <Input value={form.title} onChange={(e) => set("title", e.target.value)} className="h-12 bg-white/90 border-2 border-white/70 rounded-xl" />
+        <div className="mb-5 p-3.5 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 rounded-xl flex gap-2.5">
+          <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+          <p className="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
+            O'zgarishlar moderator tekshiruvidan so'ng qo'llaniladi. Ko'rik paytida e'lonning hozirgi holati saytda qoladi.
+          </p>
+        </div>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-xl text-sm text-red-600 dark:text-red-400">
+            {error}
           </div>
-          <div className="space-y-2">
-            <Label className="font-semibold">Tavsif</Label>
-            <textarea value={form.description} onChange={(e) => set("description", e.target.value)} rows={4} className="w-full px-4 py-3 bg-white/90 border-2 border-white/70 rounded-xl focus:border-orange-400 outline-none resize-none" />
+        )}
+
+        <div className="space-y-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl p-5 shadow-lg">
+          <div>
+            <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Sarlavha *</label>
+            <input value={form.title} onChange={(e) => set("title", e.target.value)} className={inputCls} placeholder="Masalan: 3 xonali kvartira sotiladi" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="space-y-2"><Label className="font-semibold">Narx ($)</Label><Input type="number" value={form.price} onChange={(e) => set("price", e.target.value)} className="h-12 bg-white/90 border-2 border-white/70 rounded-xl" /></div>
-            <div className="space-y-2"><Label className="font-semibold">Hudud</Label>
-              <select value={form.region} onChange={(e) => set("region", e.target.value)} className="w-full h-12 px-4 bg-white/90 border-2 border-white/70 rounded-xl">
+
+          <div>
+            <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Tavsif</label>
+            <textarea value={form.description} onChange={(e) => set("description", e.target.value)} rows={4} className={`${inputCls} h-auto py-3 resize-none`} placeholder="E'lon haqida batafsil..." />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Narx ($) *</label>
+              <input type="number" value={form.price} onChange={(e) => set("price", e.target.value)} className={inputCls} placeholder="45000" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Hudud *</label>
+              <select value={form.region} onChange={(e) => set("region", e.target.value)} className={inputCls}>
                 <option value="">Tanlang</option>
-                {REGIONS.map(r => <option key={r.id} value={r.name}>{r.name}</option>)}
-              </select>
-            </div>
-            <div className="space-y-2"><Label className="font-semibold">Tuman</Label><Input value={form.district} onChange={(e) => set("district", e.target.value)} className="h-12 bg-white/90 border-2 border-white/70 rounded-xl" /></div>
-            <div className="space-y-2"><Label className="font-semibold">Manzil</Label><Input value={form.address} onChange={(e) => set("address", e.target.value)} className="h-12 bg-white/90 border-2 border-white/70 rounded-xl" /></div>
-            <div className="space-y-2"><Label className="font-semibold">Xonalar</Label><Input type="number" value={form.rooms} onChange={(e) => set("rooms", e.target.value)} className="h-12 bg-white/90 border-2 border-white/70 rounded-xl" /></div>
-            <div className="space-y-2"><Label className="font-semibold">Maydon (m2)</Label><Input type="number" value={form.area} onChange={(e) => set("area", e.target.value)} className="h-12 bg-white/90 border-2 border-white/70 rounded-xl" /></div>
-            <div className="space-y-2"><Label className="font-semibold">Kategoriya</Label>
-              <select value={form.category} onChange={(e) => set("category", e.target.value)} className="w-full h-12 px-4 bg-white/90 border-2 border-white/70 rounded-xl">
-                {PROPERTY_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
-            </div>
-            <div className="space-y-2"><Label className="font-semibold">Bitim turi</Label>
-              <select value={form.type} onChange={(e) => set("type", e.target.value)} className="w-full h-12 px-4 bg-white/90 border-2 border-white/70 rounded-xl">
-                {DEAL_TYPES.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                {REGIONS.map((r) => (<option key={r.id} value={r.name}>{r.name}</option>))}
               </select>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <Label className="font-semibold">Jami qavatlar</Label>
-              <Input type="number" value={form.totalFloors} onChange={(e) => set("totalFloors", e.target.value)} className="h-12 bg-white/90 border-2 border-white/70 rounded-xl" />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Tuman / shahar</label>
+              <input value={form.district} onChange={(e) => set("district", e.target.value)} className={inputCls} />
             </div>
-          </div>
-          <div className="space-y-2">
-            <Label className="font-semibold">Kommunikatsiyalar</Label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { key: "hasGas", label: "Gaz", emoji: "🔥" },
-                { key: "hasWater", label: "Suv", emoji: "💧" },
-                { key: "hasElectricity", label: "Elektr", emoji: "💡" },
-              ].map((u) => {
-                const val = form[u.key as keyof typeof form] as boolean
-                return (
-                  <div key={u.key} className="p-3 bg-white/90 border-2 border-white/70 rounded-xl">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-lg">{u.emoji}</span>
-                      <span className="text-sm font-medium text-gray-700">{u.label}</span>
-                    </div>
-                    <div className="flex gap-1">
-                      <button type="button" onClick={() => set(u.key, true)} className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${val ? "bg-green-500 text-white shadow" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}>✓ Bor</button>
-                      <button type="button" onClick={() => set(u.key, false)} className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${!val ? "bg-red-500 text-white shadow" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}>✕ Yo'q</button>
-                    </div>
-                  </div>
-                )
-              })}
+            <div>
+              <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Manzil</label>
+              <input value={form.address} onChange={(e) => set("address", e.target.value)} className={inputCls} />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label className="font-semibold">Rasmlar ({images.length})</Label>
-              <label className="inline-flex items-center gap-2 px-3 py-2 border-2 border-orange-300 text-orange-600 rounded-xl text-sm font-semibold cursor-pointer hover:bg-orange-50">
-                {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-                Rasm qo'shish
-                <input type="file" accept="image/*" multiple onChange={handleFiles} className="hidden" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div>
+              <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Xonalar</label>
+              <input type="number" value={form.rooms} onChange={(e) => set("rooms", e.target.value)} className={inputCls} />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Maydon (m²)</label>
+              <input type="number" value={form.area} onChange={(e) => set("area", e.target.value)} className={inputCls} />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Qavat</label>
+              <input type="number" value={form.floor} onChange={(e) => set("floor", e.target.value)} className={inputCls} />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block">Jami qavat</label>
+              <input type="number" value={form.totalFloors} onChange={(e) => set("totalFloors", e.target.value)} className={inputCls} />
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-3 pt-1">
+            {[
+              { key: "hasGas" as const, label: "Gaz bor" },
+              { key: "hasWater" as const, label: "Suv bor" },
+              { key: "hasElectricity" as const, label: "Elektr bor" },
+            ].map((item) => (
+              <label key={item.key} className="flex items-center gap-2 px-3.5 py-2.5 bg-gray-50 dark:bg-zinc-800 rounded-xl cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form[item.key]}
+                  onChange={(e) => set(item.key, e.target.checked)}
+                  className="w-4 h-4 accent-orange-500"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-200">{item.label}</span>
               </label>
-            </div>
-            {images.length > 0 && (
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                {images.map((img, i) => (
-                  <div key={i} className="relative aspect-square rounded-lg overflow-hidden border-2 border-white/70">
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                    <button onClick={() => setImages(prev => prev.filter((_, idx) => idx !== i))} className="absolute top-1 right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                      <X className="h-3 w-3 text-white" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+            ))}
           </div>
 
-          <Button onClick={submit} disabled={saving || isUploading} className="w-full h-12 bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-semibold">
-            {saving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Send className="h-4 w-4 mr-2" />}
-            Moderatsiyaga yuborish
-          </Button>
-        </Card>
+          <button
+            onClick={submit}
+            disabled={saving || !form.title || !form.price || !form.region}
+            className="h-12 w-full bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-orange-400/30 disabled:opacity-50"
+          >
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            O'zgarishlarni yuborish
+          </button>
+        </div>
       </div>
-      <Footer />
     </div>
   )
 }

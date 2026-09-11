@@ -1,146 +1,111 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { getServerSession } from "next-auth"
+import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Plus, Eye, Clock, CheckCircle, XCircle, Loader2, Pencil } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { prisma } from "@/lib/auth"
+import { authOptions } from "@/lib/auth-options"
 import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
-import { DEAL_TYPES } from "@/lib/locations"
+import MobileNav from "@/components/MobileNav"
+import DeleteListingButton from "@/components/DeleteListingButton"
+import { Pencil, Home, Clock, CheckCircle, XCircle, Plus } from "lucide-react"
 
-interface MyListing {
-  id: string
-  title: string
-  price: number
-  status: string
-  type: string
-  images: string[]
-  createdAt: string
+export const dynamic = "force-dynamic"
+
+const statusMap: Record<string, { label: string; cls: string; icon: typeof Clock }> = {
+  PENDING: { label: "Ko'rikda", cls: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400", icon: Clock },
+  ACTIVE: { label: "Faol", cls: "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400", icon: CheckCircle },
+  SOLD: { label: "Sotilgan", cls: "bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400", icon: CheckCircle },
+  EXPIRED: { label: "Muddati tugagan", cls: "bg-gray-100 text-gray-600 dark:bg-zinc-800 dark:text-gray-400", icon: XCircle },
+  REJECTED: { label: "Rad etilgan", cls: "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400", icon: XCircle },
 }
 
-const statusConfig: Record<string, { label: string; color: string; icon: any }> = {
-  ACTIVE: { label: "Faol", color: "bg-green-100 text-green-700 border-green-200", icon: CheckCircle },
-  PENDING: { label: "Moderatsiyada", color: "bg-amber-100 text-amber-700 border-amber-200", icon: Clock },
-  SOLD: { label: "Sotilgan", color: "bg-gray-100 text-gray-600 border-gray-200", icon: XCircle },
-  REJECTED: { label: "Rad etilgan", color: "bg-red-100 text-red-700 border-red-200", icon: XCircle },
-  EXPIRED: { label: "Muddati tugagan", color: "bg-gray-100 text-gray-600 border-gray-200", icon: Clock },
-}
+export default async function MyListingsPage() {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) redirect("/login?callbackUrl=/my-listings")
 
-export default function MyListingsPage() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const [listings, setListings] = useState<MyListing[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetch("/api/listings/mine")
-        .then((r) => r.json())
-        .then((d) => setListings(d.listings || []))
-        .catch(() => setListings([]))
-        .finally(() => setLoading(false))
-    } else if (status === "unauthenticated") {
-      router.push("/login")
-    }
-  }, [status, router])
-
-  if (status === "loading" || (status === "authenticated" && loading)) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-      </div>
-    )
-  }
-
-  if (!session) return null
+  const listings = await prisma.listing.findMany({
+    where: { userId: session.user.id },
+    orderBy: { createdAt: "desc" },
+    include: {
+      edits: { where: { status: "PENDING" }, take: 1, orderBy: { createdAt: "desc" } },
+    },
+  })
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 pb-24 lg:pb-10">
       <Navbar />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
+      <div className="max-w-4xl mx-auto px-4 py-6">
+        <div className="flex items-center justify-between mb-5">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mb-1">
-              Mening e'lonlarim
-            </h1>
-            <p className="text-sm sm:text-base text-gray-600">{listings.length} ta e'lon</p>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Mening e'lonlarim</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{listings.length} ta e'lon</p>
           </div>
-          <Link href="/add-listing">
-            <Button className="w-full sm:w-auto bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-semibold">
-              <Plus className="h-4 w-4 mr-2" />
-              Yangi e'lon
-            </Button>
+          <Link href="/add-listing" className="h-10 px-4 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-sm font-bold rounded-xl flex items-center gap-1.5 shadow-lg shadow-orange-400/30">
+            <Plus className="h-4 w-4" /> Yangi e'lon
           </Link>
         </div>
 
         {listings.length === 0 ? (
-          <Card className="bg-white/80 backdrop-blur-xl border border-white/70 rounded-xl sm:rounded-2xl p-10 text-center shadow-lg">
-            <p className="text-gray-600 mb-4">Hozircha e'lonlaringiz yo'q</p>
-            <Link href="/add-listing">
-              <Button className="bg-gradient-to-r from-orange-400 to-amber-500 text-white">
-                <Plus className="h-4 w-4 mr-2" />
-                Birinchi e'lonni qo'shish
-              </Button>
+          <div className="text-center py-20 bg-white/80 dark:bg-zinc-900/80 rounded-2xl border border-white/70 dark:border-zinc-800">
+            <Home className="h-12 w-12 text-gray-300 dark:text-zinc-700 mx-auto mb-3" />
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Hali e'lonlaringiz yo'q</p>
+            <Link href="/add-listing" className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-sm font-bold rounded-xl">
+              <Plus className="h-4 w-4" /> Birinchi e'lonni qo'shish
             </Link>
-          </Card>
+          </div>
         ) : (
-          <div className="space-y-3 sm:space-y-4">
-            {listings.map((listing) => {
-              const st = statusConfig[listing.status] || statusConfig.PENDING
-              const StatusIcon = st.icon
+          <div className="space-y-3">
+            {listings.map((l) => {
+              const st = statusMap[l.status] || statusMap.PENDING
+              const StIcon = st.icon
+              const hasPendingEdit = l.edits.length > 0
               return (
-                <Card key={listing.id} className="bg-white/80 backdrop-blur-xl border border-white/70 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all">
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                    <div className="w-full sm:w-24 h-20 rounded-xl bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                      {listing.images?.[0] ? (
-                        <img src={listing.images[0]} alt={listing.title} className="w-full h-full object-cover" />
-                      ) : (
-                        <Eye className="h-8 w-8 text-orange-400" />
-                      )}
+                <div key={l.id} className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl p-3.5 shadow-lg flex gap-3.5">
+                  {l.images?.[0] ? (
+                    <img src={l.images[0]} alt="" className="w-24 h-24 rounded-xl object-cover flex-shrink-0" />
+                  ) : (
+                    <div className="w-24 h-24 rounded-xl bg-orange-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                      <Home className="h-8 w-8 text-orange-300" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-800 mb-1 truncate">{listing.title}</h3>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600">
-                        <span className="font-bold text-orange-600">${listing.price.toLocaleString("en-US")}</span>
-                        <span>•</span>
-                        <span>{DEAL_TYPES.find((d) => d.id === listing.type)?.name || listing.type}</span>
-                        <span>•</span>
-                        <span>{new Date(listing.createdAt).toLocaleDateString("uz-UZ")}</span>
-                      </div>
-                      <div className={`inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full text-xs font-semibold border ${st.color}`}>
-                        <StatusIcon className="h-3 w-3" />
-                        {st.label}
-                      </div>
-                    </div>
-                    <div className="flex sm:flex-col gap-2">
-                      <Link href={`/edit-listing/${listing.id}`} className="flex-1 sm:flex-none">
-                        <Button variant="outline" size="sm" className="w-full sm:w-auto border-gray-300 text-xs">
-                          <Pencil className="h-3.5 w-3.5 mr-1" />
-                          Tahrirlash
-                        </Button>
+                  )}
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <Link href={`/listing/${l.id}`} className="font-bold text-gray-800 dark:text-white truncate hover:text-orange-600">
+                        {l.title || "Sarlavhasiz"}
                       </Link>
-                      {listing.status === "ACTIVE" && (
-                        <Link href={`/listing/${listing.id}`} className="flex-1 sm:flex-none">
-                          <Button variant="outline" size="sm" className="w-full sm:w-auto border-gray-300 text-xs">
-                            <Eye className="h-3.5 w-3.5 mr-1" />
-                            Ko'rish
-                          </Button>
-                        </Link>
-                      )}
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 flex-shrink-0 ${st.cls}`}>
+                        <StIcon className="h-3 w-3" /> {st.label}
+                      </span>
+                    </div>
+                    <div className="text-base font-bold text-orange-600 mt-0.5">${l.price.toLocaleString("en-US")}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+                      {l.region}{l.district ? `, ${l.district}` : ""}
+                    </div>
+                    {hasPendingEdit && (
+                      <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full text-[10px] font-semibold">
+                        <Clock className="h-3 w-3" /> O'zgarish ko'rikda
+                      </div>
+                    )}
+
+                    <div className="flex gap-2 mt-2.5">
+                      <Link
+                        href={`/edit-listing/${l.id}`}
+                        className="h-10 px-3 bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded-xl text-sm font-semibold flex items-center gap-1.5 hover:bg-orange-100 dark:hover:bg-orange-500/20 transition-colors"
+                      >
+                        <Pencil className="h-4 w-4" /> Tahrirlash
+                      </Link>
+                      <DeleteListingButton id={l.id} />
                     </div>
                   </div>
-                </Card>
+                </div>
               )
             })}
           </div>
         )}
       </div>
 
-      <Footer />
+      <MobileNav />
     </div>
   )
 }
