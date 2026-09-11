@@ -113,6 +113,12 @@ model Listing {
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   favorites Favorite[]
   edits     ListingEdit[]
+
+  @@index([status, createdAt])
+  @@index([region, status])
+  @@index([category, status])
+  @@index([userId])
+  @@index([status, type])
 }
 
 model Favorite {
@@ -144,11 +150,9 @@ enum EditStatus {
   APPROVED
   REJECTED
 
-  @@index([status, createdAt])
-  @@index([region, status])
-  @@index([category, status])
-  @@index([userId])
-  @@index([status, type])
+
+
+
 
 }
 
