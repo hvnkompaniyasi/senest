@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
-import { PrismaClient } from "@prisma/client"
+import { getServerSession } from "next-auth"
+import { prisma } from "@/lib/auth"
+import { authOptions } from "@/lib/auth-options"
+import { CreateListingSchema } from "@/lib/schemas"
 
-const prisma = new PrismaClient()
+export const dynamic = "force-dynamic"
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,117 +15,85 @@ export async function GET(req: NextRequest) {
     const deal = searchParams.get("deal")
     const minPrice = searchParams.get("minPrice")
     const maxPrice = searchParams.get("maxPrice")
-    const rooms = searchParams.get("rooms")
-    const minArea = searchParams.get("minArea")
-    const maxArea = searchParams.get("maxArea")
     const q = searchParams.get("q")
-    const sortBy = searchParams.get("sortBy") || "newest"
 
     const where: any = { status: "ACTIVE" }
-
     if (region) where.region = region
     if (district) where.district = district
     if (category) where.category = category
     if (deal) where.type = deal
-    if (minPrice || maxPrice) {
-      where.price = {}
-      if (minPrice) where.price.gte = parseFloat(minPrice)
-      if (maxPrice) where.price.lte = parseFloat(maxPrice)
-    }
-    if (rooms) {
-      where.rooms = rooms === "5" ? { gte: 5 } : parseInt(rooms)
-    }
-    if (minArea || maxArea) {
-      where.area = {}
-      if (minArea) where.area.gte = parseFloat(minArea)
-      if (maxArea) where.area.lte = parseFloat(maxArea)
-    }
+    if (minPrice) where.price = { ...where.price, gte: parseFloat(minPrice) }
+    if (maxPrice) where.price = { ...where.price, lte: parseFloat(maxPrice) }
     if (q) {
       where.OR = [
         { title: { contains: q, mode: "insensitive" } },
-        { address: { contains: q, mode: "insensitive" } },
-        { region: { contains: q, mode: "insensitive" } },
         { district: { contains: q, mode: "insensitive" } },
+        { address: { contains: q, mode: "insensitive" } },
       ]
     }
 
-    let orderBy: any = { createdAt: "desc" }
-    if (sortBy === "price-asc") orderBy = { price: "asc" }
-    if (sortBy === "price-desc") orderBy = { price: "desc" }
-    if (sortBy === "area-desc") orderBy = { area: "desc" }
-
     const listings = await prisma.listing.findMany({
       where,
-      orderBy,
-      include: { user: { select: { name: true, phone: true } } },
-      take: 100,
+      orderBy: { createdAt: "desc" },
+      take: 50,
     })
 
     return NextResponse.json({ listings })
   } catch (error) {
-    console.error("Listings GET error:", error)
-    return NextResponse.json({ error: "Server xatoligi" }, { status: 500 })
+    console.error("GET /api/listings error:", error)
+    return NextResponse.json({ error: "Server xatosi" }, { status: 500 })
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const { getServerSession } = await import("next-auth")
-    const { authOptions } = await import("@/lib/auth-options")
     const session = await getServerSession(authOptions)
-
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Avval tizimga kiring" }, { status: 401 })
     }
 
     const body = await req.json()
-    const {
-      title, description, type, category, region, district, address,
-      price, currency, rooms, area, floor, totalFloors,
-      hasGas, hasWater, hasElectricity, images,
-    } = body
 
-    const isBuilding = ["APARTMENT", "HOUSE", "OFFICE"].includes(category)
+    // Zod validation
+    const validation = CreateListingSchema.safeParse(body)
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]
+      return NextResponse.json(
+        { error: firstError?.message || "Ma'lumotlar noto'g'ri" },
+        { status: 400 }
+      )
+    }
 
-    if (!category || !type || !region || !price) {
-      return NextResponse.json({ error: "Kategoriya, bitim turi, region va narx majburiy" }, { status: 400 })
-    }
-    if (isBuilding && (!rooms || !floor || !totalFloors)) {
-      return NextResponse.json({ error: "Xonalar soni, qavat va jami qavatlar majburiy" }, { status: 400 })
-    }
-    if (!images || !Array.isArray(images) || images.length === 0) {
-      return NextResponse.json({ error: "Kamida bitta rasm yuklang" }, { status: 400 })
-    }
+    const validatedData = validation.data
 
     const listing = await prisma.listing.create({
       data: {
-        title: title || "",
-        description: description || "",
-        type,
-        category,
-        status: "PENDING",
-        price: parseFloat(price),
-        currency: currency || "USD",
-        region,
-        district: district || "",
-        address: address || "",
-        latitude: body.latitude ?? null,
-        longitude: body.longitude ?? null,
-        rooms: rooms ? parseInt(rooms) : null,
-        area: area ? parseFloat(area) : null,
-        floor: floor ? parseInt(floor) : null,
-        totalFloors: totalFloors ? parseInt(totalFloors) : null,
-        hasGas: !!hasGas,
-        hasWater: !!hasWater,
-        hasElectricity: !!hasElectricity,
-        images,
         userId: session.user.id,
+        title: validatedData.title,
+        description: validatedData.description || "",
+        type: validatedData.type as any,
+        category: validatedData.category as any,
+        price: validatedData.price,
+        currency: validatedData.currency,
+        region: validatedData.region,
+        district: validatedData.district || "",
+        address: validatedData.address || "",
+        latitude: validatedData.latitude ?? null,
+        longitude: validatedData.longitude ?? null,
+        rooms: validatedData.rooms ?? null,
+        area: validatedData.area ?? null,
+        floor: validatedData.floor ?? null,
+        totalFloors: validatedData.totalFloors ?? null,
+        hasGas: validatedData.hasGas ?? false,
+        hasWater: validatedData.hasWater ?? false,
+        hasElectricity: validatedData.hasElectricity ?? false,
+        images: validatedData.images,
       },
     })
 
     return NextResponse.json({ listing }, { status: 201 })
   } catch (error) {
-    console.error("Listing create error:", error)
-    return NextResponse.json({ error: "Server xatoligi" }, { status: 500 })
+    console.error("POST /api/listings error:", error)
+    return NextResponse.json({ error: "Server xatosi" }, { status: 500 })
   }
 }

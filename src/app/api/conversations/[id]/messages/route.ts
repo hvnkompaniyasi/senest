@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { prisma } from "@/lib/auth"
 import { authOptions } from "@/lib/auth-options"
+import { CreateMessageSchema } from "@/lib/schemas"
 
 export const dynamic = "force-dynamic"
 
@@ -50,7 +51,13 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   const conv = await getConv(params.id, uid)
   if (!conv) return NextResponse.json({ error: "Topilmadi" }, { status: 404 })
 
-  const { text } = await req.json()
+    const body = await req.json()
+  const validation = CreateMessageSchema.safeParse(body)
+  if (!validation.success) {
+    return NextResponse.json({ error: validation.error.issues[0]?.message || "Validation xatosi" }, { status: 400 })
+  }
+  const { text } = validation.data
+
   if (!text || !String(text).trim()) return NextResponse.json({ error: "Xabar bo'sh" }, { status: 400 })
 
   const message = await prisma.message.create({
