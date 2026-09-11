@@ -26,7 +26,7 @@ interface DbListing {
 }
 
 interface ListingsBrowserProps {
-  subtitle?: string
+  sub
   dealFilter?: string
 }
 
@@ -100,14 +100,7 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="mb-4 sm:mb-6">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mb-1 sm:mb-2">
-            {title}
-          </h1>
-          <p className="text-sm sm:text-base text-gray-600">
-            {subtitle} - {loading ? "..." : `${listings.length} ta e'lon topildi`}
-          </p>
-        </div>
+        
 
         <Card className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-lg rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 mb-6 sm:mb-8">
           <div className="relative mb-3">
