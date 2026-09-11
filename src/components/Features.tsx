@@ -9,20 +9,20 @@ const features = [
   },
   {
     icon: Shield,
-    title: "Xavfsiz to'lov",
-    description: "Barcha bitimlar himoyalangan va kafolatlangan",
+    title: "To'g'ridan-to'g'ri bitim",
+    description: "To'lov va kelishuvlar tomonlar o'rtasida bevosita amalga oshiriladi",
     color: "from-amber-400 to-yellow-500",
   },
   {
     icon: BadgeCheck,
-    title: "Tekshirilgan e'lonlar",
-    description: "Har bir e'lon moderatsiyadan o'tadi",
+    title: "Moderatsiyadan o'tgan e'lonlar",
+    description: "Har bir e'lon admin ko'rigidan so'ng saytda ko'rinadi",
     color: "from-green-400 to-emerald-500",
   },
   {
     icon: Headphones,
-    title: "24/7 qo'llab-quvvatlash",
-    description: "Istalgan vaqtda biz bilan bog'laning",
+    title: "Aloqa va yordam",
+    description: "Savollaringiz bo'lsa, bizga qo'ng'iroq qiling yoki yozing",
     color: "from-blue-400 to-cyan-500",
   },
 ]
