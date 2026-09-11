@@ -1,18 +1,21 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { Search, SlidersHorizontal, ChevronDown, ChevronUp, Loader2 } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Card } from "@/components/ui/card"
-import ListingSkeleton from "@/components/ListingSkeleton"
+import { Search, SlidersHorizontal, X, Loader2, MapPin } from "lucide-react"
 import ListingCard from "@/components/ListingCard"
-import SearchFilters from "@/components/SearchFilters"
-import { FilterState, DEFAULT_FILTERS, DEAL_TYPES } from "@/lib/locations"
+import ListingSkeleton from "@/components/ListingSkeleton"
+import { REGIONS, DEAL_TYPES } from "@/lib/locations"
+
+interface Region {
+  id: string
+  name: string
+  districts?: string[]
+}
 
 interface DbListing {
-  title?: string
   id: string
+  title: string
   price: number
   region: string
   district: string
@@ -20,139 +23,247 @@ interface DbListing {
   area: number | null
   images: string[]
   type: string
-  createdAt: string
-  category: string
 }
 
 interface ListingsBrowserProps {
   dealFilter?: string
 }
 
+const PAGE_SIZE = 12
+
+const inputCls =
+  "h-11 w-full px-3 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-700 dark:text-gray-200 outline-none focus:border-orange-400"
+
 export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {}) {
   const searchParams = useSearchParams()
-  const [searchQuery, setSearchQuery] = useState("")
+
+  const [q, setQ] = useState(searchParams.get("q") || "")
+  const [region, setRegion] = useState(searchParams.get("region") || "")
+  const [district, setDistrict] = useState(searchParams.get("district") || "")
+  const [category, setCategory] = useState(searchParams.get("category") || "")
+  const [deal, setDeal] = useState(dealFilter || searchParams.get("deal") || "")
+  const [minPrice, setMinPrice] = useState("")
+  const [maxPrice, setMaxPrice] = useState("")
+  const [sort, setSort] = useState("new")
   const [showFilters, setShowFilters] = useState(false)
+
   const [listings, setListings] = useState<DbListing[]>([])
+  const [total, setTotal] = useState(0)
+  const [hasMore, setHasMore] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [skip, setSkip] = useState(0)
 
-  const urlCategory = searchParams.get("category") || ""
-  const urlDeal = searchParams.get("deal") || ""
+  const regions = REGIONS as Region[]
+  const districts = regions.find((r) => r.name === region)?.districts || []
 
-  const [filters, setFilters] = useState<FilterState>({
-    ...DEFAULT_FILTERS,
-    region: searchParams.get("region") || "",
-    district: searchParams.get("district") || "",
-    category: urlCategory || (urlDeal === "RENT" ? "RENT" : ""),
-    minPrice: searchParams.get("minPrice") || "",
-    maxPrice: searchParams.get("maxPrice") || "",
-    rooms: searchParams.get("rooms") || "",
-    minArea: searchParams.get("minArea") || "",
-    maxArea: searchParams.get("maxArea") || "",
-    sortBy: searchParams.get("sortBy") || "newest",
-  })
-
-  const fetchListings = useCallback(async () => {
-    setLoading(true)
-    try {
-      const params = new URLSearchParams()
-      if (filters.region) params.set("region", filters.region)
-      if (filters.district) params.set("district", filters.district)
-
-      // Ijara tanlangan bo'lsa -> deal, aks holda category
-      if (filters.category === "RENT") {
-        params.set("deal", "RENT")
-      } else if (filters.category) {
-        params.set("category", filters.category)
-      }
-
-      if (dealFilter) params.set("deal", dealFilter)
-      if (urlDeal && !dealFilter) params.set("deal", urlDeal)
-      if (filters.minPrice) params.set("minPrice", filters.minPrice)
-      if (filters.maxPrice) params.set("maxPrice", filters.maxPrice)
-      if (filters.rooms) params.set("rooms", filters.rooms)
-      if (filters.minArea) params.set("minArea", filters.minArea)
-      if (filters.maxArea) params.set("maxArea", filters.maxArea)
-      if (filters.sortBy) params.set("sortBy", filters.sortBy)
-      if (searchQuery) params.set("q", searchQuery)
-
-      const res = await fetch(`/api/listings?${params.toString()}`)
-      const data = await res.json()
-      setListings(data.listings || [])
-    } catch (err) {
-      console.error("Fetch error:", err)
-      setListings([])
-    } finally {
-      setLoading(false)
-    }
-  }, [filters, dealFilter, urlDeal, searchQuery])
-
+  // Qidiruv uchun debounce
+  const [debouncedQ, setDebouncedQ] = useState(q)
   useEffect(() => {
-    const timer = setTimeout(fetchListings, 300)
-    return () => clearTimeout(timer)
-  }, [fetchListings])
+    const t = setTimeout(() => setDebouncedQ(q), 400)
+    return () => clearTimeout(t)
+  }, [q])
 
-  const dealLabel = (type: string) => DEAL_TYPES.find((d) => d.id === type)?.name || type
+  // Asosiy yuklash (filtrlar o'zgarganda)
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    setSkip(0)
+
+    const params = new URLSearchParams()
+    if (debouncedQ) params.set("q", debouncedQ)
+    if (region) params.set("region", region)
+    if (district) params.set("district", district)
+    if (category) params.set("category", category)
+    if (deal) params.set("deal", deal)
+    if (minPrice) params.set("minPrice", minPrice)
+    if (maxPrice) params.set("maxPrice", maxPrice)
+    params.set("sort", sort)
+    params.set("take", String(PAGE_SIZE))
+    params.set("skip", "0")
+
+    fetch(`/api/listings?${params.toString()}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (cancelled) return
+        setListings(d.listings || [])
+        setTotal(d.total || 0)
+        setHasMore(!!d.hasMore)
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [debouncedQ, region, district, category, deal, minPrice, maxPrice, sort])
+
+  const loadMore = async () => {
+    setLoadingMore(true)
+    const nextSkip = skip + PAGE_SIZE
+    const params = new URLSearchParams()
+    if (debouncedQ) params.set("q", debouncedQ)
+    if (region) params.set("region", region)
+    if (district) params.set("district", district)
+    if (category) params.set("category", category)
+    if (deal) params.set("deal", deal)
+    if (minPrice) params.set("minPrice", minPrice)
+    if (maxPrice) params.set("maxPrice", maxPrice)
+    params.set("sort", sort)
+    params.set("take", String(PAGE_SIZE))
+    params.set("skip", String(nextSkip))
+
+    try {
+      const d = await (await fetch(`/api/listings?${params.toString()}`)).json()
+      setListings((prev) => [...prev, ...(d.listings || [])])
+      setSkip(nextSkip)
+      setHasMore(!!d.hasMore)
+    } catch {
+      // jim
+    } finally {
+      setLoadingMore(false)
+    }
+  }
+
+  const resetFilters = () => {
+    setQ("")
+    setRegion("")
+    setDistrict("")
+    setCategory("")
+    setDeal("")
+    setMinPrice("")
+    setMaxPrice("")
+    setSort("new")
+  }
+
+  const activeFilterCount = [region, district, category, deal, minPrice, maxPrice].filter(Boolean).length
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        
+    <div>
+      {/* Qidiruv + filtr tugmasi */}
+      <div className="flex gap-2 mb-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Sarlavha, manzil yoki hudud bo'yicha qidirish..."
+            className={`${inputCls} pl-10`}
+          />
+        </div>
+        <button
+          onClick={() => setShowFilters((s) => !s)}
+          className={`h-11 px-4 rounded-xl flex items-center gap-2 text-sm font-semibold border transition-colors ${
+            showFilters || activeFilterCount > 0
+              ? "bg-orange-500 text-white border-orange-500"
+              : "bg-white/90 dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-gray-200"
+          }`}
+        >
+          <SlidersHorizontal className="h-4 w-4" />
+          Filtrlar
+          {activeFilterCount > 0 && (
+            <span className="min-w-[18px] h-[18px] px-1 bg-white text-orange-600 text-[10px] font-bold rounded-full flex items-center justify-center">
+              {activeFilterCount}
+            </span>
+          )}
+        </button>
+      </div>
 
-        <Card className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-lg rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 mb-6 sm:mb-8">
-          <div className="relative mb-3">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
-            <Input
-              placeholder="Sarlavha yoki manzil bo'yicha qidirish..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 sm:pl-11 h-11 sm:h-12 bg-white/90 border-2 border-white/70 rounded-lg sm:rounded-xl"
-            />
-          </div>
-
-          <SearchFilters filters={filters} onChange={setFilters} onSearch={() => setShowFilters(false)} showAdvanced={showFilters} />
-
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="mt-3 w-full flex items-center justify-center gap-2 py-2 text-sm font-semibold text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded-lg transition-all"
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-            {showFilters ? "Kamroq filtrlar" : "Kengaytirilgan qidiruv"}
-            {showFilters ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+      {/* Filtr paneli */}
+      {showFilters && (
+        <div className="mb-4 p-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl shadow-lg grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <select value={region} onChange={(e) => { setRegion(e.target.value); setDistrict("") }} className={inputCls}>
+            <option value="">Barcha hududlar</option>
+            {regions.map((r) => (<option key={r.id} value={r.name}>{r.name}</option>))}
+          </select>
+          <select value={district} onChange={(e) => setDistrict(e.target.value)} className={inputCls} disabled={!region}>
+            <option value="">{region ? "Barcha tumanlar" : "Avval hudud tanlang"}</option>
+            {districts.map((d) => (<option key={d} value={d}>{d}</option>))}
+          </select>
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className={inputCls}>
+            <option value="">Barcha turlar (mulkiy)</option>
+            <option value="APARTMENT">Kvartira</option>
+            <option value="HOUSE">Uy / Hovli</option>
+            <option value="OFFICE">Ofis</option>
+            <option value="LAND">Yer uchastkasi</option>
+            <option value="WAREHOUSE">Ombor</option>
+          </select>
+          <select value={deal} onChange={(e) => setDeal(e.target.value)} className={inputCls}>
+            <option value="">Barcha bitimlar</option>
+            {DEAL_TYPES.map((d) => (<option key={d.id} value={d.id}>{d.name}</option>))}
+          </select>
+          <input type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="Narx: dan ($)" className={inputCls} />
+          <input type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="Narx: gacha ($)" className={inputCls} />
+          <select value={sort} onChange={(e) => setSort(e.target.value)} className={inputCls}>
+            <option value="new">Eng yangilari</option>
+            <option value="price_asc">Arzon → Qimmat</option>
+            <option value="price_desc">Qimmat → Arzon</option>
+          </select>
+          <button onClick={resetFilters} className="h-11 px-4 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5">
+            <X className="h-4 w-4" /> Tozalash
           </button>
-        </Card>
+        </div>
+      )}
 
-        {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-          </div>
-        ) : listings.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {listings.map((listing) => (
+      {/* Natija soni */}
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          {loading ? "Qidirilmoqda..." : `${total} ta e'lon topildi`}
+        </p>
+      </div>
+
+      {/* Grid */}
+      {loading ? (
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <ListingSkeleton count={6} />
+        </div>
+      ) : listings.length === 0 ? (
+        <div className="text-center py-16 bg-white/80 dark:bg-zinc-900/80 rounded-2xl border border-white/70 dark:border-zinc-800">
+          <MapPin className="h-12 w-12 text-gray-300 dark:text-zinc-700 mx-auto mb-3" />
+          <p className="font-semibold text-gray-700 dark:text-gray-200 mb-1">Hech narsa topilmadi</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            Filtrlarni o'zgartirib yoki tozalab qayta urinib ko'ring
+          </p>
+          <button
+            onClick={resetFilters}
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-sm font-bold rounded-xl"
+          >
+            <X className="h-4 w-4" /> Filtrlarni tozalash
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {listings.map((l) => (
               <ListingCard
-                key={listing.id}
-                id={listing.id}
-                title={listing.title || "Sarlavhasiz e'lon"}
-                price={listing.price}
-                location={[listing.region, listing.district].filter(Boolean).join(", ")}
-                rooms={listing.rooms || 0}
-                area={listing.area || 0}
-                image={listing.images?.[0] || ""}
-                type={dealLabel(listing.type)}
-                createdAt={listing.createdAt}
+                key={l.id}
+                id={l.id}
+                title={l.title}
+                price={l.price}
+                location={[l.region, l.district].filter(Boolean).join(", ")}
+                rooms={l.rooms || 0}
+                area={l.area || 0}
+                image={l.images?.[0] || ""}
+                type={DEAL_TYPES.find((d) => d.id === l.type)?.name || l.type}
               />
             ))}
           </div>
-        ) : (
-          <div className="text-center py-16 sm:py-20">
-            <Search className="h-12 w-12 sm:h-16 sm:w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-2">E'lonlar topilmadi</h3>
-            <p className="text-sm sm:text-base text-gray-500">Hozircha bu filter bo'yicha e'lonlar yo'q. Birinchi e'lonni siz qo'shing!</p>
-          </div>
-        )}
-      </div>
 
-      
+          {hasMore && (
+            <div className="text-center mt-6">
+              <button
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="h-12 px-8 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-gray-200 rounded-xl font-bold text-sm flex items-center gap-2 mx-auto hover:border-orange-400 transition-colors"
+              >
+                {loadingMore ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                Yana yuklash ({total - listings.length} ta qoldi)
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }

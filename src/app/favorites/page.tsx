@@ -1,90 +1,97 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { Heart, Loader2 } from "lucide-react"
+import { getServerSession } from "next-auth"
+import { redirect } from "next/navigation"
+import Link from "next/link"
+import { Heart, Home, MapPin } from "lucide-react"
+import { prisma } from "@/lib/auth"
+import { authOptions } from "@/lib/auth-options"
 import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
-import ListingCard from "@/components/ListingCard"
+import MobileNav from "@/components/MobileNav"
+import RemoveFavoriteButton from "@/components/RemoveFavoriteButton"
 import { DEAL_TYPES } from "@/lib/locations"
 
-export default function FavoritesPage() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const [favorites, setFavorites] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+export const dynamic = "force-dynamic"
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetch("/api/favorites")
-        .then(r => r.json())
-        .then(data => setFavorites(data.favorites || []))
-        .catch(() => setFavorites([]))
-        .finally(() => setLoading(false))
-    } else if (status === "unauthenticated") {
-      router.push("/login?callbackUrl=/favorites")
-    }
-  }, [status, router])
+export const metadata = {
+  title: "Sevimlilar | Senest",
+  description: "Saqlangan e'lonlaringiz ro'yxati",
+}
 
-  if (status === "loading" || loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-      </div>
-    )
-  }
+export default async function FavoritesPage() {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) redirect("/login?callbackUrl=/favorites")
 
-  if (!session) return null
+  const favorites = await prisma.favorite.findMany({
+    where: { userId: session.user.id },
+    include: { listing: true },
+    orderBy: { createdAt: "desc" },
+  })
+
+  const active = favorites.filter((f) => f.listing.status === "ACTIVE")
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 pb-24 lg:pb-10">
       <Navbar />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mb-2">
-            Sevimli e'lonlarim
-          </h1>
-          <p className="text-sm sm:text-base text-gray-600">
-            {favorites.length} ta e'lon saqlangan
-          </p>
-        </div>
 
-        {favorites.length === 0 ? (
-          <div className="text-center py-16 sm:py-20">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-orange-100 flex items-center justify-center">
-              <Heart className="h-10 w-10 text-orange-400" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">Hozircha sevimli e'lonlar yo'q</h3>
-            <p className="text-gray-500 mb-6">E'lonlarni ko'rib chiqing va ❤️ tugmasini bosing</p>
-            <a href="/listings" className="inline-block px-6 py-3 bg-gradient-to-r from-orange-400 to-amber-500 text-white font-semibold rounded-xl shadow-lg">
-              E'lonlarni ko'rish
-            </a>
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 py-6">
+        <div className="flex items-center gap-2.5 mb-1">
+          <Heart className="h-6 w-6 text-red-500 fill-current" />
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Sevimlilar</h1>
+        </div>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+          {active.length} ta saqlangan e'lon
+        </p>
+
+        {active.length === 0 ? (
+          <div className="text-center py-20 bg-white/80 dark:bg-zinc-900/80 rounded-2xl border border-white/70 dark:border-zinc-800">
+            <Heart className="h-12 w-12 text-gray-300 dark:text-zinc-700 mx-auto mb-3" />
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              Hali sevimli e'lonlaringiz yo'q
+            </p>
+            <Link
+              href="/listings"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-sm font-bold rounded-xl"
+            >
+              <Home className="h-4 w-4" /> E'lonlarni ko'rish
+            </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {favorites.map((fav) => {
-              const listing = fav.listing
-              return (
-                <ListingCard
-                  key={fav.id}
-                  id={listing.id}
-                  title={listing.title}
-                  price={listing.price}
-                  location={[listing.region, listing.district].filter(Boolean).join(", ")}
-                  rooms={listing.rooms || 0}
-                  area={listing.area || 0}
-                  image={listing.images?.[0] || ""}
-                  type={DEAL_TYPES.find(d => d.id === listing.type)?.name || listing.type}
-                />
-              )
-            })}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {active.map((f) => (
+              <div key={f.id} className="relative">
+                <Link
+                  href={`/listing/${f.listing.id}`}
+                  className="block bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                >
+                  <div className="relative h-32 sm:h-40 bg-gradient-to-br from-orange-100 to-amber-100 dark:from-zinc-800 dark:to-zinc-900">
+                    {f.listing.images?.[0] && (
+                      <img src={f.listing.images[0]} alt="" className="w-full h-full object-cover" />
+                    )}
+                    <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-white/95 rounded-full text-[11px] font-bold text-orange-600 shadow">
+                      {DEAL_TYPES.find((d) => d.id === f.listing.type)?.name || f.listing.type}
+                    </span>
+                  </div>
+                  <div className="p-3">
+                    <div className="text-base font-bold text-orange-600">
+                      ${f.listing.price.toLocaleString("en-US")}
+                    </div>
+                    <div className="text-sm font-semibold text-gray-800 dark:text-white truncate mt-0.5">
+                      {f.listing.title || "Sarlavhasiz"}
+                    </div>
+                    <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">
+                      <MapPin className="h-3 w-3 flex-shrink-0" />
+                      {f.listing.region}
+                      {f.listing.district ? `, ${f.listing.district}` : ""}
+                    </div>
+                  </div>
+                </Link>
+                <RemoveFavoriteButton listingId={f.listing.id} />
+              </div>
+            ))}
           </div>
         )}
       </div>
 
-      <Footer />
+      <MobileNav />
     </div>
   )
 }
