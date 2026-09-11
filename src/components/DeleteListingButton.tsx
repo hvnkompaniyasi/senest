@@ -28,7 +28,7 @@ export default function DeleteListingButton({ id }: { id: string }) {
     <button
       onClick={remove}
       disabled={busy}
-      className="h-10 px-3 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl text-sm font-semibold flex items-center gap-1.5 hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors"
+      className="flex-1 h-10 px-3 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors"
     >
       {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
       O'chirish
