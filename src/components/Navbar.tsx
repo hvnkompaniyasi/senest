@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
-import { Home, Plus, Heart, User, LogOut } from "lucide-react"
+import { Home, Heart, User, LogOut } from "lucide-react"
 import ThemeToggle from "@/components/ThemeToggle"
 import ChatNavLink from "@/components/ChatNavLink"
 
@@ -36,13 +36,6 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <ChatNavLink />
-            <Link
-              href="/add-listing"
-              aria-label="E'lon qo'shish"
-              className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-400/30 hover:scale-110 transition-transform"
-            >
-              <Plus className="h-5 w-5 text-white" />
-            </Link>
             {session ? (
               <div className="flex items-center gap-2">
                 <Link

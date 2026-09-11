@@ -36,7 +36,7 @@ export default function RootLayout({
               <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#fb923c" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Senest" />
       <body className={inter.className}>

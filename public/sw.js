@@ -1,4 +1,4 @@
-const CACHE_NAME = "senest-v2"
+const CACHE_NAME = "senest-v3"
 const OFFLINE_URL = "/offline"
 const PRECACHE = ["/", "/offline", "/manifest.json", "/icons/icon-192.svg", "/icons/icon-512.svg"]
 
@@ -17,12 +17,39 @@ self.addEventListener("activate", (event) => {
 })
 
 self.addEventListener("fetch", (event) => {
+  const url = new URL(event.request.url)
+
+  // API so'rovlarini SW UMUMAN ushlamaydi (dynamic + auth talab qiladi)
+  if (url.pathname.startsWith("/api/")) return
+  // Faqat GET so'rovlar
+  if (event.request.method !== "GET") return
+
+  // Sahifa navigatsiyasi: offline fallback
   if (event.request.mode === "navigate") {
-    event.respondWith(fetch(event.request).catch(() => caches.match(OFFLINE_URL)))
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(OFFLINE_URL))
+    )
     return
   }
+
+  // Static fayllar: cache-first, xatoda jim qolamiz
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request))
+    caches.match(event.request).then(
+      (cached) =>
+        cached ||
+        fetch(event.request)
+          .then((response) => {
+            if (
+              response.ok &&
+              (url.pathname.startsWith("/_next/static/") || url.pathname.startsWith("/icons/"))
+            ) {
+              const clone = response.clone()
+              caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone))
+            }
+            return response
+          })
+          .catch(() => undefined)
+    )
   )
 })
 
@@ -32,7 +59,6 @@ self.addEventListener("push", (event) => {
   try {
     if (event.data) data = Object.assign(data, event.data.json())
   } catch (e) {
-    // matn formatida bo'lsa
     if (event.data) data.body = event.data.text()
   }
   event.waitUntil(
@@ -45,7 +71,6 @@ self.addEventListener("push", (event) => {
   )
 })
 
-// BILDIRISHNOMA BOSILGANIDA
 self.addEventListener("notificationclick", (event) => {
   event.notification.close()
   const link = (event.notification.data && event.notification.data.link) || "/"
