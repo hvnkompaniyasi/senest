@@ -21,7 +21,7 @@ interface MapListing {
 }
 
 const coordsOf = (l: MapListing): [number, number] =>
-  l.latitude && l.longitude ? [l.latitude, l.longitude] : coordsOf(l)
+  l.latitude && l.longitude ? [l.latitude, l.longitude] : listingCoords(l.region, l.district, l.id)
 
 export default function MapPage() {
   const divRef = useRef<HTMLDivElement>(null)
