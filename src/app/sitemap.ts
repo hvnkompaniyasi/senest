@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next"
 import { prisma } from "@/lib/auth"
 
-const BASE = "https://senest-nine.vercel.app"
+const BASE = "https://www.senest.uz"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const listings = await prisma.listing.findMany({
