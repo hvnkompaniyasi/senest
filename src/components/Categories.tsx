@@ -1,52 +1,33 @@
 import Link from "next/link"
-import { prisma } from "@/lib/auth"
-import { PROPERTY_CATEGORIES } from "@/lib/locations"
-import { Building2, Home, Building, TreePine, Warehouse } from "lucide-react"
+import { Building2, Home, Briefcase, Trees, Warehouse } from "lucide-react"
 
-export const dynamic = "force-dynamic"
+const CATS = [
+  { id: "APARTMENT", name: "Kvartira", icon: Building2 },
+  { id: "HOUSE", name: "Uy / Hovli", icon: Home },
+  { id: "OFFICE", name: "Ofis", icon: Briefcase },
+  { id: "LAND", name: "Yer", icon: Trees },
+  { id: "WAREHOUSE", name: "Ombor", icon: Warehouse },
+]
 
-const icons: Record<string, any> = { APARTMENT: Building2, HOUSE: Home, OFFICE: Building, LAND: TreePine, WAREHOUSE: Warehouse }
-const colors: Record<string, string> = {
-  APARTMENT: "from-orange-400 to-amber-500",
-  HOUSE: "from-amber-400 to-yellow-500",
-  OFFICE: "from-orange-500 to-red-500",
-  LAND: "from-green-400 to-emerald-500",
-  WAREHOUSE: "from-blue-400 to-cyan-500",
-}
-
-export default async function Categories() {
-  const groups = await prisma.listing.groupBy({
-    by: ["category"],
-    where: { status: "ACTIVE" },
-    _count: true,
-  })
-  const countMap: Record<string, number> = {}
-  groups.forEach((g) => { countMap[g.category] = g._count })
-
+export default function Categories() {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <div className="text-center mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-2">Kategoriyalar bo'yicha qidirish</h2>
-        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">O'zingizga mos turdagi ko'chmas mulkni tanlang</p>
-      </div>
-      <div className="grid grid-cols-3 lg:grid-cols-5 gap-3">
-        {PROPERTY_CATEGORIES.map((cat, i) => {
-          const Icon = icons[cat.id] || Building2
-          const count = countMap[cat.id] || 0
+    <section className="pb-6">
+      <h2 className="text-base font-bold text-gray-900 dark:text-white mb-3">Kategoriyalar</h2>
+      <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
+        {CATS.map((c) => {
+          const Icon = c.icon
           return (
             <Link
-              key={cat.id}
-              href={`/listings?category=${cat.id}`}
-              className="group bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-xl p-3 sm:p-4 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all text-center animate-fade-in-up"
-              style={{ animationDelay: `${i * 60}ms` }}
+              key={c.id}
+              href={`/listings?category=${c.id}`}
+              className="flex-shrink-0 flex items-center gap-2 pl-2 pr-4 py-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-full shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:border-[#FF9500] transition-colors"
             >
-              <div className={`inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 mb-2 rounded-xl bg-gradient-to-br ${colors[cat.id]} shadow-lg group-hover:scale-110 transition-transform`}>
-                <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-              </div>
-              <div className="font-semibold text-gray-800 dark:text-white text-xs sm:text-sm leading-tight">{cat.name}</div>
-              <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                {count > 0 ? `${count} ta e'lon` : "Hozircha bo'sh"}
-              </div>
+              <span className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center">
+                <Icon className="h-4 w-4 text-[#FF9500]" />
+              </span>
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                {c.name}
+              </span>
             </Link>
           )
         })}
