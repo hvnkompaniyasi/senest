@@ -190,3 +190,14 @@ img { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 .leaflet-default-icon-path {
   background-image: url(https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png);
 }
+
+/* ============ USER LOCATION DOT ============ */
+.user-dot {
+  width: 18px; height: 18px;
+  background: #3b82f6; border: 3px solid #fff; border-radius: 50%;
+  animation: userpulse 2s infinite;
+}
+@keyframes userpulse {
+  0% { box-shadow: 0 0 0 0 rgba(59,130,246,.5); }
+  100% { box-shadow: 0 0 0 16px rgba(59,130,246,0); }
+}
