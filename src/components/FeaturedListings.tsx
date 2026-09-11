@@ -65,6 +65,7 @@ export default async function FeaturedListings() {
                 area={listing.area || 0}
                 image={listing.images?.[0] || ""}
                 type={dealLabel(listing.type)}
+                createdAt={listing.createdAt.toISOString()}
               />
             ))}
           </div>

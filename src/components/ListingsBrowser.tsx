@@ -21,6 +21,7 @@ interface DbListing {
   area: number | null
   images: string[]
   type: string
+  createdAt: string
   category: string
 }
 
@@ -149,6 +150,7 @@ export default function ListingsBrowser({ title, subtitle, dealFilter }: Listing
                 area={listing.area || 0}
                 image={listing.images?.[0] || ""}
                 type={dealLabel(listing.type)}
+                createdAt={listing.createdAt}
               />
             ))}
           </div>

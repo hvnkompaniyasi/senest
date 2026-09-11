@@ -14,9 +14,10 @@ interface ListingCardProps {
   area: number
   image: string
   type: string
+  createdAt?: string
 }
 
-export default function ListingCard({ id, title, price, location, rooms, area, image, type }: ListingCardProps) {
+export default function ListingCard({ id, title, price, location, rooms, area, image, type, createdAt }: ListingCardProps) {
   const { data: session } = useSession()
   const [isFavorite, setIsFavorite] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -80,6 +81,17 @@ export default function ListingCard({ id, title, price, location, rooms, area, i
             </span>
           </div>
           
+          <div className="absolute bottom-3 left-3 flex gap-1.5">
+            {createdAt && Date.now() - new Date(createdAt).getTime() < 7 * 24 * 60 * 60 * 1000 && (
+              <span className="px-2.5 py-1 bg-green-500 text-white rounded-full text-[10px] font-bold shadow-md">
+                YANGI
+              </span>
+            )}
+            <span className="px-2.5 py-1 bg-blue-600/90 backdrop-blur-sm text-white rounded-full text-[10px] font-bold shadow-md">
+              ✓ TASDIQLANGAN
+            </span>
+          </div>
+
           <button
             onClick={toggleFavorite}
             disabled={loading}

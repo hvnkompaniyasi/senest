@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "./globals.css"
+import MobileNav from "@/components/MobileNav"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import AuthProvider from "@/components/AuthProvider";
 
 const inter = Inter({ 
@@ -23,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="uz" className={inter.variable}>
       <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider><div className="pb-16 lg:pb-0">{children}</div>
+        <MobileNav />
+        <SpeedInsights /></AuthProvider>
       </body>
     </html>
   );
