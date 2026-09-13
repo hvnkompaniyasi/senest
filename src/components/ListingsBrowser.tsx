@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { Search, SlidersHorizontal, X, Loader2, MapPin } from "lucide-react"
+import Link from "next/link"
+import { BadgeCheck } from "lucide-react"
+import { Search, SlidersHorizontal, X, Loader2, MapPin, LayoutGrid, List } from "lucide-react"
 import ListingCard from "@/components/ListingCard"
 import ListingSkeleton from "@/components/ListingSkeleton"
 import { REGIONS, DEAL_TYPES } from "@/lib/locations"
@@ -23,6 +25,9 @@ interface DbListing {
   area: number | null
   images: string[]
   type: string
+  createdAt: string
+  isPremium: boolean
+  user: { name: string | null; phone: string } | null
 }
 
 interface ListingsBrowserProps {
@@ -54,6 +59,7 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
   const [maxPrice, setMaxPrice] = useState("")
   const [sort, setSort] = useState("new")
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
   const [listings, setListings] = useState<DbListing[]>([])
   const [total, setTotal] = useState(0)
@@ -211,21 +217,55 @@ export default function ListingsBrowser({ dealFilter }: ListingsBrowserProps = {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-            {listings.map((l) => (
-              <ListingCard
-                key={l.id}
-                id={l.id}
-                title={l.title}
-                price={l.price}
-                location={[l.region, l.district].filter(Boolean).join(", ")}
-                rooms={l.rooms || 0}
-                area={l.area || 0}
-                image={l.images?.[0] || ""}
-                type={DEAL_TYPES.find((d) => d.id === l.type)?.name || l.type}
-              />
-            ))}
-          </div>
+          {viewMode === "grid" ? (
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+              {listings.map((l) => (
+                <ListingCard
+                  key={l.id}
+                  id={l.id}
+                  title={l.title}
+                  price={l.price}
+                  location={[l.region, l.district].filter(Boolean).join(", ")}
+                  rooms={l.rooms || 0}
+                  area={l.area || 0}
+                  image={l.images?.[0] || ""}
+                  type={DEAL_TYPES.find((d) => d.id === l.type)?.name || l.type}
+                  seller={l.user?.name || undefined}
+                  isPremium={l.isPremium}
+                  createdAt={l.createdAt}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-2.5">
+              {listings.map((l) => (
+                <Link
+                  key={l.id}
+                  href={`/listing/${l.id}`}
+                  className="flex gap-3 bg-white dark:bg-zinc-900 rounded-2xl p-2.5 border border-gray-100 dark:border-zinc-800 shadow-[0_4px_16px_rgba(0,0,0,0.04)]"
+                >
+                  <div className="relative w-28 h-24 rounded-xl overflow-hidden bg-orange-50 dark:bg-zinc-800 flex-shrink-0">
+                    {l.images?.[0] && <img src={l.images[0]} alt="" className="w-full h-full object-cover" />}
+                    {l.isPremium && (
+                      <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-white text-[8px] font-extrabold rounded-full">VIP</span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0 py-0.5">
+                    <div className="text-base font-extrabold text-[#FF9500]">${l.price.toLocaleString("en-US")}</div>
+                    <div className="text-sm font-semibold text-gray-800 dark:text-white line-clamp-2 leading-snug">{l.title}</div>
+                    <div className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+                      {[l.region, l.district].filter(Boolean).join(", ")}
+                    </div>
+                    {l.user?.name && (
+                      <div className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5 flex items-center gap-1">
+                        <BadgeCheck className="h-2.5 w-2.5 text-sky-400" /> {l.user.name}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
 
           {hasMore && (
             <div className="text-center mt-5">

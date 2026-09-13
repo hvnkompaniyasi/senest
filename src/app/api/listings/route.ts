@@ -42,10 +42,10 @@ export async function GET(req: NextRequest) {
         ? { price: "asc" as const }
         : sort === "price_desc"
           ? { price: "desc" as const }
-          : { createdAt: "desc" as const }
+          : [{ isPremium: "desc" as const }, { createdAt: "desc" as const }]
 
     const [listings, total] = await Promise.all([
-      prisma.listing.findMany({ where, orderBy, skip, take }),
+      prisma.listing.findMany({ where, orderBy, skip, take, include: { user: { select: { name: true, phone: true } } } }),
       prisma.listing.count({ where }),
     ])
 

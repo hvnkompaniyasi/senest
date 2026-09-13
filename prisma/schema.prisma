@@ -18,6 +18,7 @@ enum ListingType {
   SALE
   RENT
   NEW_BUILDING
+  DAILY
 }
 
 enum ListingStatus {
@@ -123,6 +124,8 @@ model Listing {
   @@index([category, status])
   @@index([userId])
   @@index([status, type])
+  isPremium    Boolean   @default(false)
+  premiumUntil DateTime?
 }
 
 model Favorite {
