@@ -45,7 +45,7 @@ export const PROPERTY_CATEGORIES = [
 export const DEAL_TYPES = [
   { id: "SALE", name: "Sotuv" },
   { id: "RENT", name: "Ijara" },
-  { id: "DAILY", name: "Kunlik" },
+  { id: "DAILY", name: "Kunlik ijara" },
 ]
 
 export const ROOM_OPTIONS = [

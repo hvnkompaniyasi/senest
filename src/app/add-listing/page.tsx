@@ -26,8 +26,7 @@ const CATEGORIES = [
 const DEALS = [
   { id: "SALE", name: "Sotiladi" },
   { id: "RENT", name: "Ijaraga" },
-  { id: "NEW_BUILDING", name: "Yangi qurilish" },
-  { id: "DAILY", name: "Kunlik" },
+  { id: "DAILY", name: "Kunlik ijara" },
 ]
 
 interface Region {
