@@ -7,6 +7,11 @@ import Navbar from "@/components/Navbar"
 import MobileNav from "@/components/MobileNav"
 import DeleteListingButton from "@/components/DeleteListingButton"
 import { Pencil, Home, Clock, CheckCircle, XCircle, Plus } from "lucide-react"
+export const metadata = {
+  title: "Mening e'lonlarim | Senest",
+  description: "Sizning e'lonlaringiz",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 export const dynamic = "force-dynamic"
 

@@ -13,6 +13,11 @@ import Navbar from "@/components/Navbar"
 import MobileNav from "@/components/MobileNav"
 import LocationPicker from "@/components/LocationPicker"
 import { REGIONS } from "@/lib/locations"
+export const metadata = {
+  title: "Tahrirlash | Senest",
+  description: "E'lonni tahrirlash",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 const CATEGORIES = [
   { id: "APARTMENT", name: "Kvartira" },

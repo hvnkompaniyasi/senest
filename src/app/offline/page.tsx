@@ -2,6 +2,11 @@
 
 import Link from "next/link"
 import { WifiOff, Home, RefreshCw } from "lucide-react"
+export const metadata = {
+  title: "Offline | Senest",
+  description: "Internet ulanishi yo'q",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 export default function OfflinePage() {
   return (

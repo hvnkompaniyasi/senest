@@ -7,6 +7,11 @@ import Link from "next/link"
 import { ArrowLeft, KeyRound, Loader2, CheckCircle, ShieldAlert } from "lucide-react"
 import Navbar from "@/components/Navbar"
 import MobileNav from "@/components/MobileNav"
+export const metadata = {
+  title: "Sozlamalar | Senest",
+  description: "Hisob sozlamalari",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 const inputCls =
   "h-12 w-full px-4 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-orange-400"

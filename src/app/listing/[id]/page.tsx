@@ -16,6 +16,11 @@ import ShareListingButton from "@/components/ShareListingButton"
 import BackButton from "@/components/BackButton"
 import FavoriteToggle from "@/components/FavoriteToggle"
 import { DEAL_TYPES } from "@/lib/locations"
+export const metadata = {
+  title: "E'lon | Senest",
+  description: "Ko'chmas mulk e'loni",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 export const dynamic = "force-dynamic"
 

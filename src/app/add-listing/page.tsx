@@ -12,6 +12,11 @@ import Navbar from "@/components/Navbar"
 import MobileNav from "@/components/MobileNav"
 import LocationPicker from "@/components/LocationPicker"
 import { REGIONS } from "@/lib/locations"
+export const metadata = {
+  title: "E'lon qo'shish | Senest",
+  description: "Yangi ko'chmas mulk e'lonini qo'shing",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 const DRAFT_KEY = "senest-draft-listing"
 

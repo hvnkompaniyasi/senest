@@ -5,6 +5,11 @@ import Link from "next/link"
 import { ArrowLeft, SlidersHorizontal, LocateFixed, Plus, Minus, X, Loader2, MapPin } from "lucide-react"
 import { REGIONS, DEAL_TYPES } from "@/lib/locations"
 import MobileNav from "@/components/MobileNav"
+export const metadata = {
+  title: "Xarita | Senest",
+  description: "Ko'chmas mulk xaritada",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 interface MapListing {
   id: string

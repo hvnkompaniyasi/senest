@@ -8,6 +8,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
 import { Home, User, Phone, Mail, Lock } from 'lucide-react'
+export const metadata = {
+  title: "Ro'yxatdan o'tish | Senest",
+  description: "Senest platformasiga ro'yxatdan o'tish",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 export default function RegisterPage() {
   const router = useRouter()

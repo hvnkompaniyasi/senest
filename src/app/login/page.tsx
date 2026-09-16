@@ -9,6 +9,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
 import { Home, Phone, Lock } from 'lucide-react'
+export const metadata = {
+  title: "Kirish | Senest",
+  description: "Senest platformasiga kirish",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 export default function LoginPage() {
   const router = useRouter()

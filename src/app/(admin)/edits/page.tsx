@@ -2,6 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { CheckCircle, XCircle, Loader2, FileEdit, ArrowRight } from "lucide-react"
+export const metadata = {
+  title: "Tahrirlar | Senest",
+  description: "Admin tahrirlar",
+  openGraph: { images: ["/icons/icon-512.svg"] },
+}
 
 interface EditUser {
   name: string | null
