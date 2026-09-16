@@ -5,6 +5,7 @@ import SWRegister from "@/components/SWRegister"
 import InstallPWA from "@/components/InstallPWA"
 import MobileNav from "@/components/MobileNav"
 ;
+import ThemeScript from "@/components/ThemeScript"
 import AuthProvider from "@/components/AuthProvider";
 
 ;
@@ -21,13 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="uz">
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem("senest-theme")==="dark"){document.documentElement.classList.add("dark")}}catch(e){}`,
-          }}
-        />
-      </head>
+      <ThemeScript />
               <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#fb923c" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
