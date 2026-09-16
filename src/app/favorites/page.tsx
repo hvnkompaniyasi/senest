@@ -64,7 +64,7 @@ export default async function FavoritesPage() {
                 >
                   <div className="relative h-32 sm:h-40 bg-gradient-to-br from-orange-100 to-amber-100 dark:from-zinc-800 dark:to-zinc-900">
                     {f.listing.images?.[0] && (
-                      <img src={f.listing.images[0]} alt="" className="w-full h-full object-cover" />
+                      <img src={f.listing.images[0]} alt={f.listing.title || "E'lon rasmi"} className="w-full h-full object-cover" />
                     )}
                     <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-white/95 rounded-full text-[11px] font-bold text-orange-600 shadow">
                       {DEAL_TYPES.find((d) => d.id === f.listing.type)?.name || f.listing.type}

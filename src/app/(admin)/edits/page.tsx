@@ -104,7 +104,7 @@ export default function AdminEditsPage() {
               <div key={edit.id} className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-gray-100 dark:border-zinc-800 shadow-sm">
                 <div className="flex items-start gap-3 mb-3">
                   {Array.isArray(listing.images) && typeof listing.images[0] === "string" ? (
-                    <img src={listing.images[0]} alt="" className="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
+                    <img src={listing.images[0]} alt={String(listing.title || "E'lon") || "E'lon rasmi"} className="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
                   ) : (
                     <div className="w-14 h-14 rounded-xl bg-gray-100 dark:bg-zinc-800 flex-shrink-0" />
                   )}

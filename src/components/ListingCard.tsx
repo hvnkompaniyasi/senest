@@ -104,7 +104,7 @@ export default function ListingCard({
       <Link href={`/listing/${id}`} className="block">
         <div className="relative aspect-[4/3] bg-gradient-to-br from-orange-100 to-amber-100 dark:from-zinc-800 dark:to-zinc-900">
           {image ? (
-            <Image src={image} alt={title} className="w-full h-full object-cover" />
+            <Image src={image} alt={title || "E'lon rasmi"} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <Home className="h-8 w-8 text-orange-300" />

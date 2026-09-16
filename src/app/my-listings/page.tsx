@@ -65,7 +65,7 @@ export default async function MyListingsPage() {
                   <div className="flex gap-3.5">
                     {l.images?.[0] ? (
                       <Link href={`/listing/${l.id}`} className="flex-shrink-0">
-                        <img src={l.images[0]} alt="" className="w-24 h-24 rounded-xl object-cover" />
+                        <img src={l.images[0]} alt={l.title || "E'lon rasmi"} className="w-24 h-24 rounded-xl object-cover" />
                       </Link>
                     ) : (
                       <div className="w-24 h-24 rounded-xl bg-orange-50 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">
