@@ -66,3 +66,10 @@ export const EditListingSchema = z.object({
   hasWater: z.boolean().optional(),
   hasElectricity: z.boolean().optional(),
 })
+
+export const RegisterSchema = z.object({
+  name: z.string().min(2).max(50).optional(),
+  phone: z.string().regex(/^\d+$/, "Telefon faqat raqamlar"),
+  email: z.string().email().optional(),
+  password: z.string().min(6, "Parol kamida 6 belgi"),
+})

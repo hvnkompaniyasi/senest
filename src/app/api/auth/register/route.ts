@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { PrismaClient } from '@prisma/client'
+import { RegisterSchema } from '@/lib/schemas'
 
 const prisma = new PrismaClient()
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, phone, email, password } = body
+    const result = RegisterSchema.safeParse(body)
+    if (!result.success) {
+      return NextResponse.json({ errors: result.error.errors }, { status: 400 })
+    }
+    const { name, phone, email, password } = result.data
 
     if (!phone || !password) {
       return NextResponse.json({ error: 'Telefon va parol majburiy' }, { status: 400 })
