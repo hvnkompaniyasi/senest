@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import type { TouchEvent as ReactTouchEvent } from "react"
+import Image from "next/image"
 import { ChevronLeft, ChevronRight, X, ZoomIn, Home } from "lucide-react"
 
 interface ListingGalleryProps {
@@ -54,13 +55,14 @@ export default function ListingGallery({ images, title }: ListingGalleryProps) {
     <>
       {/* Asosiy galereya */}
       <div className="relative rounded-2xl overflow-hidden shadow-xl border border-white/70 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900">
-        <img
+        <Image
           src={images[index]}
           alt={`${title} - rasm ${index + 1}`}
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, 60vw"
+          className="object-cover cursor-zoom-in select-none [touch-action:pan-y]"
           onClick={() => setLightbox(true)}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-          className="w-full h-64 sm:h-[420px] object-cover cursor-zoom-in select-none [touch-action:pan-y]"
         />
 
         {count > 1 && (
@@ -109,7 +111,7 @@ export default function ListingGallery({ images, title }: ListingGalleryProps) {
       {/* LIGHTBOX - to'liq ekran */}
       {lightbox && (
         <div
-          className="fixed inset-0 z-[900] bg-black/95 backdrop-blur-sm flex items-center justify-center"
+          className="fixed inset-0 z-[900] bg-black/95 backdrop-blur-sm flex items-center justify-center relative"
           onClick={() => setLightbox(false)}
         >
           <button
@@ -138,13 +140,13 @@ export default function ListingGallery({ images, title }: ListingGalleryProps) {
             </>
           )}
 
-          <img
+          <Image
             src={images[index]}
             alt={`${title} - rasm ${index + 1}`}
+            fill
+            sizes="94vw"
+            className="object-contain select-none [touch-action:pan-y]!"
             onClick={() => setLightbox(false)}
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
-            className="max-h-[88vh] max-w-[94vw] object-contain select-none [touch-action:pan-y]"
           />
 
           <span className="absolute bottom-5 left-1/2 -translate-x-1/2 px-3 py-1 bg-white/10 text-white/90 text-sm font-semibold rounded-full">
