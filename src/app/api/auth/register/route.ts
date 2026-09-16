@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const result = RegisterSchema.safeParse(body)
     if (!result.success) {
-      return NextResponse.json({ errors: result.error.errors }, { status: 400 })
+      return NextResponse.json({ errors: result.error.issues }, { status: 400 })
     }
     const { name, phone, email, password } = result.data
 
