@@ -53,4 +53,16 @@ UI: o'zbek. Kod izohlari: ingliz. Commit: ingliz. Hujjat: o'zbek + ingliz.
 ## 12. ECC qoidalari integratsiyasi
 Plan → Test → Implement → Review → Verify → Remember. Har feature avval plan. TDD. Har deploydan keyin verification loop. Xotira: muhim qarorlar saqlanadi.
 
+
+## Deviations
+- Analytics o'chirilgan (web-vitals bug)
+- next/font yo'q (system font stack)
+- Solo git flow (PR review yo'q)
+- Polling 60s/40s (compute tejash)
+
+## Multi-agent protocol
+- Har agent git pull avval bajaradi
+- Bir vaqtda bitta yozuvchi
+- Lead = arxitektura qarorlari
+
 MUHIM: Bu fayl har AI agent tomonidan o'qiladi va qoidalarga amal qilinadi. Yangilanishlar PR orqali.
