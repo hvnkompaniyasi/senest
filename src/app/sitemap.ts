@@ -1,6 +1,8 @@
 import { MetadataRoute } from "next"
 import { prisma } from "@/lib/auth"
 
+export const dynamic = "force-dynamic"
+
 const BASE = "https://www.senest.uz"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

@@ -48,3 +48,22 @@ Senest — O'zbekiston ko'chmas mulk platformasi.
 - Qaysi fayllar
 - Build holati
 - Commit hash
+
+## MULOQOT QOIDALARI (MAJBURIY)
+
+1. **Chat javoblari** — barcha javoblar chatda ko'rsatiladi
+2. **Fayl yozish** — faqat foydalanuvchi aniq so'raganda ("faylga saqla", "yozib qo'y")
+3. **Kod yozish** — kod chatda ham, faylga ham (ikkalasida)
+4. **Hisobot** — qisqa xulosa chatda, batafsil faylga (agar kerak)
+5. **Hech qachon** — "yozdim" deb javob berma, o'rniga matnni ko'rsat
+
+### Noto'g'ri:
+> "README.md ga yozdim"
+
+### To'g'ri:
+> "Mana README.md mazmuni:
+>
+> # Senest
+> ...
+>
+> Faylni saqlashimni xohlasangiz, ayting."

@@ -6,6 +6,8 @@ import Advantages from "@/components/Advantages"
 import Footer from "@/components/Footer"
 import MobileNav from "@/components/MobileNav"
 
+export const dynamic = "force-dynamic"
+
 export const metadata = {
   title: "Senest — O'zbekistondagi ishonchli ko'chmas mulk platformasi",
   description:
