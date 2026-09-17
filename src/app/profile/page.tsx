@@ -20,11 +20,11 @@ export const metadata = {
 }
 
 const MENU = [
-  { href: "/add-listing", icon: Plus, label: "Yangi e'lon qo'shish", color: "bg-orange-50 dark:bg-orange-500/10 text-[#FF9500]" },
+  { href: "/add-listing", icon: Plus, label: "Yangi e'lon qo'shish", color: "bg-green-50 dark:bg-green-500/10 text-[#FF9500]" },
   { href: "/my-listings", icon: FileText, label: "Mening e'lonlarim", color: "bg-blue-50 dark:bg-blue-500/10 text-blue-500" },
   { href: "/favorites", icon: Heart, label: "Sevimli e'lonlar", color: "bg-red-50 dark:bg-red-500/10 text-red-500" },
   { href: "/messages", icon: MessageSquare, label: "Xabarlarim", color: "bg-green-50 dark:bg-green-500/10 text-green-500" },
-  { href: "/settings", icon: KeyRound, label: "Parolni o'zgartirish", color: "bg-amber-50 dark:bg-amber-500/10 text-amber-500" },
+  { href: "/settings", icon: KeyRound, label: "Parolni o'zgartirish", color: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500" },
   { href: "/settings", icon: Settings, label: "Qo'shimcha sozlamalar", color: "bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-300" },
 ]
 
@@ -51,7 +51,7 @@ export default async function ProfilePage() {
         {/* ========== IXCHAM HEADER KARTA (banner yo'q) ========== */}
         <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)] flex items-center gap-3.5">
           {/* Kichik gradient avatar */}
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FF9500] to-[#FF6A00] flex items-center justify-center text-white text-xl font-extrabold shadow-md shadow-orange-400/30 flex-shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#16a34a] to-[#15803d] flex items-center justify-center text-white text-xl font-extrabold shadow-md shadow-green-400/30 flex-shrink-0">
             {initial}
           </div>
 

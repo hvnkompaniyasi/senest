@@ -89,7 +89,7 @@ export default function ProfileEditSheet({ initialName, initialPhone }: Props) {
               <button
                 onClick={save}
                 disabled={busy}
-                className="h-12 w-full bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-orange-400/30 disabled:opacity-50"
+                className="h-12 w-full bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-green-400/30 disabled:opacity-50"
               >
                 {busy && <Loader2 className="h-4 w-4 animate-spin" />} Saqlash
               </button>

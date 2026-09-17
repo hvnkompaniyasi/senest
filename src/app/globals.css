@@ -57,7 +57,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.45 0.15 155); /* Green primary */
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -69,7 +69,7 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
+  --chart-1: oklch(0.45 0.15 155);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
@@ -77,7 +77,7 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary: oklch(0.45 0.15 155);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
@@ -92,7 +92,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  --primary: oklch(0.6 0.15 155); /* Green primary dark */
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -104,14 +104,14 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
+  --chart-1: oklch(0.6 0.15 155);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.6 0.15 155);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
@@ -130,13 +130,14 @@
     @apply font-sans;
   }
 }
+
 /* ============ DARK MODE ============ */
 .dark { color-scheme: dark; }
 .dark body { background-color: #09090b; color: #f4f4f5; }
 
-/* Sahifa fonlari */
-.dark .bg-gradient-to-br.from-orange-50.via-amber-50.to-yellow-50 { background-image: none; background-color: #09090b; }
-.dark .bg-gradient-to-br.from-orange-100.to-amber-100 { background-image: none; background-color: #27272a; }
+/* Sahifa fonlari - orange/amber o'rniga green */
+.dark .bg-gradient-to-br.from-green-50.via-emerald-50.to-teal-50 { background-image: none; background-color: #09090b; }
+.dark .bg-gradient-to-br.from-green-100.to-emerald-100 { background-image: none; background-color: #27272a; }
 
 /* Yuzalar (kartalar, navbar, modallar) */
 .dark .bg-white, .dark .bg-white\/95 { background-color: #18181b; }
@@ -159,19 +160,16 @@
 .dark .text-gray-600 { color: #a1a1aa; }
 .dark .text-gray-500 { color: #8b8b93; }
 
-/* Chip va badge'lar */
-.dark .bg-orange-50 { background-color: rgb(67 20 7 / 0.35); }
-.dark .bg-amber-100 { background-color: rgb(67 20 7 / 0.35); }
+/* Chip va badge'lar - green variants */
 .dark .bg-green-50 { background-color: rgb(5 46 22 / 0.45); }
-.dark .bg-red-50 { background-color: rgb(69 10 10 / 0.45); }
-.dark .border-orange-200 { border-color: rgb(154 52 18 / 0.45); }
+.dark .bg-emerald-100 { background-color: rgb(5 46 22 / 0.35); }
+.dark .bg-teal-50 { background-color: rgb(5 46 22 / 0.45); }
 .dark .border-green-200 { border-color: rgb(20 83 45 / 0.45); }
-.dark .border-red-200 { border-color: rgb(153 27 27 / 0.45); }
-.dark .border-amber-200 { border-color: rgb(146 64 14 / 0.45); }
-.dark .text-orange-700 { color: #fdba74; }
+.dark .border-emerald-200 { border-color: rgb(20 83 45 / 0.35); }
+.dark .border-teal-200 { border-color: rgb(20 83 45 / 0.35); }
 .dark .text-green-700 { color: #86efac; }
-.dark .text-red-700 { color: #fca5a5; }
-.dark .text-amber-700 { color: #fcd34d; }
+.dark .text-emerald-700 { color: #86efac; }
+.dark .text-teal-700 { color: #86efac; }
 
 /* ============ SMOOTH TRANSITIONS ============ */
 * { scroll-behavior: smooth; }
@@ -194,12 +192,12 @@ img { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 /* ============ USER LOCATION DOT ============ */
 .user-dot {
   width: 18px; height: 18px;
-  background: #3b82f6; border: 3px solid #fff; border-radius: 50%;
+  background: #16a34a; border: 3px solid #fff; border-radius: 50%;
   animation: userpulse 2s infinite;
 }
 @keyframes userpulse {
-  0% { box-shadow: 0 0 0 0 rgba(59,130,246,.5); }
-  100% { box-shadow: 0 0 0 16px rgba(59,130,246,0); }
+  0% { box-shadow: 0 0 0 0 rgba(22,163,74,.5); }
+  100% { box-shadow: 0 0 0 16px rgba(22,163,74,0); }
 }
 
 /* ============ HORIZONTAL SCROLL HIMOYASI ============ */

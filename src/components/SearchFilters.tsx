@@ -11,9 +11,9 @@ interface SearchFiltersProps {
   showAdvanced?: boolean
 }
 
-const selectClass = "w-full h-11 sm:h-12 pl-10 sm:pl-11 pr-8 bg-white/90 border-2 border-white/70 rounded-lg sm:rounded-xl text-gray-800 focus:border-orange-400 focus:ring-4 focus:ring-orange-400/20 outline-none transition-all font-medium text-sm sm:text-base appearance-none cursor-pointer"
+const selectClass = "w-full h-11 sm:h-12 pl-10 sm:pl-11 pr-8 bg-white/90 border-2 border-white/70 rounded-lg sm:rounded-xl text-gray-800 focus:border-green-400 focus:ring-4 focus:ring-green-400/20 outline-none transition-all font-medium text-sm sm:text-base appearance-none cursor-pointer"
 
-const inputClass = "w-full h-11 sm:h-12 pl-10 sm:pl-11 pr-3 bg-white/90 border-2 border-white/70 rounded-lg sm:rounded-xl text-gray-800 placeholder:text-gray-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-400/20 outline-none transition-all font-medium text-sm sm:text-base"
+const inputClass = "w-full h-11 sm:h-12 pl-10 sm:pl-11 pr-3 bg-white/90 border-2 border-white/70 rounded-lg sm:rounded-xl text-gray-800 placeholder:text-gray-400 focus:border-green-400 focus:ring-4 focus:ring-green-400/20 outline-none transition-all font-medium text-sm sm:text-base"
 
 export default function SearchFilters({ filters, onChange, onSearch, showAdvanced = false }: SearchFiltersProps) {
   const set = (field: keyof FilterState, value: string) => {
@@ -26,7 +26,7 @@ export default function SearchFilters({ filters, onChange, onSearch, showAdvance
     <div className="space-y-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
         <div className="relative">
-          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
+          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500 pointer-events-none z-10" />
           <select value={filters.region} onChange={(e) => onChange({ ...filters, region: e.target.value, district: "" })} className={selectClass}>
             <option value="">Barcha hududlar</option>
             {REGIONS.map((r) => (
@@ -36,7 +36,7 @@ export default function SearchFilters({ filters, onChange, onSearch, showAdvance
         </div>
 
         <div className="relative">
-          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
+          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500 pointer-events-none z-10" />
           <select value={filters.district} onChange={(e) => set("district", e.target.value)} disabled={!filters.region} className={selectClass + " disabled:opacity-50"}>
             <option value="">{filters.region ? "Barcha tumanlar" : "Avval hudud tanlang"}</option>
             {getDistricts(filters.region).map((d) => (
@@ -46,7 +46,7 @@ export default function SearchFilters({ filters, onChange, onSearch, showAdvance
         </div>
 
         <div className="relative">
-          <Home className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
+          <Home className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500 pointer-events-none z-10" />
           <select value={filters.category} onChange={(e) => set("category", e.target.value)} className={selectClass}>
             <option value="">Barcha turlar</option>
             {PROPERTY_CATEGORIES.map((t) => (
@@ -56,24 +56,24 @@ export default function SearchFilters({ filters, onChange, onSearch, showAdvance
           </select>
         </div>
 
-        <Button onClick={onSearch} className="w-full h-11 sm:h-12 bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 hover:from-orange-500 hover:via-amber-500 hover:to-orange-600 text-white font-bold rounded-lg sm:rounded-xl shadow-lg shadow-orange-400/30 hover:shadow-orange-400/50 transition-all text-sm sm:text-base">
+        <Button onClick={onSearch} className="w-full h-11 sm:h-12 bg-gradient-to-r from-orange-400 via-emerald-400 to-orange-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 text-white font-bold rounded-lg sm:rounded-xl shadow-lg shadow-green-400/30 hover:shadow-green-400/50 transition-all text-sm sm:text-base">
           <Search className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
           Qidirish
         </Button>
       </div>
 
       {showAdvanced && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 pt-3 border-t border-orange-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 pt-3 border-t border-green-100">
           <div className="relative">
-            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
+            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500 pointer-events-none z-10" />
             <input type="number" placeholder="Narxdan ($)" value={filters.minPrice} onChange={(e) => set("minPrice", e.target.value)} className={inputClass} />
           </div>
           <div className="relative">
-            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
+            <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500 pointer-events-none z-10" />
             <input type="number" placeholder="Narxgacha ($)" value={filters.maxPrice} onChange={(e) => set("maxPrice", e.target.value)} className={inputClass} />
           </div>
           <div className="relative">
-            <Bed className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
+            <Bed className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500 pointer-events-none z-10" />
             <select value={filters.rooms} onChange={(e) => set("rooms", e.target.value)} className={selectClass}>
               <option value="">Xonalar soni</option>
               {ROOM_OPTIONS.map((r) => (
@@ -82,7 +82,7 @@ export default function SearchFilters({ filters, onChange, onSearch, showAdvance
             </select>
           </div>
           <div className="relative">
-            <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
+            <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500 pointer-events-none z-10" />
             <select value={filters.sortBy} onChange={(e) => set("sortBy", e.target.value)} className={selectClass}>
               {SORT_OPTIONS.map((s) => (
                 <option key={s.id} value={s.id}>{s.name}</option>
@@ -90,11 +90,11 @@ export default function SearchFilters({ filters, onChange, onSearch, showAdvance
             </select>
           </div>
           <div className="relative">
-            <Maximize className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
+            <Maximize className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500 pointer-events-none z-10" />
             <input type="number" placeholder="Maydondan (m2)" value={filters.minArea} onChange={(e) => set("minArea", e.target.value)} className={inputClass} />
           </div>
           <div className="relative">
-            <Maximize className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-orange-500 pointer-events-none z-10" />
+            <Maximize className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500 pointer-events-none z-10" />
             <input type="number" placeholder="Maydongacha (m2)" value={filters.maxArea} onChange={(e) => set("maxArea", e.target.value)} className={inputClass} />
           </div>
           <div className="sm:col-span-2 flex items-center gap-2">
@@ -103,7 +103,7 @@ export default function SearchFilters({ filters, onChange, onSearch, showAdvance
               Tozalash
             </Button>
             {activeCount > 0 && (
-              <span className="px-3 py-1.5 bg-orange-100 border border-orange-200 rounded-full text-xs font-semibold text-orange-700 whitespace-nowrap">
+              <span className="px-3 py-1.5 bg-green-100 border border-green-200 rounded-full text-xs font-semibold text-green-700 whitespace-nowrap">
                 {activeCount} ta filtr faol
               </span>
             )}

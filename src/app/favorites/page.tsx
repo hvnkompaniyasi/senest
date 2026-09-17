@@ -29,7 +29,7 @@ export default async function FavoritesPage() {
   const active = favorites.filter((f) => f.listing.status === "ACTIVE")
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 pb-24 lg:pb-10">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 pb-24 lg:pb-10">
       <Navbar />
 
       <div className="max-w-6xl mx-auto px-3 sm:px-6 py-6">
@@ -49,7 +49,7 @@ export default async function FavoritesPage() {
             </p>
             <Link
               href="/listings"
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-sm font-bold rounded-xl"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-green-400 to-emerald-500 text-white text-sm font-bold rounded-xl"
             >
               <Home className="h-4 w-4" /> E'lonlarni ko'rish
             </Link>
@@ -62,16 +62,16 @@ export default async function FavoritesPage() {
                   href={`/listing/${f.listing.id}`}
                   className="block bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
                 >
-                  <div className="relative h-32 sm:h-40 bg-gradient-to-br from-orange-100 to-amber-100 dark:from-zinc-800 dark:to-zinc-900">
+                  <div className="relative h-32 sm:h-40 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-zinc-800 dark:to-zinc-900">
                     {f.listing.images?.[0] && (
                       <img src={f.listing.images[0]} alt={f.listing.title || "E'lon rasmi"} className="w-full h-full object-cover" />
                     )}
-                    <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-white/95 rounded-full text-[11px] font-bold text-orange-600 shadow">
+                    <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-white/95 rounded-full text-[11px] font-bold text-green-600 shadow">
                       {DEAL_TYPES.find((d) => d.id === f.listing.type)?.name || f.listing.type}
                     </span>
                   </div>
                   <div className="p-3">
-                    <div className="text-base font-bold text-orange-600">
+                    <div className="text-base font-bold text-green-600">
                       ${f.listing.price.toLocaleString("en-US")}
                     </div>
                     <div className="text-sm font-semibold text-gray-800 dark:text-white truncate mt-0.5">

@@ -100,8 +100,8 @@ export default function MessagesClient() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-orange-50 dark:bg-zinc-950">
-        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+      <div className="min-h-screen flex items-center justify-center bg-green-50 dark:bg-zinc-950">
+        <Loader2 className="h-8 w-8 animate-spin text-green-500" />
       </div>
     )
   }
@@ -110,7 +110,7 @@ export default function MessagesClient() {
   const other = (c: Conv) => (c.buyer.id === uid ? c.seller : c.buyer)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950">
       <Navbar />
 
       <div className="max-w-5xl mx-auto px-3 sm:px-6 py-4">
@@ -118,15 +118,15 @@ export default function MessagesClient() {
           {/* Ro'yxat */}
           <div className={`${selected ? "hidden lg:flex" : "flex"} flex-col`}>
             <h1 className="text-xl font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-orange-500" /> Xabarlarim
+              <MessageSquare className="h-5 w-5 text-green-500" /> Xabarlarim
             </h1>
             {loading ? (
-              <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin text-orange-500" /></div>
+              <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin text-green-500" /></div>
             ) : convs.length === 0 ? (
               <div className="text-center py-16 bg-white/80 dark:bg-zinc-900/80 rounded-2xl border border-white/70 dark:border-zinc-800">
                 <MessageSquare className="h-10 w-10 text-gray-300 dark:text-zinc-700 mx-auto mb-3" />
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Hozircha xabarlar yo'q</p>
-                <Link href="/listings" className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-sm font-semibold rounded-xl">
+                <Link href="/listings" className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 text-white text-sm font-semibold rounded-xl">
                   <Home className="h-4 w-4" /> E'lonlarni ko'rish
                 </Link>
               </div>
@@ -141,14 +141,14 @@ export default function MessagesClient() {
                       onClick={() => setSelected(c.id)}
                       className={`w-full flex items-center gap-3 p-3 rounded-2xl border text-left transition-all ${
                         selected === c.id
-                          ? "bg-orange-100 dark:bg-orange-500/15 border-orange-300 dark:border-orange-500/40"
-                          : "bg-white/80 dark:bg-zinc-900/80 border-white/70 dark:border-zinc-800 hover:border-orange-300"
+                          ? "bg-green-100 dark:bg-green-500/15 border-green-300 dark:border-green-500/40"
+                          : "bg-white/80 dark:bg-zinc-900/80 border-white/70 dark:border-zinc-800 hover:border-green-300"
                       }`}
                     >
                       {c.listing.images?.[0] ? (
                         <img src={c.listing.images[0]} alt="" className="w-12 h-12 rounded-xl object-cover flex-shrink-0" />
                       ) : (
-                        <div className="w-12 h-12 rounded-xl bg-orange-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0"><Home className="h-5 w-5 text-orange-400" /></div>
+                        <div className="w-12 h-12 rounded-xl bg-green-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0"><Home className="h-5 w-5 text-green-400" /></div>
                       )}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
@@ -194,7 +194,7 @@ export default function MessagesClient() {
                     <div className="text-sm font-bold text-gray-800 dark:text-white truncate">
                       {other(conv).name || `+${other(conv).phone}`}
                     </div>
-                    <Link href={`/listing/${conv.listing.id}`} className="text-xs text-orange-600 dark:text-orange-400 truncate block hover:underline">
+                    <Link href={`/listing/${conv.listing.id}`} className="text-xs text-green-600 dark:text-green-400 truncate block hover:underline">
                       {conv.listing.title} · ${conv.listing.price.toLocaleString("en-US")}
                     </Link>
                   </div>
@@ -206,12 +206,12 @@ export default function MessagesClient() {
                       <div
                         className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm shadow-sm ${
                           m.sender.id === uid
-                            ? "bg-gradient-to-r from-orange-400 to-amber-500 text-white rounded-br-md"
+                            ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-br-md"
                             : "bg-white dark:bg-zinc-800 text-gray-800 dark:text-gray-100 border border-gray-100 dark:border-zinc-700 rounded-bl-md"
                         }`}
                       >
                         <p className="whitespace-pre-line">{m.text}</p>
-                        <div className={`text-[10px] mt-1 ${m.sender.id === uid ? "text-orange-100" : "text-gray-400"}`}>
+                        <div className={`text-[10px] mt-1 ${m.sender.id === uid ? "text-green-100" : "text-gray-400"}`}>
                           {fmt(m.createdAt)}
                         </div>
                       </div>
@@ -227,12 +227,12 @@ export default function MessagesClient() {
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && send()}
                       placeholder="Xabar yozing..."
-                      className="flex-1 h-11 px-4 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-orange-400"
+                      className="flex-1 h-11 px-4 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-green-400"
                     />
                     <button
                       onClick={send}
                       disabled={sending || !text.trim()}
-                      className="w-11 h-11 bg-gradient-to-r from-orange-400 to-amber-500 text-white rounded-xl flex items-center justify-center shadow-lg disabled:opacity-50"
+                      className="w-11 h-11 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-xl flex items-center justify-center shadow-lg disabled:opacity-50"
                       aria-label="Yuborish"
                     >
                       {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}

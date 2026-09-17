@@ -16,7 +16,7 @@ export const metadata = {
 export const dynamic = "force-dynamic"
 
 const statusMap: Record<string, { label: string; cls: string; icon: typeof Clock }> = {
-  PENDING: { label: "Ko'rikda", cls: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400", icon: Clock },
+  PENDING: { label: "Ko'rikda", cls: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400", icon: Clock },
   ACTIVE: { label: "Faol", cls: "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400", icon: CheckCircle },
   SOLD: { label: "Sotilgan", cls: "bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400", icon: CheckCircle },
   EXPIRED: { label: "Muddati tugagan", cls: "bg-gray-100 text-gray-600 dark:bg-zinc-800 dark:text-gray-400", icon: XCircle },
@@ -45,7 +45,7 @@ export default async function MyListingsPage() {
             <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white">Mening e'lonlarim</h1>
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{listings.length} ta e'lon</p>
           </div>
-          <Link href="/add-listing" className="h-10 px-4 bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white text-sm font-bold rounded-xl flex items-center gap-1.5 shadow-lg shadow-orange-400/30 flex-shrink-0">
+          <Link href="/add-listing" className="h-10 px-4 bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white text-sm font-bold rounded-xl flex items-center gap-1.5 shadow-lg shadow-green-400/30 flex-shrink-0">
             <Plus className="h-4 w-4" /> Yangi e'lon
           </Link>
         </div>
@@ -73,8 +73,8 @@ export default async function MyListingsPage() {
                         <img src={l.images[0]} alt={l.title || "E'lon rasmi"} className="w-24 h-24 rounded-xl object-cover" />
                       </Link>
                     ) : (
-                      <div className="w-24 h-24 rounded-xl bg-orange-50 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                        <Home className="h-8 w-8 text-orange-300" />
+                      <div className="w-24 h-24 rounded-xl bg-green-50 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                        <Home className="h-8 w-8 text-green-300" />
                       </div>
                     )}
 
@@ -105,7 +105,7 @@ export default async function MyListingsPage() {
                   <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-zinc-800">
                     <Link
                       href={`/edit-listing/${l.id}`}
-                      className="flex-1 h-10 px-3 bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 hover:bg-orange-100 dark:hover:bg-orange-500/20 transition-colors"
+                      className="flex-1 h-10 px-3 bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 hover:bg-green-100 dark:hover:bg-green-500/20 transition-colors"
                     >
                       <Pencil className="h-4 w-4" /> Tahrirlash
                     </Link>

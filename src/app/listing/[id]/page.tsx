@@ -16,12 +16,6 @@ import ShareListingButton from "@/components/ShareListingButton"
 import BackButton from "@/components/BackButton"
 import FavoriteToggle from "@/components/FavoriteToggle"
 import { DEAL_TYPES } from "@/lib/locations"
-export const metadata = {
-  title: "E'lon | Senest",
-  description: "Ko'chmas mulk e'loni",
-  openGraph: { images: ["/icons/icon-512.svg"] },
-}
-
 export const dynamic = "force-dynamic"
 
 const categoryNames: Record<string, string> = {
@@ -104,10 +98,10 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
         {/* ===== ASOSIY MA'LUMOTLAR (bitta karta) ===== */}
         <div className="mt-3 bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
           <div className="flex flex-wrap gap-2 mb-2.5">
-            <span className="px-3 py-1 bg-orange-100 dark:bg-orange-500/15 text-orange-700 dark:text-orange-400 rounded-full text-[11px] font-bold">
+            <span className="px-3 py-1 bg-green-100 dark:bg-green-500/15 text-green-700 dark:text-green-400 rounded-full text-[11px] font-bold">
               {dealName}
             </span>
-            <span className="px-3 py-1 bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400 rounded-full text-[11px] font-bold">
+            <span className="px-3 py-1 bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 rounded-full text-[11px] font-bold">
               {categoryNames[listing.category] || listing.category}
             </span>
           </div>
@@ -173,7 +167,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
         {/* ===== SOTUVCHI (ixcham) ===== */}
         <div className="mt-3 bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#FF9500] to-[#FF6A00] flex items-center justify-center flex-shrink-0">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#16a34a] to-[#15803d] flex items-center justify-center flex-shrink-0">
               <User className="h-5 w-5 text-white" />
             </div>
             <div className="flex-1 min-w-0">

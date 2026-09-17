@@ -27,7 +27,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="w-9 h-9 rounded-xl bg-white/80 dark:bg-zinc-800 border border-white/70 dark:border-zinc-700 flex items-center justify-center text-gray-600 dark:text-amber-300 shadow-md hover:scale-110 transition-all"
+      className="w-9 h-9 rounded-xl bg-white/80 dark:bg-zinc-800 border border-white/70 dark:border-zinc-700 flex items-center justify-center text-gray-600 dark:text-emerald-300 shadow-md hover:scale-110 transition-all"
       aria-label={dark ? "Kunduzgi rejim" : "Tungi rejim"}
     >
       {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}

@@ -5,11 +5,6 @@ import Link from "next/link"
 import { ArrowLeft, SlidersHorizontal, LocateFixed, Plus, Minus, X, Loader2, MapPin } from "lucide-react"
 import { REGIONS, DEAL_TYPES } from "@/lib/locations"
 import MobileNav from "@/components/MobileNav"
-export const metadata = {
-  title: "Xarita | Senest",
-  description: "Ko'chmas mulk xaritada",
-  openGraph: { images: ["/icons/icon-512.svg"] },
-}
 
 interface MapListing {
   id: string
@@ -133,8 +128,8 @@ export default function MapPage() {
       <div ref={divRef} className="absolute inset-0 z-0" />
 
       {!ready && (
-        <div className="absolute inset-0 z-[400] flex items-center justify-center bg-orange-50 dark:bg-zinc-900">
-          <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+        <div className="absolute inset-0 z-[400] flex items-center justify-center bg-green-50 dark:bg-zinc-900">
+          <Loader2 className="h-8 w-8 animate-spin text-green-500" />
         </div>
       )}
 
@@ -144,7 +139,7 @@ export default function MapPage() {
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <div className="flex-1 h-11 px-4 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200 dark:border-zinc-700 flex items-center gap-2 min-w-0">
-          <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0" />
+          <MapPin className="h-4 w-4 text-green-500 flex-shrink-0" />
           <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 truncate">
             Xaritadagi e'lonlar: {listings.length}
           </span>
@@ -206,7 +201,7 @@ export default function MapPage() {
                 <button onClick={() => { setRegion(""); setDeal("") }} className="flex-1 h-12 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold">
                   Tozalash
                 </button>
-                <button onClick={() => setSheetOpen(false)} className="flex-1 h-12 bg-gradient-to-r from-orange-400 to-amber-500 text-white rounded-xl text-sm font-bold shadow-lg">
+                <button onClick={() => setSheetOpen(false)} className="flex-1 h-12 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-xl text-sm font-bold shadow-lg">
                   Ko'rish ({listings.length})
                 </button>
               </div>

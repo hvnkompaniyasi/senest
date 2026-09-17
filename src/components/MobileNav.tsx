@@ -25,7 +25,7 @@ export default function MobileNav() {
           if (item.center) {
             return (
               <Link key={item.href} href={item.href} aria-label="E'lon qo'shish" className="-mt-6">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center shadow-xl shadow-orange-400/40 border-4 border-white dark:border-zinc-900">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-xl shadow-orange-400/40 border-4 border-white dark:border-zinc-900">
                   <Icon className="h-6 w-6 text-white" />
                 </div>
               </Link>
@@ -36,7 +36,7 @@ export default function MobileNav() {
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors ${
-                active ? "text-orange-600 dark:text-orange-400" : "text-gray-500 dark:text-gray-400"
+                active ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"
               }`}
             >
               <Icon className="h-5 w-5" />

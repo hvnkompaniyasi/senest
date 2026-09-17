@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Senest
 
-## Getting Started
+O'zbekiston ko'chmas mulk platformasi.
 
-First, run the development server:
+## Loyiha haqida
+Senest — ishonchli ko'chmas mulk e'lonlari platformasi. Asosiy funksiyalar: listing, qidiruv, agent aloqasi, admin panel.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
+- Next.js 14.2.18 (App Router, TypeScript strict)
+- Prisma 5.18.0 (PostgreSQL — Railway)
+- Tailwind CSS + shadcn/ui
+- next-auth (JWT auth)
+- Zod (validatsiya)
+- Vitest (3 ta unit test)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy qoidalari
+- Vercel (avtomatik): `main` → production; `feature/*` → preview
+- Database: Railway Postgres (Pooled: `pgbouncer=true&connection_limit=1`)
+- `.env.local`: DATABASE_URL = Railway POOLED string (maskalangan)
+- Build: `npm run build` (SIGABRT oldin mavjud — resurs cheklovi)
+- Migration: `prisma db push` → `scripts/full-migrate.ts` (FALLBACK)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Backup tizimi
+- Har kuni 03:00 (`crontab`): `/opt/data/senest/scripts/backup-db.sh`
+- Backup joyi: `/opt/data/backups/`
+- Retention: 7 kun (`find ... -mtime +7 -delete`)
+- DIRECT URL: Railway `DATABASE_PUBLIC_URL` (pgbouncer=false, sslmode=require)
+- Telegram notification: `TELEGRAM_BOT_TOKEN` (`***` maskalangan)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Monitoring tizimi
+- Har 6 soat (`crontab`): `/opt/data/senest/scripts/monitor-db.sh`
+- Tekshirish: `curl` site + `curl` API + `prisma` DB count
+- Log: `/opt/data/backups/monitor-log.log`
+- Telegram alert (xatolik bo'lsa): `curl` API
 
-## Learn More
+## Docker
+- `Dockerfile`: multi-stage (node:18-alpine)
+- `docker-compose.yml`: `web` (Next.js) + `db` (postgres:15-alpine)
+- Build: `docker-compose up --build`
 
-To learn more about Next.js, take a look at the following resources:
+## Xavfsizlik
+- Input validatsiya: Zod
+- API kalitlar: `.env.local` (commit qilinmagan, `***` maskalangan)
+- Rate limiting: `middleware.ts` (`POST`/`PATCH`/`DELETE` → 60/min, 429 o'zbek)
+- Auth: `next-auth` + JWT
+- SQL injection: faqat Prisma ORM
+- XSS: React automatic escape
+- CSRF: `next-auth` token
+- NEXTAUTH_SECRET: `.env` (majburiy)
+- Secret'lar: `.env.local` + `gitignore`; `git log -S` bo'sh
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Testing
+- Unit testlar: `tests/` (`vitest.config.ts`)
+- Coverage maqsadi: 70%+
+- E2E: Playwright (tavsiya)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Skills
+- `autonomous-ai-agents` (multi-agent protocol: `git pull` avval, bitta yozuvchi, `Plan → Test → Implement → Review → Verify`)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Muallif
+Senest — hvnkompaniyasi / HVN

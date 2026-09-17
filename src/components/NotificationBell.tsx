@@ -91,7 +91,7 @@ export default function NotificationBell() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-zinc-800">
             <span className="font-bold text-sm text-gray-800 dark:text-white">Bildirishnomalar</span>
             {unread > 0 && (
-              <button onClick={readAll} className="text-xs font-semibold text-orange-600 flex items-center gap-1">
+              <button onClick={readAll} className="text-xs font-semibold text-green-600 flex items-center gap-1">
                 <CheckCheck className="h-3.5 w-3.5" /> Hammasini o'qish
               </button>
             )}
@@ -107,12 +107,12 @@ export default function NotificationBell() {
                 <button
                   key={n.id}
                   onClick={() => clickNotif(n)}
-                  className={`w-full text-left px-4 py-3 border-b border-gray-50 dark:border-zinc-800/50 hover:bg-orange-50 dark:hover:bg-zinc-800 transition-colors ${
-                    n.read ? "" : "bg-orange-50/50 dark:bg-orange-500/5"
+                  className={`w-full text-left px-4 py-3 border-b border-gray-50 dark:border-zinc-800/50 hover:bg-green-50 dark:hover:bg-zinc-800 transition-colors ${
+                    n.read ? "" : "bg-green-50/50 dark:bg-green-500/5"
                   }`}
                 >
                   <div className="flex items-start gap-2">
-                    {!n.read && <span className="w-2 h-2 rounded-full bg-orange-500 mt-1.5 flex-shrink-0" />}
+                    {!n.read && <span className="w-2 h-2 rounded-full bg-green-500 mt-1.5 flex-shrink-0" />}
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-semibold text-gray-800 dark:text-white">{n.title}</div>
                       {n.body && <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{n.body}</div>}

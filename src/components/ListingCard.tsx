@@ -102,19 +102,19 @@ export default function ListingCard({
   return (
     <div className="relative bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-zinc-800 shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:shadow-xl hover:-translate-y-0.5 transition-all">
       <Link href={`/listing/${id}`} className="block">
-        <div className="relative aspect-[4/3] bg-gradient-to-br from-orange-100 to-amber-100 dark:from-zinc-800 dark:to-zinc-900">
+        <div className="relative aspect-[4/3] bg-gradient-to-br from-green-100 to-emerald-100 dark:from-zinc-800 dark:to-zinc-900">
           {image ? (
             <Image src={image} alt={title || "E'lon rasmi"} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Home className="h-8 w-8 text-orange-300" />
+              <Home className="h-8 w-8 text-green-300" />
             </div>
           )}
 
           {/* Chap yuqori: badge'lar */}
           <div className="absolute top-2 left-2 flex flex-col items-start gap-1">
             {isPremium && (
-              <span className="px-2 py-0.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-white text-[9px] font-extrabold rounded-full flex items-center gap-1 shadow">
+              <span className="px-2 py-0.5 bg-gradient-to-r from-emerald-400 to-teal-500 text-white text-[9px] font-extrabold rounded-full flex items-center gap-1 shadow">
                 <Crown className="h-2.5 w-2.5" /> VIP
               </span>
             )}
@@ -131,7 +131,7 @@ export default function ListingCard({
           {/* Sotuvchi - pastki chap */}
           {seller && (
             <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 px-2 py-1 bg-black/45 backdrop-blur-sm rounded-full text-[9px] font-semibold text-white max-w-[75%]">
-              <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#FF9500] to-[#FF6A00] flex items-center justify-center text-[7px] font-extrabold flex-shrink-0">
+              <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#16a34a] to-[#15803d] flex items-center justify-center text-[7px] font-extrabold flex-shrink-0">
                 {seller.charAt(0).toUpperCase()}
               </span>
               <span className="truncate">{seller}</span>

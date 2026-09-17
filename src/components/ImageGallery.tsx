@@ -9,8 +9,8 @@ export default function ImageGallery({ images, title }: { images: string[]; titl
 
   if (!hasImages) {
     return (
-      <div className="aspect-video bg-gradient-to-br from-orange-100 to-amber-100 rounded-2xl flex items-center justify-center">
-        <Home className="h-20 w-20 text-orange-300" />
+      <div className="aspect-video bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl flex items-center justify-center">
+        <Home className="h-20 w-20 text-green-300" />
       </div>
     )
   }
@@ -47,7 +47,7 @@ export default function ImageGallery({ images, title }: { images: string[]; titl
               key={i}
               onClick={() => setIndex(i)}
               className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                i === index ? "border-orange-500 shadow-lg" : "border-transparent opacity-70 hover:opacity-100"
+                i === index ? "border-green-500 shadow-lg" : "border-transparent opacity-70 hover:opacity-100"
               }`}
             >
               <img src={img} alt="" className="w-full h-full object-cover" />

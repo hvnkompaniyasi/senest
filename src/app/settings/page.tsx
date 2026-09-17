@@ -7,14 +7,9 @@ import Link from "next/link"
 import { ArrowLeft, KeyRound, Loader2, CheckCircle, ShieldAlert } from "lucide-react"
 import Navbar from "@/components/Navbar"
 import MobileNav from "@/components/MobileNav"
-export const metadata = {
-  title: "Sozlamalar | Senest",
-  description: "Hisob sozlamalari",
-  openGraph: { images: ["/icons/icon-512.svg"] },
-}
 
 const inputCls =
-  "h-12 w-full px-4 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-orange-400"
+  "h-12 w-full px-4 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-green-400"
 
 export default function SettingsPage() {
   const router = useRouter()
@@ -65,24 +60,24 @@ export default function SettingsPage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-orange-50 dark:bg-zinc-950">
-        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+      <div className="min-h-screen flex items-center justify-center bg-green-50 dark:bg-zinc-950">
+        <Loader2 className="h-8 w-8 animate-spin text-green-500" />
       </div>
     )
   }
   if (!session) return null
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 pb-24 lg:pb-10">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 pb-24 lg:pb-10">
       <Navbar />
 
       <div className="max-w-md mx-auto px-4 py-6">
-        <Link href="/profile" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 dark:text-gray-300 mb-4 hover:text-orange-600">
+        <Link href="/profile" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 dark:text-gray-300 mb-4 hover:text-green-600">
           <ArrowLeft className="h-4 w-4" /> Profilga qaytish
         </Link>
 
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-5 flex items-center gap-2">
-          <KeyRound className="h-6 w-6 text-orange-500" /> Sozlamalar
+          <KeyRound className="h-6 w-6 text-green-500" /> Sozlamalar
         </h1>
 
         <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl p-5 shadow-lg">
@@ -127,7 +122,7 @@ export default function SettingsPage() {
             <button
               onClick={submit}
               disabled={busy || !current || !next || !confirm}
-              className="h-12 w-full bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-orange-400/30 disabled:opacity-50"
+              className="h-12 w-full bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-400/30 disabled:opacity-50"
             >
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <KeyRound className="h-4 w-4" />}
               Parolni yangilash

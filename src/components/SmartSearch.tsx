@@ -62,10 +62,10 @@ export default function SmartSearch() {
             onChange={(e) => setQ(e.target.value)}
             onFocus={() => suggestions.length > 0 && setOpen(true)}
             placeholder="Qidirish: sarlavha, manzil, hudud..."
-            className="w-full h-13 pl-12 pr-11 py-3.5 bg-white/90 dark:bg-zinc-900/90 border-2 border-white/70 dark:border-zinc-800 rounded-2xl text-gray-800 dark:text-white placeholder:text-gray-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-400/20 outline-none shadow-lg transition-all text-sm sm:text-base"
+            className="w-full h-13 pl-12 pr-11 py-3.5 bg-white/90 dark:bg-zinc-900/90 border-2 border-white/70 dark:border-zinc-800 rounded-2xl text-gray-800 dark:text-white placeholder:text-gray-400 focus:border-green-400 focus:ring-4 focus:ring-green-400/20 outline-none shadow-lg transition-all text-sm sm:text-base"
           />
           {loading && (
-            <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-orange-500" />
+            <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-green-500" />
           )}
         </div>
       </form>
@@ -80,10 +80,10 @@ export default function SmartSearch() {
                 setQ("")
                 router.push(s.href)
               }}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-orange-50 dark:hover:bg-zinc-800 text-left transition-colors border-b border-gray-50 dark:border-zinc-800/50 last:border-0"
+              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-green-50 dark:hover:bg-zinc-800 text-left transition-colors border-b border-gray-50 dark:border-zinc-800/50 last:border-0"
             >
               {s.type === "region" ? (
-                <MapPin className="h-4 w-4 text-orange-500 flex-shrink-0" />
+                <MapPin className="h-4 w-4 text-green-500 flex-shrink-0" />
               ) : (
                 <Home className="h-4 w-4 text-gray-400 flex-shrink-0" />
               )}

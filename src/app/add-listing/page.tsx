@@ -12,11 +12,6 @@ import Navbar from "@/components/Navbar"
 import MobileNav from "@/components/MobileNav"
 import LocationPicker from "@/components/LocationPicker"
 import { REGIONS } from "@/lib/locations"
-export const metadata = {
-  title: "E'lon qo'shish | Senest",
-  description: "Yangi ko'chmas mulk e'lonini qo'shing",
-  openGraph: { images: ["/icons/icon-512.svg"] },
-}
 
 const DRAFT_KEY = "senest-draft-listing"
 
@@ -297,7 +292,7 @@ export default function AddListingPage() {
                 onClick={() => set("category", c.id)}
                 className={`px-3.5 py-2 rounded-full text-xs font-bold border transition-colors ${
                   form.category === c.id
-                    ? "bg-[#FF9500] border-[#FF9500] text-white shadow-md shadow-orange-400/30"
+                    ? "bg-[#FF9500] border-[#FF9500] text-white shadow-md shadow-green-400/30"
                     : "bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-gray-300"
                 }`}
               >
@@ -334,7 +329,7 @@ export default function AddListingPage() {
             onClick={() => fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors ${
               dragOver
-                ? "border-[#FF9500] bg-orange-50 dark:bg-orange-500/10"
+                ? "border-[#FF9500] bg-green-50 dark:bg-green-500/10"
                 : "border-gray-200 dark:border-zinc-700 hover:border-[#FF9500]/60"
             }`}
           >
@@ -456,7 +451,7 @@ export default function AddListingPage() {
         <button
           onClick={submit}
           disabled={saving || isUploading}
-          className="h-13 h-14 w-full bg-gradient-to-r from-[#FF9500] to-[#FF7A00] hover:from-[#FF8A00] hover:to-[#FF6A00] text-white rounded-2xl font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-orange-400/30 disabled:opacity-50"
+          className="h-13 h-14 w-full bg-gradient-to-r from-[#FF9500] to-[#FF7A00] hover:from-[#FF8A00] hover:to-[#FF6A00] text-white rounded-2xl font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-green-400/30 disabled:opacity-50"
         >
           {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Home className="h-5 w-5" />}
           E'lonni joylash

@@ -2,11 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { CheckCircle, XCircle, Loader2, FileEdit, ArrowRight } from "lucide-react"
-export const metadata = {
-  title: "Tahrirlar | Senest",
-  description: "Admin tahrirlar",
-  openGraph: { images: ["/icons/icon-512.svg"] },
-}
 
 interface EditUser {
   name: string | null
@@ -93,7 +88,7 @@ export default function AdminEditsPage() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <Loader2 className="h-7 w-7 animate-spin text-orange-500" />
+          <Loader2 className="h-7 w-7 animate-spin text-green-500" />
         </div>
       ) : edits.length === 0 ? (
         <div className="text-center py-20 bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800">

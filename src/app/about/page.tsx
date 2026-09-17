@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function StaticPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <Card className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-xl rounded-xl sm:rounded-2xl p-6 sm:p-10">

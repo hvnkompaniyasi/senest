@@ -5,13 +5,13 @@ const features = [
     icon: Zap,
     title: "Tezkor qidiruv",
     description: "Bir necha soniyada o'zingizga mos uy-joy toping",
-    color: "from-orange-400 to-amber-500",
+    color: "from-green-400 to-emerald-500",
   },
   {
     icon: Shield,
     title: "To'g'ridan-to'g'ri bitim",
     description: "To'lov va kelishuvlar tomonlar o'rtasida bevosita amalga oshiriladi",
-    color: "from-amber-400 to-yellow-500",
+    color: "from-emerald-400 to-teal-500",
   },
   {
     icon: BadgeCheck,

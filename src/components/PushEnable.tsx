@@ -77,7 +77,7 @@ export default function PushEnable() {
       className={`w-full flex items-center gap-2 px-4 py-3 text-left text-sm font-semibold transition-colors border-b border-gray-100 dark:border-zinc-800 ${
         enabled
           ? "text-green-600 dark:text-green-400 bg-green-50/50 dark:bg-green-500/5"
-          : "text-orange-600 dark:text-orange-400 bg-orange-50/50 dark:bg-orange-500/5"
+          : "text-green-600 dark:text-green-400 bg-green-50/50 dark:bg-green-500/5"
       }`}
     >
       {busy ? (

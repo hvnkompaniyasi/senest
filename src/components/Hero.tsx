@@ -32,7 +32,7 @@ export default function Hero() {
 
       <h1 className="text-[26px] sm:text-4xl leading-tight font-extrabold text-gray-900 dark:text-white">
         Uy-joyingizni{" "}
-        <span className="bg-gradient-to-r from-[#FF9500] to-[#FF6A00] bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-[#16a34a] to-[#15803d] bg-clip-text text-transparent">
           osongina
         </span>{" "}
         toping
@@ -42,7 +42,7 @@ export default function Hero() {
       </p>
 
       {/* Qidiruv kartasi */}
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-2.5 shadow-[0_8px_30px_rgba(255,149,0,0.10)] border border-orange-100/70 dark:border-zinc-800">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-2.5 shadow-[0_8px_30px_rgba(255,149,0,0.10)] border border-green-100/70 dark:border-zinc-800">
         <div className="flex bg-gray-100 dark:bg-zinc-800 rounded-xl p-1 mb-2.5">
           {DEALS.map((d) => (
             <button
@@ -70,7 +70,7 @@ export default function Hero() {
           />
           <button
             onClick={submit}
-            className="absolute right-1.5 top-1.5 h-9 px-4 bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white rounded-lg text-sm font-bold shadow-md shadow-orange-400/30 active:scale-95 transition-transform"
+            className="absolute right-1.5 top-1.5 h-9 px-4 bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white rounded-lg text-sm font-bold shadow-md shadow-green-400/30 active:scale-95 transition-transform"
           >
             Qidirish
           </button>
@@ -87,7 +87,7 @@ export default function Hero() {
         </Link>
         <Link
           href="/add-listing"
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30 rounded-full text-xs font-semibold text-orange-600 dark:text-orange-400"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 rounded-full text-xs font-semibold text-green-600 dark:text-green-400"
         >
           <Plus className="h-3.5 w-3.5" /> E'lon qo'shish — bepul
         </Link>

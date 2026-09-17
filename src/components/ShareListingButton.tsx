@@ -52,7 +52,7 @@ export default function ShareListingButton({ title }: { title: string }) {
     { name: "Telegram", icon: Send, href: `https://t.me/share/url?url=${encUrl}&text=${encTitle}`, color: "bg-sky-50 dark:bg-sky-500/10 text-sky-600 dark:text-sky-400" },
     { name: "WhatsApp", icon: MessageCircle, href: `https://wa.me/?text=${encTitle}%20${encUrl}`, color: "bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400" },
     { name: "Facebook", icon: FacebookIcon, href: `https://www.facebook.com/sharer/sharer.php?u=${encUrl}`, color: "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400" },
-    { name: "Email", icon: Mail, href: `mailto:?subject=${encTitle}&body=${encUrl}`, color: "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+    { name: "Email", icon: Mail, href: `mailto:?subject=${encTitle}&body=${encUrl}`, color: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
     { name: "SMS", icon: Smartphone, href: `sms:?body=${encTitle}%20${encUrl}`, color: "bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400" },
   ]
 

@@ -2,18 +2,13 @@
 
 import Link from "next/link"
 import { WifiOff, Home, RefreshCw } from "lucide-react"
-export const metadata = {
-  title: "Offline | Senest",
-  description: "Internet ulanishi yo'q",
-  openGraph: { images: ["/icons/icon-512.svg"] },
-}
 
 export default function OfflinePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
-        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-orange-100 dark:bg-orange-500/10 flex items-center justify-center">
-          <WifiOff className="h-10 w-10 text-orange-500" />
+        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-500/10 flex items-center justify-center">
+          <WifiOff className="h-10 w-10 text-green-500" />
         </div>
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
           Internet aloqasi yo'q
@@ -24,7 +19,7 @@ export default function OfflinePage() {
         <div className="flex gap-3 justify-center">
           <button
             onClick={() => window.location.reload()}
-            className="px-5 py-2.5 bg-gradient-to-r from-orange-400 to-amber-500 text-white font-semibold rounded-xl flex items-center gap-2"
+            className="px-5 py-2.5 bg-gradient-to-r from-green-400 to-emerald-500 text-white font-semibold rounded-xl flex items-center gap-2"
           >
             <RefreshCw className="h-4 w-4" /> Qayta urinish
           </button>

@@ -47,8 +47,8 @@ export default function InstallPWA() {
 
   return (
     <div className="fixed bottom-20 lg:bottom-6 left-3 right-3 sm:left-auto sm:right-4 sm:w-96 z-40 animate-fade-in-up">
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-orange-200 dark:border-orange-500/30 p-4 flex items-start gap-3">
-        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center flex-shrink-0">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-green-200 dark:border-green-500/30 p-4 flex items-start gap-3">
+        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center flex-shrink-0">
           <svg viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="currentColor">
             <path d="M12 3 L4 10 L6 10 L6 21 L10 21 L10 16 L14 16 L14 21 L18 21 L18 10 L20 10 Z"/>
           </svg>
@@ -65,7 +65,7 @@ export default function InstallPWA() {
       </div>
       <button
         onClick={install}
-        className="mt-2 w-full py-3 bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-bold rounded-xl shadow-lg shadow-orange-400/30 flex items-center justify-center gap-2 text-sm"
+        className="mt-2 w-full py-3 bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-green-400/30 flex items-center justify-center gap-2 text-sm"
       >
         <Download className="h-4 w-4" /> Qurilmaga o'rnatish
       </button>

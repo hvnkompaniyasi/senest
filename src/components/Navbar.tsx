@@ -6,20 +6,21 @@ import { Home, Heart, LogOut } from "lucide-react"
 import ThemeToggle from "@/components/ThemeToggle"
 import ChatNavLink from "@/components/ChatNavLink"
 
-const linkCls = "px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-zinc-800 rounded-lg transition-all"
+const linkCls = "px-3 xl:px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-zinc-800 rounded-lg transition-all"
 
 export default function Navbar() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+  const isLoading = status === "loading"
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-zinc-950/85 backdrop-blur-xl border-b border-white/60 dark:border-zinc-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-400/30">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg shadow-green-400/30">
               <Home className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
               Senest
             </span>
           </Link>
@@ -36,7 +37,11 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <ChatNavLink />
-            {session ? (
+            {isLoading ? (
+              <div className="px-4 py-2 bg-gray-200 dark:bg-zinc-700 rounded-xl animate-pulse" aria-hidden="true">
+                <span className="text-sm font-semibold text-gray-400 dark:text-gray-500">Kirish</span>
+              </div>
+            ) : session ? (
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
@@ -49,7 +54,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="px-4 py-2 bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white text-sm font-semibold rounded-xl shadow-lg shadow-orange-400/30 transition-all"
+                className="px-4 py-2 bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-lg shadow-green-400/30 transition-all"
               >
                 Kirish
               </Link>

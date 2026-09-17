@@ -26,7 +26,7 @@ export default async function FeaturedListings() {
       {premium.length > 0 && (
         <section className="pb-6">
           <div className="flex items-center gap-2 mb-3">
-            <Crown className="h-4 w-4 text-amber-500" />
+            <Crown className="h-4 w-4 text-emerald-500" />
             <h2 className="text-base font-bold text-gray-900 dark:text-white">VIP e'lonlar</h2>
           </div>
           <div className="flex gap-3 overflow-x-auto no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0 snap-x pb-1">

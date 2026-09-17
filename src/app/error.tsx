@@ -10,7 +10,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   }, [error])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-950 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border border-white/70 dark:border-zinc-800 rounded-2xl p-8 shadow-2xl text-center">
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-500/10 flex items-center justify-center">
           <AlertTriangle className="h-8 w-8 text-red-500" />
@@ -20,7 +20,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
           Xato haqida xabar berdik. Iltimos, qayta urinib ko'ring.
         </p>
         <div className="flex gap-3 justify-center">
-          <button onClick={reset} className="px-5 py-2.5 bg-gradient-to-r from-orange-400 to-amber-500 text-white font-semibold rounded-xl flex items-center gap-2">
+          <button onClick={reset} className="px-5 py-2.5 bg-gradient-to-r from-green-400 to-emerald-500 text-white font-semibold rounded-xl flex items-center gap-2">
             <RefreshCw className="h-4 w-4" /> Qayta urinish
           </button>
           <Link href="/" className="px-5 py-2.5 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-200 font-semibold rounded-xl flex items-center gap-2">

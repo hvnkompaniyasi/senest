@@ -1,68 +1,50 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# Senest & Senest-Admin — Agent Instructions
 
-# This is NOT the Next.js you know
+## LOYIHA HAQIDA
+Senest — O'zbekiston ko'chmas mulk platformasi.
+- senest (asosiy): foydalanuvchi platformasi
+- senest-admin: moderator panel
+- Target: 10K e'lon, 50K user, 500K tashrif (6 oy)
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+## TECH STACK
+- Next.js 14.2.18 (App Router)
+- TypeScript 5 (strict, any taqiqlangan)
+- Prisma 5.18 + Railway PostgreSQL
+- Tailwind 3.4 + shadcn/ui
+- next-auth v4 (JWT)
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## KOD STANDARTLARI
+- camelCase (variables), PascalCase (components), kebab-case (files)
+- Komponent ≤ 150 qator
+- Funksiya ≤ 50 qator
+- Izohlar ingliz, UI o'zbek
+- any taqiqlangan
 
-<!-- END:nextjs-agent-rules -->
+## ARXITEKTURA
+- ISR: / = 60s, /listings = static, /listing/[id] = dynamic
+- Polling: NotificationBell 60s, MessagesClient 40s
+- Cache: system font (next/font yo'q)
+- Images: Uploadthing (next/image ga o'tish T4)
 
-# Senest — To'liq Arxitektura Qo'llanmasi
+## XAVFSIZLIK
+- Zod validation — barcha API
+- next-auth JWT — session
+- Prisma ORM — SQL injection yo'q
+- Rate limiting (T1)
 
-## 1. Loyiha haqida
-Nomi: Senest. Maqsadi: O'zbekiston ko'chmas mulk bozori platformasi. Asosiy funksiyalar: listing, qidiruv, agent aloqasi. Tech stack: Next.js, TypeScript, Prisma, Tailwind, shadcn/ui. Target: O'zbekiston foydalanuvchilari.
+## TEGMASLIK KERAK
+- prisma/schema.prisma (lead tasdiqisiz)
+- vercel.json (crons)
+- next-auth config
+- middleware auth logic
 
-## 2. Kod standartlari
-TypeScript strict, any taqiqlanadi, explicit types. Naming: camelCase (var), PascalCase (component), kebab-case (fayl). Feature-based tuzilma. Komponent ≤150 qator. Funksiya ≤50 qator, single responsibility. Import tartibi: external → internal → relative → types.
+## GIT
+- Branch: main, dev, feature/*
+- Commit: Conventional Commits
+- PR: dev → main
 
-## 3. Xavfsizlik qoidalari (MAJBURIY)
-Barcha input zod bilan validatsiya. API kalitlar faqat .env. dangerouslySetInnerHTML taqiqlangan (XSS). SQL injection: faqat Prisma ORM. Auth: next-auth, JWT. Authorization: har API route tekshiruv. Rate limiting: middleware. CSRF: next-auth token. XSS: React escape. NEXTAUTH_SECRET majburiy.
-
-## 4. Performance qoidalari
-next/image har rasm uchun. Dynamic imports (React.lazy) katta komponentlar uchun. useMemo/useCallback og'ir hisob-kitoblar. Caching: ISR/SWR. Bundle ≤300 KB. Lighthouse 90+.
-
-## 5. SEO va Accessibility
-Har sahifa: meta title, description, og:image. Semantic HTML. Alt text har rasm. ARIA labels interaktiv elementlarga. Heading h1→h2→h3 tartib. Sitemap.xml va robots.txt.
-
-## 6. Error handling
-try/catch har async funksiyada. Error boundaries har sahifa. Loading: skeleton/spinner. User xabarlari o'zbek tilida. Logging: console.error / Sentry.
-
-## 7. Testing qoidalari
-Unit testlar: utility funksiyalar. Integration: API route'lar. E2E: Playwright, asosiy flow. Coverage 70%+. TDD: avval test, keyin implement.
-
-## 8. Git workflow
-Branch: main (prod), dev (dev), feature/*. Commit: Conventional Commits. PR: dev'ga. Code review majburiy (1 tasdiq). Merge: squash.
-
-## 9. Deploy qoidalari
-Vercel: avtomatik (main→prod, feature→preview). Env: Vercel Dashboard. DB migrations: Prisma migrate deploy. Rollback: Vercel bir klik. Monitoring: Vercel Analytics + Sentry.
-
-## 10. Loyiha strukturasi
-senest/
-├── app/
-├── components/
-├── lib/
-├── prisma/
-├── public/
-├── tests/
-└── AGENTS.md
-
-## 11. Til qoidalari
-UI: o'zbek. Kod izohlari: ingliz. Commit: ingliz. Hujjat: o'zbek + ingliz.
-
-## 12. ECC qoidalari integratsiyasi
-Plan → Test → Implement → Review → Verify → Remember. Har feature avval plan. TDD. Har deploydan keyin verification loop. Xotira: muhim qarorlar saqlanadi.
-
-
-## Deviations
-- Analytics o'chirilgan (web-vitals bug)
-- next/font yo'q (system font stack)
-- Solo git flow (PR review yo'q)
-- Polling 60s/40s (compute tejash)
-
-## Multi-agent protocol
-- Har agent git pull avval bajaradi
-- Bir vaqtda bitta yozuvchi
-- Lead = arxitektura qarorlari
-
-MUHIM: Bu fayl har AI agent tomonidan o'qiladi va qoidalarga amal qilinadi. Yangilanishlar PR orqali.
+## HISOBOT
+- Nima o'zgardi
+- Qaysi fayllar
+- Build holati
+- Commit hash

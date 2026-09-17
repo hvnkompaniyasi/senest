@@ -45,8 +45,8 @@ export default function ListingGallery({ images, title }: ListingGalleryProps) {
 
   if (count === 0) {
     return (
-      <div className="w-full h-64 sm:h-[420px] rounded-2xl bg-gradient-to-br from-orange-100 to-amber-100 dark:from-zinc-800 dark:to-zinc-900 flex items-center justify-center">
-        <Home className="h-14 w-14 text-orange-300 dark:text-zinc-600" />
+      <div className="w-full h-64 sm:h-[420px] rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 dark:from-zinc-800 dark:to-zinc-900 flex items-center justify-center">
+        <Home className="h-14 w-14 text-green-300 dark:text-zinc-600" />
       </div>
     )
   }

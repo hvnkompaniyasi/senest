@@ -9,11 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
 import { Home, Phone, Lock } from 'lucide-react'
-export const metadata = {
-  title: "Kirish | Senest",
-  description: "Senest platformasiga kirish",
-  openGraph: { images: ["/icons/icon-512.svg"] },
-}
 
 export default function LoginPage() {
   const router = useRouter()
@@ -51,7 +46,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 p-4 relative overflow-hidden font-sans">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 p-4 relative overflow-hidden font-sans">
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-gradient-to-br from-orange-300/40 to-amber-400/40 rounded-full blur-3xl animate-pulse" />
         <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-amber-300/40 to-orange-400/40 rounded-full blur-3xl animate-pulse" />
@@ -63,7 +58,7 @@ export default function LoginPage() {
         
         <div className="relative p-6 md:p-8">
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-16 h-16 mb-3 rounded-full bg-gradient-to-br from-orange-400 via-amber-400 to-orange-500 shadow-[0_8px_24px_rgba(245,158,11,0.4)] transform hover:scale-110 transition-transform duration-300">
+            <div className="inline-flex items-center justify-center w-16 h-16 mb-3 rounded-full bg-gradient-to-br from-orange-400 via-emerald-400 to-orange-500 shadow-[0_8px_24px_rgba(245,158,11,0.4)] transform hover:scale-110 transition-transform duration-300">
               <Home className="h-8 w-8 text-white drop-shadow-lg" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent drop-shadow-sm">
@@ -82,8 +77,8 @@ export default function LoginPage() {
             <div className="space-y-1.5">
               <Label htmlFor="phone" className="text-gray-800 font-semibold text-sm ml-1">Telefon raqam</Label>
               <div className="relative group">
-                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-orange-500 transition-colors z-10" />
-                <span className="absolute left-12 top-1/2 -translate-y-1/2 text-orange-600 font-semibold select-none pointer-events-none z-20 text-base">
+                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-green-500 transition-colors z-10" />
+                <span className="absolute left-12 top-1/2 -translate-y-1/2 text-green-600 font-semibold select-none pointer-events-none z-20 text-base">
                   +998{' '}
                 </span>
                 <Input
@@ -98,7 +93,7 @@ export default function LoginPage() {
                     }
                   }}
                   required
-                  className="pl-[96px] h-12 bg-white/90 backdrop-blur-xl border-2 border-white/70 rounded-xl text-gray-900 placeholder:text-gray-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-400/20 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all duration-300 font-semibold text-base"
+                  className="pl-[96px] h-12 bg-white/90 backdrop-blur-xl border-2 border-white/70 rounded-xl text-gray-900 placeholder:text-gray-400 focus:border-green-400 focus:ring-4 focus:ring-green-400/20 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all duration-300 font-semibold text-base"
                 />
               </div>
             </div>
@@ -106,7 +101,7 @@ export default function LoginPage() {
             <div className="space-y-1.5">
               <Label htmlFor="password" className="text-gray-800 font-semibold text-sm ml-1">Parol</Label>
               <div className="relative group">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-orange-500 transition-colors z-10" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-green-500 transition-colors z-10" />
                 <Input
                   id="password"
                   type="password"
@@ -114,7 +109,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="pl-11 h-12 bg-white/90 backdrop-blur-xl border-2 border-white/70 rounded-xl text-gray-900 placeholder:text-gray-400 focus:border-orange-400 focus:ring-4 focus:ring-orange-400/20 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all duration-300 font-medium"
+                  className="pl-11 h-12 bg-white/90 backdrop-blur-xl border-2 border-white/70 rounded-xl text-gray-900 placeholder:text-gray-400 focus:border-green-400 focus:ring-4 focus:ring-green-400/20 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all duration-300 font-medium"
                 />
               </div>
             </div>
@@ -122,7 +117,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 mt-4 bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 hover:from-orange-500 hover:via-amber-500 hover:to-orange-600 text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(245,158,11,0.4)] hover:shadow-[0_12px_32px_rgba(245,158,11,0.5)] transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+              className="w-full h-12 mt-4 bg-gradient-to-r from-orange-400 via-emerald-400 to-orange-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(245,158,11,0.4)] hover:shadow-[0_12px_32px_rgba(245,158,11,0.5)] transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
             >
               {loading ? "Kirilmoqda..." : "Kirish"}
             </Button>
@@ -130,7 +125,7 @@ export default function LoginPage() {
             <div className="text-center mt-3">
               <p className="text-gray-700 text-sm">
                 Akkaunt yo'qmi?{" "}
-                <Link href="/register" className="text-orange-600 hover:text-orange-700 font-bold underline decoration-orange-400/50 decoration-2 underline-offset-4 transition-colors">
+                <Link href="/register" className="text-green-600 hover:text-green-700 font-bold underline decoration-orange-400/50 decoration-2 underline-offset-4 transition-colors">
                   Ro'yxatdan o'tish
                 </Link>
               </p>

@@ -11,10 +11,10 @@ const LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-white/80 dark:bg-zinc-900/80 border-t border-orange-100/60 dark:border-zinc-800">
+    <footer className="bg-white/80 dark:bg-zinc-900/80 border-t border-green-100/60 dark:border-zinc-800">
       <div className="max-w-6xl mx-auto px-6 py-10 pb-28 lg:pb-12 text-center">
         <div className="flex items-center justify-center gap-2.5 mb-2">
-          <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#FF9500] to-[#FF6A00] flex items-center justify-center shadow-md shadow-orange-400/30">
+          <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#16a34a] to-[#15803d] flex items-center justify-center shadow-md shadow-green-400/30">
             <Home className="h-4.5 w-4.5 h-5 w-5 text-white" />
           </span>
           <span className="text-lg font-extrabold text-gray-900 dark:text-white">Senest</span>
