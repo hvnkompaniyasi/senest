@@ -45,7 +45,7 @@ export default function MapPicker({ value, onChange, center }: MapPickerProps) {
     if (!L || !map) return
     const pinIcon = L.divIcon({
       className: "",
-      html: '<div style="width:26px;height:26px;background:linear-gradient(135deg,#fb923c,#f59e0b);border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 4px 12px rgba(0,0,0,.35)"></div>',
+      html: '<div style="width:26px;height:26px;background:linear-gradient(135deg,#fb923c,#0a7c4e);border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 4px 12px rgba(0,0,0,.35)"></div>',
       iconSize: [26, 26],
       iconAnchor: [13, 26],
     })

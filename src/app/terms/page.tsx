@@ -12,7 +12,7 @@ export default function StaticPage() {
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <Card className="bg-white/80 backdrop-blur-xl border border-white/70 shadow-xl rounded-xl sm:rounded-2xl p-6 sm:p-10">
-          <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 via-amber-600 to-emerald-600 bg-clip-text text-transparent mb-6">
+          <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 via-emerald-600 to-emerald-600 bg-clip-text text-transparent mb-6">
             Foydalanish shartlari
           </h1>
           <div className="prose prose-sm sm:prose-base max-w-none text-gray-700 space-y-4">

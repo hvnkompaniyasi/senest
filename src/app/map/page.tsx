@@ -79,7 +79,7 @@ export default function MapPage() {
       const [lat, lng] = coordsOf(l)
       const icon = L.divIcon({
         className: "",
-        html: `<div style="background:linear-gradient(135deg,#fb923c,#f59e0b);color:#fff;padding:5px 12px;border-radius:9999px;font-size:12px;font-weight:700;box-shadow:0 4px 14px rgba(249,115,22,.45);border:2px solid #fff;white-space:nowrap;transform:translate(-50%,-50%)">$${Math.round(l.price / 1000)}k</div>`,
+        html: `<div style="background:linear-gradient(135deg,#fb923c,#0a7c4e);color:#fff;padding:5px 12px;border-radius:9999px;font-size:12px;font-weight:700;box-shadow:0 4px 14px rgba(249,115,22,.45);border:2px solid #fff;white-space:nowrap;transform:translate(-50%,-50%)">$${Math.round(l.price / 1000)}k</div>`,
         iconSize: [0, 0],
       })
       const marker = L.marker([lat, lng], { icon }).addTo(group)
@@ -89,7 +89,7 @@ export default function MapPage() {
           <div style="font-weight:700;font-size:13px;margin-bottom:2px">${(l.title || "Sarlavhasiz").slice(0, 45)}</div>
           <div style="color:#ea580c;font-weight:800;font-size:15px">$${l.price.toLocaleString("en-US")}</div>
           <div style="color:#6b7280;font-size:11px;margin:5px 0 8px">${l.region}${l.district ? ", " + l.district : ""}</div>
-          <a href="/listing/${l.id}" style="display:block;text-align:center;background:linear-gradient(135deg,#fb923c,#f59e0b);color:#fff;padding:8px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none">Ko'rish</a>
+          <a href="/listing/${l.id}" style="display:block;text-align:center;background:linear-gradient(135deg,#fb923c,#0a7c4e);color:#fff;padding:8px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none">Ko'rish</a>
         </div>`
       )
     })
