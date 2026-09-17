@@ -3,7 +3,7 @@ import Footer from "@/components/Footer"
 import { Card } from "@/components/ui/card"
 
 export const metadata = {
-  title: "Foydalanish shartlari - Senest",
+  title: "Foydalanish shartlari - Olsot Market",
 }
 
 export default function StaticPage() {
@@ -16,7 +16,7 @@ export default function StaticPage() {
             Foydalanish shartlari
           </h1>
           <div className="prose prose-sm sm:prose-base max-w-none text-gray-700 space-y-4">
-            <p>Senest platformasidan foydalanish orqali siz quyidagi shartlarga rozilik bildirasiz:</p>
+            <p>Olsot Market platformasidan foydalanish orqali siz quyidagi shartlarga rozilik bildirasiz:</p>
 <p><strong>1. E'lon joylashtirish:</strong> E'lonlar faqat haqiqiy ma'lumotlarni o'z ichiga olishi kerak. Yolg'on yoki aldamchi e'lonlar o'chiriladi.</p>
 <p><strong>2. Mas'uliyat:</strong> Platforma foydalanuvchilar o'rtasidagi bitimlar uchun javob bermaydi, lekin mojaroli holatlarda yordam beradi.</p>
 <p><strong>3. Moderatsiya:</strong> Barcha e'lonlar moderatsiyadan o'tadi. Qoidabuzarlik aniqlansa, e'lon o'chiriladi va akkaunt bloklanishi mumkin.</p>

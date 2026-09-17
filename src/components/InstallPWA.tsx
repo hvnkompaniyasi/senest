@@ -54,7 +54,7 @@ export default function InstallPWA() {
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <div className="font-bold text-sm text-gray-800 dark:text-white">Senest ilovasini o'rnating</div>
+          <div className="font-bold text-sm text-gray-800 dark:text-white">Olsot Market ilovasini o'rnating</div>
           <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
             Home screen'ga qo'shing — tezkor kirish
           </div>

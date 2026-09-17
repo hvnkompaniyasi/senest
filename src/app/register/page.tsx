@@ -92,7 +92,7 @@ export default function RegisterPage() {
               <Home className="h-8 w-8 text-white drop-shadow-lg" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 via-emerald-600 to-emerald-600 bg-clip-text text-transparent drop-shadow-sm">
-              Senest
+              Olsot Market
             </h1>
             <p className="text-gray-700 mt-1 text-base font-medium">Yangi akkaunt yarating</p>
           </div>

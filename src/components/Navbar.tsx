@@ -21,7 +21,7 @@ export default function Navbar() {
               <Home className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              Senest
+              Olsot Market
             </span>
           </Link>
 

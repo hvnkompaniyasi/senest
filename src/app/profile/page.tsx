@@ -16,7 +16,7 @@ import ProfileEditSheet from "@/components/ProfileEditSheet"
 export const dynamic = "force-dynamic"
 
 export const metadata = {
-  title: "Profil | Senest",
+  title: "Profil | Olsot Market",
 }
 
 const MENU = [

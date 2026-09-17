@@ -17,7 +17,7 @@ export default function Footer() {
           <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#16a34a] to-[#15803d] flex items-center justify-center shadow-md shadow-green-400/30">
             <Home className="h-4.5 w-4.5 h-5 w-5 text-white" />
           </span>
-          <span className="text-lg font-extrabold text-gray-900 dark:text-white">Senest</span>
+          <span className="text-lg font-extrabold text-gray-900 dark:text-white">Olsot Market</span>
         </div>
         <p className="text-xs text-gray-500 dark:text-gray-400 mb-6">
           O'zbekistondagi ishonchli ko'chmas mulk platformasi
@@ -49,7 +49,7 @@ export default function Footer() {
 
         <div className="w-16 h-px bg-gray-200 dark:bg-zinc-800 mx-auto mb-4" />
         <p className="text-[11px] text-gray-400 dark:text-gray-600">
-          © 2026 Senest. Barcha huquqlar himoyalangan.
+          © 2026 Olsot Market. Barcha huquqlar himoyalangan.
         </p>
       </div>
     </footer>

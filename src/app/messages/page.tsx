@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 import MessagesClient from "@/components/MessagesClient"
 export const metadata = {
-  title: "Xabarlar | Senest",
+  title: "Xabarlar | Olsot Market",
   description: "Xabar almashish",
   openGraph: { images: ["/icons/icon-512.svg"] },
 }

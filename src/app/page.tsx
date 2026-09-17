@@ -9,7 +9,7 @@ import MobileNav from "@/components/MobileNav"
 export const dynamic = "force-dynamic"
 
 export const metadata = {
-  title: "Senest — O'zbekistondagi ishonchli ko'chmas mulk platformasi",
+  title: "Olsot Market — O'zbekistondagi ishonchli ko'chmas mulk platformasi",
   description:
     "Kvartira, uy, ofis va yer e'lonlari — sotib olish, ijaraga. Xaritada qidiring, to'g'ridan-to'g'ri sotuvchi bilan bog'laning.",
 }

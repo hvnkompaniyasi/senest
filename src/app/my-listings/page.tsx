@@ -8,7 +8,7 @@ import MobileNav from "@/components/MobileNav"
 import DeleteListingButton from "@/components/DeleteListingButton"
 import { Pencil, Home, Clock, CheckCircle, XCircle, Plus } from "lucide-react"
 export const metadata = {
-  title: "Mening e'lonlarim | Senest",
+  title: "Mening e'lonlarim | Olsot Market",
   description: "Sizning e'lonlaringiz",
   openGraph: { images: ["/icons/icon-512.svg"] },
 }

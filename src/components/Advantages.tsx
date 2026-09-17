@@ -10,7 +10,7 @@ const ITEMS = [
 export default function Advantages() {
   return (
     <section className="pb-8">
-      <h2 className="text-base font-bold text-gray-900 dark:text-white mb-3">Nega Senest?</h2>
+      <h2 className="text-base font-bold text-gray-900 dark:text-white mb-3">Nega Olsot Market?</h2>
       <div className="grid grid-cols-2 gap-2.5">
         {ITEMS.map((item) => {
           const Icon = item.icon

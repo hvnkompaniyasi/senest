@@ -8,7 +8,7 @@ import Footer from "@/components/Footer"
 import MobileNav from "@/components/MobileNav"
 
 export const metadata = {
-  title: "Barcha e'lonlar | Senest",
+  title: "Barcha e'lonlar | Olsot Market",
   description: "O'zbekiston bo'ylab barcha faol uy-joy e'lonlari — qidiring, filtrlang, xaritada ko'ring",
 }
 

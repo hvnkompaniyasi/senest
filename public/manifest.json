@@ -1,6 +1,6 @@
 {
-  "name": "Senest — Uy-joy e'lonlari",
-  "short_name": "Senest",
+  "name": "Olsot Market",
+  "short_name": "Olsot",
   "description": "O'zbekiston bo'ylab ishonchli uy-joy e'lonlari — sotib olish, ijaraga, xaritada qidirish",
   "start_url": "/",
   "scope": "/",
@@ -28,6 +28,9 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["real estate", "lifestyle"],
+  "categories": [
+    "real estate",
+    "lifestyle"
+  ],
   "lang": "uz"
 }

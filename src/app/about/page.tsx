@@ -3,7 +3,7 @@ import Footer from "@/components/Footer"
 import { Card } from "@/components/ui/card"
 
 export const metadata = {
-  title: "Biz haqimizda - Senest",
+  title: "Biz haqimizda - Olsot Market",
 }
 
 export default function StaticPage() {
@@ -16,7 +16,7 @@ export default function StaticPage() {
             Biz haqimizda
           </h1>
           <div className="prose prose-sm sm:prose-base max-w-none text-gray-700 space-y-4">
-            <p>Senest - O'zbekistonning eng zamonaviy ko'chmas mulk platformasi. Biz 2026-yilda tashkil etilgan bo'lib, maqsadimiz odamlarga uy-joy topish va sotishda yordam berishdir.</p>
+            <p>Olsot Market - O'zbekistonning eng zamonaviy ko'chmas mulk platformasi. Biz 2026-yilda tashkil etilgan bo'lib, maqsadimiz odamlarga uy-joy topish va sotishda yordam berishdir.</p>
 <p>Bizning platformamiz orqali minglab odamlar o'z orzularidagi uy-joyni topdilar. Biz har bir e'lonni moderatsiyadan o'tkazamiz va foydalanuvchilarimiz xavfsizligini ta'minlaymiz.</p>
 <p><strong>Bizning qadriyatlarimiz:</strong></p>
 <ul>

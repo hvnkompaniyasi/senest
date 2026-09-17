@@ -11,7 +11,7 @@ import AuthProvider from "@/components/AuthProvider";
 ;
 
 export const metadata: Metadata = {
-  title: "Senest - Ko'chmas mulk platformasi",
+  title: "Olsot Market - Ko'chmas mulk platformasi",
   description: "O'zbekistonning eng zamonaviy ko'chmas mulk platformasi",
 };
 
@@ -28,7 +28,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Senest" />
+        <meta name="apple-mobile-web-app-title" content="Olsot Market" />
       <body>
         <AuthProvider><div className="pb-16 lg:pb-0">{children}</div>
         <MobileNav />

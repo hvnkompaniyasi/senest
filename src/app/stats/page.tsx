@@ -27,7 +27,7 @@ export default function StatsPage() {
             <BarChart className="h-8 w-8 text-emerald-400" /> Admin Statistika
             <Crown className="h-5 w-5 text-emerald-400" />
           </h1>
-          <p className="text-zinc-400 mt-2">Senest platformasi bo'yicha umumiy ma'lumotlar — 14 kunlik</p>
+          <p className="text-zinc-400 mt-2">Olsot Market platformasi bo'yicha umumiy ma'lumotlar — 14 kunlik</p>
         </header>
 
         {/* KPI Cards */}

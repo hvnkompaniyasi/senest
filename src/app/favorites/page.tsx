@@ -12,7 +12,7 @@ import { DEAL_TYPES } from "@/lib/locations"
 export const dynamic = "force-dynamic"
 
 export const metadata = {
-  title: "Sevimlilar | Senest",
+  title: "Sevimlilar | Olsot Market",
   description: "Saqlangan e'lonlaringiz ro'yxati",
 }
 

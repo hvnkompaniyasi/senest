@@ -33,7 +33,7 @@ export default function Features() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-            Nima uchun Senest?
+            Nima uchun Olsot Market?
           </h2>
           <p className="text-gray-600">Bizning afzalliklarimiz</p>
         </div>

@@ -31,9 +31,9 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     where: { id: params.id },
     select: { title: true, description: true, images: true, price: true },
   })
-  if (!listing) return { title: "E'lon topilmadi | Senest" }
+  if (!listing) return { title: "E'lon topilmadi | Olsot Market" }
   return {
-    title: `${listing.title} — $${listing.price.toLocaleString("en-US")} | Senest`,
+    title: `${listing.title} — $${listing.price.toLocaleString("en-US")} | Olsot Market`,
     description: (listing.description || listing.title).slice(0, 160),
     openGraph: {
       title: listing.title,

@@ -3,7 +3,7 @@ import Footer from "@/components/Footer"
 import { Card } from "@/components/ui/card"
 
 export const metadata = {
-  title: "Maxfiylik siyosati - Senest",
+  title: "Maxfiylik siyosati - Olsot Market",
 }
 
 export default function StaticPage() {
