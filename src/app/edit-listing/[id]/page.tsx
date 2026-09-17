@@ -77,7 +77,7 @@ const emptyForm: FormState = {
 }
 
 const inputCls =
-  "h-12 w-full px-4 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-[#FF9500]"
+  "h-12 w-full px-4 bg-white/90 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-[#0A7C4E]"
 
 const labelCls = "text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1 block"
 
@@ -221,8 +221,8 @@ export default function EditListingPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FFFDF9] dark:bg-zinc-950">
-        <Loader2 className="h-8 w-8 animate-spin text-[#FF9500]" />
+      <div className="min-h-screen flex items-center justify-center bg-[#F7FBF8] dark:bg-zinc-950">
+        <Loader2 className="h-8 w-8 animate-spin text-[#0A7C4E]" />
       </div>
     )
   }
@@ -231,7 +231,7 @@ export default function EditListingPage() {
   // ===== HOLAT OYNASI =====
   if (done) {
     return (
-      <div className="min-h-screen bg-[#FFFDF9] dark:bg-zinc-950 flex items-center justify-center px-4 pb-24">
+      <div className="min-h-screen bg-[#F7FBF8] dark:bg-zinc-950 flex items-center justify-center px-4 pb-24">
         <div className="max-w-sm w-full bg-white dark:bg-zinc-900 rounded-2xl p-6 text-center shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center">
             <CheckCircle className="h-8 w-8 text-blue-500" />
@@ -244,7 +244,7 @@ export default function EditListingPage() {
           </p>
           <button
             onClick={() => router.push("/my-listings")}
-            className="h-12 w-full bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white rounded-xl font-bold text-sm"
+            className="h-12 w-full bg-gradient-to-r from-[#0A7C4E] to-[#08623D] text-white rounded-xl font-bold text-sm"
           >
             E'lonlarimni ko'rish
           </button>
@@ -254,11 +254,11 @@ export default function EditListingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFDF9] dark:bg-zinc-950 pb-24 lg:pb-10">
+    <div className="min-h-screen bg-[#F7FBF8] dark:bg-zinc-950 pb-24 lg:pb-10">
       <Navbar />
 
       <div className="max-w-2xl mx-auto px-3 sm:px-6 py-4 space-y-4">
-        <Link href="/my-listings" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-[#FF9500]">
+        <Link href="/my-listings" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-[#0A7C4E]">
           <ArrowLeft className="h-4 w-4" /> E'lonlarim
         </Link>
 
@@ -285,7 +285,7 @@ export default function EditListingPage() {
                 onClick={() => set("type", d.id)}
                 className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
                   form.type === d.id
-                    ? "bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white shadow-md"
+                    ? "bg-gradient-to-r from-[#0A7C4E] to-[#08623D] text-white shadow-md"
                     : "text-gray-600 dark:text-gray-300"
                 }`}
               >
@@ -306,7 +306,7 @@ export default function EditListingPage() {
                 onClick={() => set("category", c.id)}
                 className={`px-3.5 py-2 rounded-full text-xs font-bold border transition-colors ${
                   form.category === c.id
-                    ? "bg-[#FF9500] border-[#FF9500] text-white shadow-md shadow-green-400/30"
+                    ? "bg-[#0A7C4E] border-[#0A7C4E] text-white shadow-md shadow-green-400/30"
                     : "bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-gray-300"
                 }`}
               >
@@ -343,8 +343,8 @@ export default function EditListingPage() {
             onClick={() => fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-colors ${
               dragOver
-                ? "border-[#FF9500] bg-green-50 dark:bg-green-500/10"
-                : "border-gray-200 dark:border-zinc-700 hover:border-[#FF9500]/60"
+                ? "border-[#0A7C4E] bg-green-50 dark:bg-green-500/10"
+                : "border-gray-200 dark:border-zinc-700 hover:border-[#0A7C4E]/60"
             }`}
           >
             <input
@@ -357,9 +357,9 @@ export default function EditListingPage() {
             />
             {isUploading ? (
               <div className="w-full max-w-xs mx-auto">
-                <Loader2 className="h-6 w-6 animate-spin text-[#FF9500] mx-auto mb-2" />
+                <Loader2 className="h-6 w-6 animate-spin text-[#0A7C4E] mx-auto mb-2" />
                 <div className="h-1.5 bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-[#FF9500] to-[#FF7A00] animate-pulse" style={{ width: "70%" }} />
+                  <div className="h-full bg-gradient-to-r from-[#0A7C4E] to-[#08623D] animate-pulse" style={{ width: "70%" }} />
                 </div>
                 <p className="text-[11px] text-gray-400 mt-1.5">Yuklanmoqda...</p>
               </div>
@@ -378,7 +378,7 @@ export default function EditListingPage() {
                 <div key={img + i} className="relative group rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700">
                   <img src={img} alt="" className="w-full h-20 object-cover" />
                   {i === 0 && (
-                    <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-[#FF9500] text-white text-[9px] font-bold rounded flex items-center gap-0.5">
+                    <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-[#0A7C4E] text-white text-[9px] font-bold rounded flex items-center gap-0.5">
                       <Star className="h-2.5 w-2.5 fill-current" /> Asosiy
                     </span>
                   )}
@@ -454,7 +454,7 @@ export default function EditListingPage() {
               { key: "hasElectricity" as const, label: "Elektr bor" },
             ]).map((item) => (
               <label key={item.key} className="flex items-center gap-2 px-3.5 py-2.5 bg-gray-50 dark:bg-zinc-800 rounded-xl cursor-pointer">
-                <input type="checkbox" checked={form[item.key]} onChange={(e) => set(item.key, e.target.checked)} className="w-4 h-4 accent-[#FF9500]" />
+                <input type="checkbox" checked={form[item.key]} onChange={(e) => set(item.key, e.target.checked)} className="w-4 h-4 accent-[#0A7C4E]" />
                 <span className="text-sm text-gray-700 dark:text-gray-200">{item.label}</span>
               </label>
             ))}
@@ -464,7 +464,7 @@ export default function EditListingPage() {
         <button
           onClick={submit}
           disabled={saving || isUploading}
-          className="h-14 w-full bg-gradient-to-r from-[#FF9500] to-[#FF7A00] hover:from-[#FF8A00] hover:to-[#FF6A00] text-white rounded-2xl font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-green-400/30 disabled:opacity-50"
+          className="h-14 w-full bg-gradient-to-r from-[#0A7C4E] to-[#08623D] hover:from-[#0A7C4E] hover:to-[#08623D] text-white rounded-2xl font-extrabold text-base flex items-center justify-center gap-2 shadow-lg shadow-green-400/30 disabled:opacity-50"
         >
           {saving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           O'zgarishlarni yuborish

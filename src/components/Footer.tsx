@@ -28,7 +28,7 @@ export default function Footer() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-[#FF9500] transition-colors"
+              className="text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-[#0A7C4E] transition-colors"
             >
               {l.label}
             </Link>
@@ -36,10 +36,10 @@ export default function Footer() {
         </nav>
 
         <div className="flex flex-wrap justify-center gap-x-5 gap-y-1.5 text-[11px] text-gray-400 dark:text-gray-500 mb-7">
-          <a href="tel:+998330070150" className="inline-flex items-center gap-1 hover:text-[#FF9500]">
+          <a href="tel:+998330070150" className="inline-flex items-center gap-1 hover:text-[#0A7C4E]">
             <Phone className="h-3 w-3" /> +998 33 007 01 50
           </a>
-          <a href="mailto:frlking2007@gmail.com" className="inline-flex items-center gap-1 hover:text-[#FF9500]">
+          <a href="mailto:frlking2007@gmail.com" className="inline-flex items-center gap-1 hover:text-[#0A7C4E]">
             <Mail className="h-3 w-3" /> frlking2007@gmail.com
           </a>
           <span className="inline-flex items-center gap-1">

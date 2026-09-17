@@ -25,7 +25,7 @@ export default function MobileNav() {
           if (item.center) {
             return (
               <Link key={item.href} href={item.href} aria-label="E'lon qo'shish" className="-mt-6">
-                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-xl shadow-orange-400/40 border-4 border-white dark:border-zinc-900">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-xl shadow-emerald-400/40 border-4 border-white dark:border-zinc-900">
                   <Icon className="h-6 w-6 text-white" />
                 </div>
               </Link>

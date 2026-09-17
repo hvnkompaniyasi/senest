@@ -36,7 +36,7 @@ export default async function MyListingsPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#FFFDF9] dark:bg-zinc-950 pb-24 lg:pb-10">
+    <div className="min-h-screen bg-[#F7FBF8] dark:bg-zinc-950 pb-24 lg:pb-10">
       <Navbar />
 
       <div className="max-w-4xl mx-auto px-3 sm:px-6 py-5">
@@ -45,7 +45,7 @@ export default async function MyListingsPage() {
             <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white">Mening e'lonlarim</h1>
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{listings.length} ta e'lon</p>
           </div>
-          <Link href="/add-listing" className="h-10 px-4 bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white text-sm font-bold rounded-xl flex items-center gap-1.5 shadow-lg shadow-green-400/30 flex-shrink-0">
+          <Link href="/add-listing" className="h-10 px-4 bg-gradient-to-r from-[#0A7C4E] to-[#08623D] text-white text-sm font-bold rounded-xl flex items-center gap-1.5 shadow-lg shadow-green-400/30 flex-shrink-0">
             <Plus className="h-4 w-4" /> Yangi e'lon
           </Link>
         </div>
@@ -54,7 +54,7 @@ export default async function MyListingsPage() {
           <div className="text-center py-20 bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800">
             <Home className="h-12 w-12 text-gray-300 dark:text-zinc-700 mx-auto mb-3" />
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Hali e'lonlaringiz yo'q</p>
-            <Link href="/add-listing" className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white text-sm font-bold rounded-xl">
+            <Link href="/add-listing" className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-gradient-to-r from-[#0A7C4E] to-[#08623D] text-white text-sm font-bold rounded-xl">
               <Plus className="h-4 w-4" /> Birinchi e'lonni qo'shish
             </Link>
           </div>
@@ -80,14 +80,14 @@ export default async function MyListingsPage() {
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <Link href={`/listing/${l.id}`} className="font-bold text-gray-900 dark:text-white line-clamp-2 text-sm leading-snug hover:text-[#FF9500]">
+                        <Link href={`/listing/${l.id}`} className="font-bold text-gray-900 dark:text-white line-clamp-2 text-sm leading-snug hover:text-[#0A7C4E]">
                           {l.title || "Sarlavhasiz"}
                         </Link>
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1 flex-shrink-0 ${st.cls}`}>
                           <StIcon className="h-3 w-3" /> {st.label}
                         </span>
                       </div>
-                      <div className="text-base font-extrabold text-[#FF9500] mt-1">
+                      <div className="text-base font-extrabold text-[#0A7C4E] mt-1">
                         ${l.price.toLocaleString("en-US")}
                       </div>
                       <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">

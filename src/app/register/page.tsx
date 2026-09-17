@@ -78,9 +78,9 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 p-4 relative overflow-hidden font-sans">
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-gradient-to-br from-orange-300/40 to-amber-400/40 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-amber-300/40 to-orange-400/40 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-orange-200/20 to-amber-200/20 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-gradient-to-br from-emerald-300/40 to-amber-400/40 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-amber-300/40 to-emerald-400/40 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-emerald-200/20 to-amber-200/20 rounded-full blur-3xl" />
       </div>
 
       <Card className="relative w-full max-w-lg bg-white/70 backdrop-blur-2xl border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] rounded-[28px] overflow-hidden">
@@ -88,10 +88,10 @@ export default function RegisterPage() {
         
         <div className="relative p-6 md:p-8">
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-16 h-16 mb-3 rounded-full bg-gradient-to-br from-orange-400 via-emerald-400 to-orange-500 shadow-[0_8px_24px_rgba(245,158,11,0.4)] transform hover:scale-110 transition-transform duration-300">
+            <div className="inline-flex items-center justify-center w-16 h-16 mb-3 rounded-full bg-gradient-to-br from-emerald-400 via-emerald-400 to-emerald-500 shadow-[0_8px_24px_rgba(245,158,11,0.4)] transform hover:scale-110 transition-transform duration-300">
               <Home className="h-8 w-8 text-white drop-shadow-lg" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent drop-shadow-sm">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 via-amber-600 to-emerald-600 bg-clip-text text-transparent drop-shadow-sm">
               Senest
             </h1>
             <p className="text-gray-700 mt-1 text-base font-medium">Yangi akkaunt yarating</p>
@@ -193,7 +193,7 @@ export default function RegisterPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 mt-4 bg-gradient-to-r from-orange-400 via-emerald-400 to-orange-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(245,158,11,0.4)] hover:shadow-[0_12px_32px_rgba(245,158,11,0.5)] transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full h-12 mt-4 bg-gradient-to-r from-emerald-400 via-emerald-400 to-emerald-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(245,158,11,0.4)] hover:shadow-[0_12px_32px_rgba(245,158,11,0.5)] transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Yaratilmoqda..." : "Royxatdan otish"}
             </Button>
@@ -201,7 +201,7 @@ export default function RegisterPage() {
             <div className="text-center mt-3">
               <p className="text-gray-700 text-sm">
                 Akkaunt bormi?{" "}
-                <Link href="/login" className="text-green-600 hover:text-green-700 font-bold underline decoration-orange-400/50 decoration-2 underline-offset-4 transition-colors">
+                <Link href="/login" className="text-green-600 hover:text-green-700 font-bold underline decoration-emerald-400/50 decoration-2 underline-offset-4 transition-colors">
                   Kirish
                 </Link>
               </p>

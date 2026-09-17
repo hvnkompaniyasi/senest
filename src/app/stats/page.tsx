@@ -62,7 +62,7 @@ export default function StatsPage() {
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((i) => {
               const h = Math.max(10, Math.random() * 80 + 10)
               return (
-                <rect key={i} x={i * 26 + 4} y={120 - h} width="20" height={h} fill="#FF9500" rx="3" opacity={0.8 + Math.random() * 0.2} />
+                <rect key={i} x={i * 26 + 4} y={120 - h} width="20" height={h} fill="#0A7C4E" rx="3" opacity={0.8 + Math.random() * 0.2} />
               )
             })}
             <text x="200" y="115" textAnchor="middle" fill="#a1a1aa" fontSize="10" fontFamily="sans-serif">Kunlar (14)</text>

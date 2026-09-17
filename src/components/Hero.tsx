@@ -50,7 +50,7 @@ export default function Hero() {
               onClick={() => setDeal(d.id)}
               className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
                 deal === d.id
-                  ? "bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white shadow-md"
+                  ? "bg-gradient-to-r from-[#0A7C4E] to-[#08623D] text-white shadow-md"
                   : "text-gray-600 dark:text-gray-300"
               }`}
             >
@@ -66,11 +66,11 @@ export default function Hero() {
             onChange={(e) => setQ(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && submit()}
             placeholder="Hudud, manzil yoki sarlavha..."
-            className="h-12 w-full pl-10 pr-24 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-[#FF9500]"
+            className="h-12 w-full pl-10 pr-24 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-[#0A7C4E]"
           />
           <button
             onClick={submit}
-            className="absolute right-1.5 top-1.5 h-9 px-4 bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white rounded-lg text-sm font-bold shadow-md shadow-green-400/30 active:scale-95 transition-transform"
+            className="absolute right-1.5 top-1.5 h-9 px-4 bg-gradient-to-r from-[#0A7C4E] to-[#08623D] text-white rounded-lg text-sm font-bold shadow-md shadow-green-400/30 active:scale-95 transition-transform"
           >
             Qidirish
           </button>
@@ -83,7 +83,7 @@ export default function Hero() {
           href="/map"
           className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-full text-xs font-semibold text-gray-700 dark:text-gray-200 shadow-[0_4px_16px_rgba(0,0,0,0.05)]"
         >
-          <MapPin className="h-3.5 w-3.5 text-[#FF9500]" /> Xaritada ko'rish
+          <MapPin className="h-3.5 w-3.5 text-[#0A7C4E]" /> Xaritada ko'rish
         </Link>
         <Link
           href="/add-listing"

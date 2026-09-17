@@ -83,7 +83,7 @@ export default function LocationPicker({ lat, lng, onChange }: LocationPickerPro
         <svg width="40" height="40" viewBox="0 0 24 24" className="drop-shadow-xl" aria-hidden="true">
           <path
             d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
-            fill="#FF9500"
+            fill="#0A7C4E"
             stroke="#fff"
             strokeWidth="1.2"
           />
@@ -102,7 +102,7 @@ export default function LocationPicker({ lat, lng, onChange }: LocationPickerPro
       </button>
 
       <div className="flex items-start gap-1.5 mt-2 text-[11px] text-gray-400 dark:text-gray-500 leading-relaxed">
-        <svg width="12" height="12" viewBox="0 0 24 24" className="mt-0.5 flex-shrink-0" fill="#FF9500" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 24 24" className="mt-0.5 flex-shrink-0" fill="#0A7C4E" aria-hidden="true">
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
         </svg>
         <span>

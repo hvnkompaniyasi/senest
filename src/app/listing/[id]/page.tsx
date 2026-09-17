@@ -80,7 +80,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
   ].filter(Boolean) as { icon: typeof Flame; label: string }[]
 
   return (
-    <div className="min-h-screen bg-[#FFFDF9] dark:bg-zinc-950">
+    <div className="min-h-screen bg-[#F7FBF8] dark:bg-zinc-950">
       <Navbar />
 
       {/* ===== GALEREYA (to'liq kenglik + overlay) ===== */}
@@ -106,14 +106,14 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
             </span>
           </div>
 
-          <div className="text-[26px] leading-tight font-extrabold text-[#FF9500]">
+          <div className="text-[26px] leading-tight font-extrabold text-[#0A7C4E]">
             ${listing.price.toLocaleString("en-US")}
           </div>
           <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mt-1">
             {listing.title || "Sarlavhasiz e'lon"}
           </h1>
           <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 mt-1.5">
-            <MapPin className="h-4 w-4 text-[#FF9500] flex-shrink-0" />
+            <MapPin className="h-4 w-4 text-[#0A7C4E] flex-shrink-0" />
             {listing.region}{listing.district ? `, ${listing.district}` : ""}{listing.address ? ` — ${listing.address}` : ""}
           </div>
 
@@ -124,7 +124,7 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
                 const Icon = s.icon
                 return (
                   <div key={s.label} className="p-3 bg-gray-50 dark:bg-zinc-800 rounded-xl text-center">
-                    <Icon className="h-4 w-4 text-[#FF9500] mx-auto mb-1" />
+                    <Icon className="h-4 w-4 text-[#0A7C4E] mx-auto mb-1" />
                     <div className="text-sm font-extrabold text-gray-900 dark:text-white">{s.value}</div>
                     <div className="text-[10px] text-gray-400 dark:text-gray-500">{s.label}</div>
                   </div>

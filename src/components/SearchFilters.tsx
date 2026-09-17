@@ -56,7 +56,7 @@ export default function SearchFilters({ filters, onChange, onSearch, showAdvance
           </select>
         </div>
 
-        <Button onClick={onSearch} className="w-full h-11 sm:h-12 bg-gradient-to-r from-orange-400 via-emerald-400 to-orange-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 text-white font-bold rounded-lg sm:rounded-xl shadow-lg shadow-green-400/30 hover:shadow-green-400/50 transition-all text-sm sm:text-base">
+        <Button onClick={onSearch} className="w-full h-11 sm:h-12 bg-gradient-to-r from-emerald-400 via-emerald-400 to-emerald-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 text-white font-bold rounded-lg sm:rounded-xl shadow-lg shadow-green-400/30 hover:shadow-green-400/50 transition-all text-sm sm:text-base">
           <Search className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
           Qidirish
         </Button>

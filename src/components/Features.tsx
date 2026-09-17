@@ -44,7 +44,7 @@ export default function Features() {
             return (
               <div
                 key={i}
-                className="group bg-white/70 backdrop-blur-xl border border-white/70 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:shadow-orange-400/20 transition-all duration-300 hover:-translate-y-1"
+                className="group bg-white/70 backdrop-blur-xl border border-white/70 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:shadow-emerald-400/20 transition-all duration-300 hover:-translate-y-1"
               >
                 <div className={`inline-flex items-center justify-center w-14 h-14 mb-4 rounded-xl bg-gradient-to-br ${feature.color} shadow-lg group-hover:scale-110 transition-transform`}>
                   <Icon className="h-7 w-7 text-white" />

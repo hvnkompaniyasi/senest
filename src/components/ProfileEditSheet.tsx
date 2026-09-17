@@ -42,7 +42,7 @@ export default function ProfileEditSheet({ initialName, initialPhone }: Props) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="h-9 px-3 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 flex items-center gap-1.5 hover:border-[#FF9500] transition-colors flex-shrink-0"
+        className="h-9 px-3 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-xs font-semibold text-gray-600 dark:text-gray-300 flex items-center gap-1.5 hover:border-[#0A7C4E] transition-colors flex-shrink-0"
       >
         <Pencil className="h-3 w-3" /> Tahrirlash
       </button>
@@ -74,7 +74,7 @@ export default function ProfileEditSheet({ initialName, initialPhone }: Props) {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ismingiz"
-                  className="h-12 w-full px-4 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-[#FF9500]"
+                  className="h-12 w-full px-4 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-[#0A7C4E]"
                 />
               </div>
               <div>
@@ -83,13 +83,13 @@ export default function ProfileEditSheet({ initialName, initialPhone }: Props) {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+998..."
-                  className="h-12 w-full px-4 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-[#FF9500]"
+                  className="h-12 w-full px-4 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl text-sm text-gray-800 dark:text-white outline-none focus:border-[#0A7C4E]"
                 />
               </div>
               <button
                 onClick={save}
                 disabled={busy}
-                className="h-12 w-full bg-gradient-to-r from-[#FF9500] to-[#FF7A00] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-green-400/30 disabled:opacity-50"
+                className="h-12 w-full bg-gradient-to-r from-[#0A7C4E] to-[#08623D] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-green-400/30 disabled:opacity-50"
               >
                 {busy && <Loader2 className="h-4 w-4 animate-spin" />} Saqlash
               </button>

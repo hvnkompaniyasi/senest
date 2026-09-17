@@ -20,7 +20,7 @@ export const metadata = {
 }
 
 const MENU = [
-  { href: "/add-listing", icon: Plus, label: "Yangi e'lon qo'shish", color: "bg-green-50 dark:bg-green-500/10 text-[#FF9500]" },
+  { href: "/add-listing", icon: Plus, label: "Yangi e'lon qo'shish", color: "bg-green-50 dark:bg-green-500/10 text-[#0A7C4E]" },
   { href: "/my-listings", icon: FileText, label: "Mening e'lonlarim", color: "bg-blue-50 dark:bg-blue-500/10 text-blue-500" },
   { href: "/favorites", icon: Heart, label: "Sevimli e'lonlar", color: "bg-red-50 dark:bg-red-500/10 text-red-500" },
   { href: "/messages", icon: MessageSquare, label: "Xabarlarim", color: "bg-green-50 dark:bg-green-500/10 text-green-500" },
@@ -44,7 +44,7 @@ export default async function ProfilePage() {
   const initial = (name || phone || "S").charAt(0).toUpperCase()
 
   return (
-    <div className="min-h-screen bg-[#FFFDF9] dark:bg-zinc-950">
+    <div className="min-h-screen bg-[#F7FBF8] dark:bg-zinc-950">
       <Navbar />
 
       <main className="pb-24 max-w-6xl mx-auto px-3 sm:px-6 pt-4">

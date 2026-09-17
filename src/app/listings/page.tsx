@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic"
 
 export default function ListingsPage() {
   return (
-    <div className="min-h-screen bg-[#FFFDF9] dark:bg-zinc-950">
+    <div className="min-h-screen bg-[#F7FBF8] dark:bg-zinc-950">
       <Navbar />
 
       <main className="max-w-6xl mx-auto px-3 sm:px-6">
@@ -32,9 +32,9 @@ export default function ListingsPage() {
           </div>
           <Link
             href="/map"
-            className="h-10 px-3.5 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 flex items-center gap-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:border-[#FF9500] transition-colors flex-shrink-0"
+            className="h-10 px-3.5 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 flex items-center gap-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:border-[#0A7C4E] transition-colors flex-shrink-0"
           >
-            <MapPin className="h-4 w-4 text-[#FF9500]" /> Xaritada
+            <MapPin className="h-4 w-4 text-[#0A7C4E]" /> Xaritada
           </Link>
         </div>
 

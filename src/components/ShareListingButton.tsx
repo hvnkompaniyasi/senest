@@ -60,7 +60,7 @@ export default function ShareListingButton({ title }: { title: string }) {
     <>
       <button
         onClick={onClick}
-        className="h-12 w-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-gray-200 rounded-xl flex items-center justify-center gap-2 font-semibold text-sm hover:border-[#FF9500] transition-colors"
+        className="h-12 w-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-gray-200 rounded-xl flex items-center justify-center gap-2 font-semibold text-sm hover:border-[#0A7C4E] transition-colors"
       >
         <Share2 className="h-4 w-4" /> Ulashish
       </button>
