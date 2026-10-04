@@ -239,3 +239,34 @@ html {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
+
+/* === Narxli xarita pin'lari (WOW #1) === */
+.price-pin {
+  background: #0A7C4E;
+  color: #fff;
+  font-weight: 800;
+  font-size: 11px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 14px rgba(10, 124, 78, 0.45);
+  white-space: nowrap;
+  transform: translate(-50%, -100%);
+  display: inline-block;
+}
+.price-pin-vip {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  color: #78350f;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.5);
+}
+.price-pin::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 2px;
+  height: 6px;
+  background: #fff;
+  transform: translateX(-50%);
+}

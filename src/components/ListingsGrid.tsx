@@ -12,16 +12,6 @@ interface ListingsGridProps {
 export default function ListingsGrid({ listings, total }: ListingsGridProps) {
   return (
     <div className="pb-4">
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          Topildi:{" "}
-          <span className="font-extrabold text-gray-900 dark:text-white">
-            {total.toLocaleString("ru-RU")}
-          </span>{" "}
-          ta e'lon
-        </p>
-      </div>
-
       {listings.length === 0 ? (
         <div className="text-center py-16 bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800">
           <p className="text-3xl mb-2">🏠</p>
