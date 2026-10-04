@@ -14,10 +14,10 @@ const IMG = [
 ];
 
 const USERS = [
-  { name: "Aziza Karimova", phone: "+998331234500" },
-  { name: "Bekzod Toshmatov", phone: "+998901234502" },
-  { name: "Dilnoza Rahimova", phone: "+998901234503" },
-  { name: "Jasur Aliyev", phone: "+998901234504" },
+  { name: "Aziza Karimova", phone: "+998331234501" },
+  { name: "Bekzod Toshmatov", phone: "+998331234500" },
+  { name: "Dilnoza Rahimova", phone: "+998331234503" },
+  { name: "Jasur Aliyev", phone: "+998331234504" },
 ];
 
 const L = [
@@ -40,30 +40,45 @@ const L = [
 
 async function main() {
   const hash = await bcrypt.hash("12345", 10);
+
+  // 1. Users
   const users = [];
   for (const u of USERS) {
     users.push(await prisma.user.upsert({
-      where: { phone: u.phone }, update: {},
-      create: { ...u, password: hash, role: "USER" },
+      where: { phone: u.phone },
+      update: {},
+      create: { name: u.name, phone: u.phone, password: hash, role: "USER" },
     }));
   }
   console.log("✅ 4 user (parol: 12345)");
 
+  // 2. Listings — har bir user'da 4 ta (16 total, lekin biz 15 qildik)
   const created = [];
   for (let i = 0; i < L.length; i++) {
     const l = L[i];
     created.push(await prisma.listing.upsert({
-      where: { id: `demo-listing-${i + 1}` }, update: {},
+      where: { id: `demo-listing-${i + 1}` },
+      update: {},
       create: {
         id: `demo-listing-${i + 1}`,
-        userId: users[i % users.length].id,
+        user: { connect: { id: users[i % users.length].id } },
         title: l.t,
         description: `${l.d} tumanida joylashgan qulay va yorug' uy. Gaz, suv, elektr, internet mavjud. Hujjatlar tayyor.`,
-        type: l.ty, category: l.c, price: l.p,
-        region: l.r, district: l.d,
-        latitude: l.lat, longitude: l.lng,
-        rooms: l.rooms, area: l.area, floor: l.fl, totalFloors: l.tf,
-        hasGas: true, hasWater: true, hasElectricity: true,
+        type: l.ty,
+        category: l.c,
+        price: l.p,
+        region: l.r,
+        district: l.d,
+        address: `${l.d}, ${l.r} shahri`,
+        latitude: l.lat,
+        longitude: l.lng,
+        rooms: l.rooms,
+        area: l.area,
+        floor: l.fl,
+        totalFloors: l.tf,
+        hasGas: true,
+        hasWater: true,
+        hasElectricity: true,
         images: [IMG[i % IMG.length], IMG[(i + 3) % IMG.length]],
         status: i < 13 ? "ACTIVE" : "PENDING",
         isPremium: i === 0 || i === 3,
@@ -73,27 +88,59 @@ async function main() {
   }
   console.log("✅ 15 e'lon (13 ACTIVE, 2 PENDING, 2 VIP)");
 
+  // 3. Conversation — user[0]=seller, user[1]=buyer, listing[0]=e'lon
   const conv = await prisma.conversation.upsert({
-    where: { id: "demo-conv-1" }, update: {},
-    create: { id: "demo-conv-1", listingId: created[0].id, userId: users[1].id },
+    where: { id: "demo-conv-1" },
+    update: {},
+    create: {
+      id: "demo-conv-1",
+      buyer: { connect: { id: users[1].id } },
+      seller: { connect: { id: users[0].id } },
+      listing: { connect: { id: created[0].id } },
+    },
   });
+  console.log("✅ Suvbat yaratildi");
+
+  // 4. Messages (3 ta)
   await prisma.message.createMany({
     data: [
-      { senderId: users[1].id, listingId: created[0].id, conversationId: conv.id, text: "Assalomu alaykum! Kvartira hali sotuvdami?" },
-      { senderId: users[0].id, listingId: created[0].id, conversationId: conv.id, text: "Vaalaykum assalom! Ha, hali sotuvda. Qachon ko'rishni xohlaysiz?" },
-      { senderId: users[1].id, listingId: created[0].id, conversationId: conv.id, text: "Ertaga soat 15:00 da qulaymi?" },
+      {
+        senderId: users[1].id,
+        conversationId: conv.id,
+        text: "Assalomu alaykum! Kvartira hali sotuvdami?",
+      },
+      {
+        senderId: users[0].id,
+        conversationId: conv.id,
+        text: "Vaalaykum assalom! Ha, hali sotuvda. Qachon ko'rishni xohlaysiz?",
+      },
+      {
+        senderId: users[1].id,
+        conversationId: conv.id,
+        text: "Ertaga soat 15:00 da qulaymi?",
+      },
     ],
     skipDuplicates: true,
   });
+  console.log("✅ 3 ta xabar");
+
+  // 5. Favorites
   await prisma.favorite.createMany({
     data: [
       { userId: users[1].id, listingId: created[2].id },
       { userId: users[1].id, listingId: created[3].id },
+      { userId: users[2].id, listingId: created[0].id },
     ],
     skipDuplicates: true,
   });
-  console.log("✅ Chat + sevimlilar");
+  console.log("✅ 3 ta sevimli");
+
   await prisma.$disconnect();
-  console.log("\n🎉 DEMO TAYYOR! Login: +998331234500 / 12345");
+  console.log("\n🎉 DEMO TAYYOR!");
+  console.log("Login: +998331234500 / 12345 (Bekzod - buyer, chat + sevimlilar bor)");
 }
-main().catch((e) => { console.error(e.message); process.exit(1); });
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
