@@ -117,29 +117,29 @@ export default async function ListingDetailPage({ params }: { params: { id: stri
           {/* Glass stats panel */}
           <div className="glass-pill rounded-2xl p-3 sm:p-4 mt-4">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {listing.rooms > 0 && (
+              {(listing.rooms ?? 0) > 0 && (
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
                     <BedDouble className="h-4 w-4 text-[#0A7C4E]" />
                   </div>
                   <div>
                     <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Xonalar</p>
-                    <p className="text-sm font-extrabold text-gray-900 dark:text-white">{listing.rooms} ta</p>
+                    <p className="text-sm font-extrabold text-gray-900 dark:text-white">{listing.rooms ?? 0} ta</p>
                   </div>
                 </div>
               )}
-              {listing.area > 0 && (
+              {(listing.area ?? 0) > 0 && (
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
                     <Ruler className="h-4 w-4 text-[#0A7C4E]" />
                   </div>
                   <div>
                     <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Maydon</p>
-                    <p className="text-sm font-extrabold text-gray-900 dark:text-white">{listing.area} m²</p>
+                    <p className="text-sm font-extrabold text-gray-900 dark:text-white">{listing.area ?? 0} m²</p>
                   </div>
                 </div>
               )}
-              {listing.floor > 0 && (
+              {(listing.floor ?? 0) > 0 && (
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
                     <Building2 className="h-4 w-4 text-[#0A7C4E]" />
