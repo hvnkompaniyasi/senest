@@ -1,26 +1,63 @@
-import { Suspense } from "react"
-import Link from "next/link"
-import { MapPin } from "lucide-react"
-import Navbar from "@/components/Navbar"
-import ListingsBrowser from "@/components/ListingsBrowser"
-import ListingSkeleton from "@/components/ListingSkeleton"
-import Footer from "@/components/Footer"
-import MobileNav from "@/components/MobileNav"
+import Link from "next/link";
+import { MapPin } from "lucide-react";
+import type { Prisma } from "@prisma/client";
+import { prisma } from "@/lib/auth";
+import Navbar from "@/components/Navbar";
+import ListingsFilters from "@/components/ListingsFilters";
+import ListingsGrid from "@/components/ListingsGrid";
+import ListingsPagination from "@/components/ListingsPagination";
+import Footer from "@/components/Footer";
+import MobileNav from "@/components/MobileNav";
 
 export const metadata = {
   title: "Barcha e'lonlar | Olsot Market",
   description: "O'zbekiston bo'ylab barcha faol uy-joy e'lonlari — qidiring, filtrlang, xaritada ko'ring",
+};
+
+export const dynamic = "force-dynamic";
+
+interface PageProps {
+  searchParams: Record<string, string | undefined>;
 }
 
-export const dynamic = "force-dynamic"
+export default async function ListingsPage({ searchParams }: PageProps) {
+  const page = Math.max(1, parseInt(searchParams.page || "1", 10) || 1);
+  const perPage = 12;
 
-export default function ListingsPage() {
+  const where: Prisma.ListingWhereInput = { status: "ACTIVE" };
+  const t = searchParams.type;
+  if (t === "SALE" || t === "RENT" || t === "DAILY") where.type = t;
+  if (searchParams.region) where.region = searchParams.region;
+  if (searchParams.q) where.title = { contains: searchParams.q, mode: "insensitive" };
+
+  const [total, listings, regionRows] = await prisma.$transaction([
+    prisma.listing.count({ where }),
+    prisma.listing.findMany({
+      where,
+      orderBy: [{ isPremium: "desc" }, { createdAt: "desc" }],
+      skip: (page - 1) * perPage,
+      take: perPage,
+      include: { user: { select: { name: true } } },
+    }),
+    prisma.listing.findMany({
+      where: { status: "ACTIVE" },
+      distinct: ["region"],
+      select: { region: true },
+      orderBy: { region: "asc" },
+    }),
+  ]);
+
+  const regions = regionRows.map((r) => r.region).filter((r): r is string => Boolean(r));
+
+  const rest = new URLSearchParams();
+  Object.entries(searchParams).forEach(([k, v]) => {
+    if (k !== "page" && v) rest.set(k, v);
+  });
+
   return (
     <div className="min-h-screen bg-[#F7FBF8] dark:bg-zinc-950">
       <Navbar />
-
-      <main className="max-w-6xl mx-auto px-3 sm:px-6">
-        {/* Header */}
+      <main className="max-w-6xl mx-auto px-3 sm:px-6 pb-24 lg:pb-10">
         <div className="flex items-center justify-between gap-3 pt-4 pb-3">
           <div>
             <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white">
@@ -38,19 +75,12 @@ export default function ListingsPage() {
           </Link>
         </div>
 
-        <Suspense
-          fallback={
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-              <ListingSkeleton count={6} />
-            </div>
-          }
-        >
-          <ListingsBrowser />
-        </Suspense>
+        <ListingsFilters regions={regions} />
+        <ListingsGrid listings={listings} total={total} />
+        <ListingsPagination total={total} page={page} perPage={perPage} params={rest.toString()} />
       </main>
-
       <Footer />
       <MobileNav />
     </div>
-  )
+  );
 }
