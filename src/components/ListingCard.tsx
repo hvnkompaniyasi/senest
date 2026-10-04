@@ -17,10 +17,11 @@ interface ListingCardProps {
   seller?: string;
   isPremium?: boolean;
   createdAt?: string;
+  isFavorited?: boolean;
 }
 
 export default function ListingCard({
-  id, title, price, location, rooms, area, image, type, isPremium,
+  id, title, price, location, rooms, area, image, type, isPremium, isFavorited,
 }: ListingCardProps) {
   return (
     <Link
@@ -57,7 +58,7 @@ export default function ListingCard({
             className="z-10"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
           >
-            <FavoriteToggle listingId={id} />
+            <FavoriteToggle listingId={id} initial={!!isFavorited} />
           </div>
         </div>
 
