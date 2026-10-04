@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     unoptimized: false,
     remotePatterns: [
+        { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "utfs.io" },
       { protocol: "https", hostname: "**.ufs.io" },
       { protocol: "https", hostname: "**.ufslive.com" },
