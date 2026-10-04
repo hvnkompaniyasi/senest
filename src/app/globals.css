@@ -222,13 +222,13 @@ html {
 }
 /* === Olsot Market Design System v2: Glass & Green === */
 .glass {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.55);
 }
 .dark .glass {
-  background: rgba(24, 24, 27, 0.65);
+  background: rgba(24, 24, 27, 0.96);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(63, 63, 70, 0.45);
