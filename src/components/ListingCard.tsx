@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { formatPrice } from "@/lib/format";
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -156,7 +157,7 @@ export default function ListingCard({
 
       <Link href={`/listing/${id}`} className="block p-2.5">
         <div className="text-base font-extrabold text-[#0A7C4E]">
-          ${price.toLocaleString("en-US")}
+          {formatPrice(price, type)}
         </div>
         <div className="text-xs font-semibold text-gray-800 dark:text-white line-clamp-2 leading-snug mt-0.5 min-h-[2em]">
           {title || "Sarlavhasiz"}
