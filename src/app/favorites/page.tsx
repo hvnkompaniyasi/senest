@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { Heart, Home, MapPin } from "lucide-react"
 import { prisma } from "@/lib/auth"
 import { authOptions } from "@/lib/auth-options"
@@ -64,7 +65,7 @@ export default async function FavoritesPage() {
                 >
                   <div className="relative h-32 sm:h-40 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-zinc-800 dark:to-zinc-900">
                     {f.listing.images?.[0] && (
-                      <img src={f.listing.images[0]} alt={f.listing.title || "E'lon rasmi"} className="w-full h-full object-cover" />
+                      <Image src={f.listing.images[0]} alt={f.listing.title || "E'lon rasmi"} fill sizes="(max-width: 640px) 50vw, 200px" className="object-cover" />
                     )}
                     <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-white/95 rounded-full text-[11px] font-bold text-green-600 shadow">
                       {DEAL_TYPES.find((d) => d.id === f.listing.type)?.name || f.listing.type}

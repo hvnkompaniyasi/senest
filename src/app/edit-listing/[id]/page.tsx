@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
+import Image from "next/image"
 import { useUploadThing } from "@/lib/uploadthing"
 import {
   ArrowLeft, Loader2, Send, Info, UploadCloud, X, ChevronLeft, ChevronRight, Star,
@@ -376,7 +377,7 @@ export default function EditListingPage() {
             <div className="grid grid-cols-3 gap-2 mt-3">
               {form.images.map((img, i) => (
                 <div key={img + i} className="relative group rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700">
-                  <img src={img} alt="" className="w-full h-20 object-cover" />
+                  <div className="relative w-full h-20"><Image src={img} alt="" fill sizes="100px" className="object-cover" /></div>
                   {i === 0 && (
                     <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-[#0A7C4E] text-white text-[9px] font-bold rounded flex items-center gap-0.5">
                       <Star className="h-2.5 w-2.5 fill-current" /> Asosiy

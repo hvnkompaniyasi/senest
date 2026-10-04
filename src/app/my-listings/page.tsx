@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { prisma } from "@/lib/auth"
 import { authOptions } from "@/lib/auth-options"
 import Navbar from "@/components/Navbar"
@@ -70,7 +71,7 @@ export default async function MyListingsPage() {
                   <div className="flex gap-3.5">
                     {l.images?.[0] ? (
                       <Link href={`/listing/${l.id}`} className="flex-shrink-0">
-                        <img src={l.images[0]} alt={l.title || "E'lon rasmi"} className="w-24 h-24 rounded-xl object-cover" />
+                        <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0"><Image src={l.images[0]} alt={l.title || "E'lon rasmi"} fill sizes="96px" className="object-cover" /></div>
                       </Link>
                     ) : (
                       <div className="w-24 h-24 rounded-xl bg-green-50 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">

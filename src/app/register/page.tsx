@@ -88,7 +88,7 @@ export default function RegisterPage() {
         
         <div className="relative p-6 md:p-8">
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-16 h-16 mb-3 rounded-full bg-gradient-to-br from-emerald-400 via-emerald-400 to-emerald-500 shadow-[0_8px_24px_rgba(245,158,11,0.4)] transform hover:scale-110 transition-transform duration-300">
+            <div className="inline-flex items-center justify-center w-16 h-16 mb-3 rounded-full bg-gradient-to-br from-emerald-400 via-emerald-400 to-emerald-500 shadow-[0_8px_24px_rgba(10,124,78,0.35)] transform hover:scale-110 transition-transform duration-300">
               <Home className="h-8 w-8 text-white drop-shadow-lg" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 via-emerald-600 to-emerald-600 bg-clip-text text-transparent drop-shadow-sm">
@@ -193,7 +193,7 @@ export default function RegisterPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 mt-4 bg-gradient-to-r from-emerald-400 via-emerald-400 to-emerald-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(245,158,11,0.4)] hover:shadow-[0_12px_32px_rgba(245,158,11,0.5)] transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full h-12 mt-4 bg-gradient-to-r from-emerald-400 via-emerald-400 to-emerald-500 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 text-white font-bold rounded-xl shadow-[0_8px_24px_rgba(10,124,78,0.35)] hover:shadow-[0_12px_32px_rgba(10,124,78,0.45)] transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Yaratilmoqda..." : "Royxatdan otish"}
             </Button>
